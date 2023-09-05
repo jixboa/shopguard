@@ -1,4 +1,4 @@
-import connectMongo from "@/database/conn";
+import connectMongo from "../../../database/conn";
 
 export async function GET(request) {
   await connectMongo();
