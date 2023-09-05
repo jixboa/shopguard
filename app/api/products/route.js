@@ -1,5 +1,5 @@
-import connectMongo from "@/database/conn";
-import Product from "@/models/productSchema";
+import connectMongo from "../../../database/conn";
+import Product from "../../../models/productSchema";
 import { containerClasses } from "@mui/material";
 import { NextResponse } from "next/server";
 

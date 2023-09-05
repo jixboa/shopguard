@@ -1,5 +1,5 @@
 import connectMongo from "../../../../database/conn";
-import Product from "@/models/productSchema";
+import Product from "../../../../models/productSchema";
 
 export async function PUT(request, { params }) {
   const { id } = params;
