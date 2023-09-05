@@ -1,21 +1,23 @@
-import connectMongo from "@/database/conn";
-import User from "@/models/userSchema";
+import User from "../../../../models/userSchema";
+import connectMongo from "../../../../database/conn";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
+connectMongo();
 
-connectMongo()
-
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   try {
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
 
-    /* const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (user) {
-      return NextResponse.json({ error: "User already exist" }, { status: 400 });
-    } */
+      return NextResponse.json(
+        { error: "User already exist" },
+        { status: 400 }
+      );
+    }
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
@@ -30,7 +32,7 @@ export async function POST(request: NextRequest) {
     console.log(savedUser);
 
     return NextResponse.json({ message: "User Created" }, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

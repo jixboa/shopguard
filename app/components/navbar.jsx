@@ -1,8 +1,13 @@
 "use client";
 
-import { Fragment } from "react";
+import axios from "axios";
+import Link from "next/link";
+import { toast } from "react-hot-toast";
+
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -16,6 +21,40 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const router = useRouter();
+  const [data, setData] = useState("nothing");
+
+  /*  const getUserDetails = async () => {
+    const res = await axios.get("/api/users/me");
+    const id = res.data.data.username;
+    setData(id);
+  }; */
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      try {
+        const res = await axios.get("/api/users/me");
+        toast.success("Cookies delivered");
+        const id = res.data.data.username;
+        setData(id);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    getUserDetails();
+  }, [data]);
+
+  const SignOut = async () => {
+    try {
+      await axios.get("/api/users/signout");
+      toast.success("Logout successful");
+      router.push("/users/signin");
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Logout failed");
+    }
+  };
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -69,7 +108,7 @@ export default function Navbar() {
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-
+                <h1 className="px-2 text-white">{data}</h1>
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
@@ -120,6 +159,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <a
                             href="#"
+                            onClick={SignOut}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"

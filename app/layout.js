@@ -2,8 +2,8 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { ReactQueryProvider } from "./reactQueryProvider";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Navbar from "@/app/components/navbar";
-import Test from "@/app/components/Test";
+import Navbar from "./components/navbar";
+//import Test from "@/app/components/Test";
 import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });

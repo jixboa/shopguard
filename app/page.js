@@ -3,9 +3,11 @@
 import { useEffect } from "react";
 
 export default function Home() {
+  /*  
   useEffect(() => {
     fetch("/api/products");
-  });
+  }); */
+
   return (
     <div className="p-5">
       <div>
