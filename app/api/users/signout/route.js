@@ -6,6 +6,8 @@ export async function GET() {
       message: "Logout successful",
       success: true,
     });
+    response.headers.set("Cache-Control", "no-store");
+
     response.cookies.set("token", "", {
       httpOnly: true,
       expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
