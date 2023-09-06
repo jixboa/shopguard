@@ -3,11 +3,11 @@ import connectMongo from "../../../../database/conn";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-connectMongo();
-
 export async function POST(request) {
+  connectMongo();
   try {
     const reqBody = await request.json();
+    console.log(reqBody);
     const { username, email, password } = reqBody;
 
     const user = await User.findOne({ email });

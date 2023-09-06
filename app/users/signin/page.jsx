@@ -22,7 +22,8 @@ export default function SignIn() {
     }
   }, [user]);
 
-  const onSignIn = async () => {
+  const onSignIn = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const response = await axios.post("/api/users/signin", user);
@@ -52,7 +53,7 @@ export default function SignIn() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="email"

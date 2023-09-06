@@ -1,12 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import User from "../../../../models/userSchema";
 import connectMongo from "../../../../database/conn";
+import { getTokenData } from "../../../../utils/getTokenData";
 
 import jwt from "jsonwebtoken";
 
 connectMongo();
 
-const getTokenData = (request) => {
+/* const getTokenData = (request) => {
   try {
     const token = request.cookies.get("token")?.value || "";
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -14,7 +15,7 @@ const getTokenData = (request) => {
   } catch (error) {
     throw new Error(error.message);
   }
-};
+}; */
 
 export async function GET(request) {
   try {

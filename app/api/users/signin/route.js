@@ -4,9 +4,8 @@ import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
-connectMongo();
-
 export async function POST(request) {
+  connectMongo();
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;

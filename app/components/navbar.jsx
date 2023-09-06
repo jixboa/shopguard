@@ -34,16 +34,16 @@ export default function Navbar() {
     const getUserDetails = async () => {
       try {
         const res = await axios.get("/api/users/me");
-        toast.success("Cookies delivered");
         const id = res.data.data.username;
         setData(id);
+        toast.success("Cookies delivered");
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
     };
 
     getUserDetails();
-  }, [data]);
+  }, []);
 
   const SignOut = async () => {
     try {

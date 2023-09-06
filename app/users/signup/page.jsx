@@ -26,7 +26,8 @@ export default function SignUp() {
     }
   }, [user]);
 
-  const onSignup = async () => {
+  const onSignup = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       console.log(user);
@@ -57,7 +58,7 @@ export default function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="fullname"
@@ -118,17 +119,16 @@ export default function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                onClick={onSignup}
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                {buttonDisabled ? "Complete  form" : "Signup"}
-              </button>
+              <div className="py-3">
+                <button
+                  onClick={onSignup}
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  {buttonDisabled ? "Complete  form" : "Signup"}
+                </button>
+              </div>
             </div>
           </form>
+
           <p>
             <Link href="/users/signin">Signin</Link>
           </p>
