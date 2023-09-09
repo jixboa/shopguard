@@ -1,6 +1,6 @@
 const getProdcts = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/products", {
+    const res = await fetch(`${process.env.DOMAIN}/api/products`, {
       cache: "no-store",
     });
 
