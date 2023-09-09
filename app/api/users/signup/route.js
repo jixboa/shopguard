@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request) {
-  connectMongo();
+  await connectMongo();
   try {
     const reqBody = await request.json();
     console.log(reqBody);

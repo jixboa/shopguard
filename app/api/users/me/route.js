@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import User from "../../../../models/userSchema";
 import connectMongo from "../../../../database/conn";
-import { getTokenData } from "../../../../utils/getTokenData";
+import { getTokenData } from "../../../utils/getTokenData";
 
 import jwt from "jsonwebtoken";
 

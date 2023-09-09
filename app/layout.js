@@ -1,9 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { ReactQueryProvider } from "./reactQueryProvider";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Provider } from "./utils/reactQueryProvider";
 import Navbar from "./components/navbar";
-//import Test from "@/app/components/Test";
+import Footer from "./components/footer";
+
 import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ReactQueryProvider>
+    <Provider>
       <html lang="en">
         <body className={inter.className}>
           <div className=" px-5">
@@ -26,8 +26,9 @@ export default function RootLayout({ children }) {
             {children}
           </div>
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          <Footer />
         </body>
       </html>
-    </ReactQueryProvider>
+    </Provider>
   );
 }
