@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 const getProdcts = async () => {
   try {
     const res = await fetch(`${process.env.DOMAIN}/api/products`, {

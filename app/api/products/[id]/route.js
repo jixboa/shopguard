@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import connectMongo from "../../../../database/conn";
 import Product from "../../../../models/productSchema";
 
+connectMongo();
+
 export async function PUT(request, { params }) {
   const { id } = params;
   const {
@@ -11,7 +13,6 @@ export async function PUT(request, { params }) {
     newPrice: price,
     newPicture: picture,
   } = await request.json();
-  await connectMongo();
   await Product.findByIdAndUpdate(id, {
     name,
     description,
@@ -27,7 +28,6 @@ export async function PUT(request, { params }) {
 
 export async function GET(request, { params }) {
   const { id } = params;
-  await connectMongo();
   const prod = await Product.findOne({ _id: id });
   return NextResponse.json({ prod }, { status: 200 });
 }

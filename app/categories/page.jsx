@@ -2,9 +2,11 @@ import { CategoryClient } from "../components/categories";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 
+export const runtime = "edge";
+
 const getCategories = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/categories", {
+    const res = await fetch(`${process.env.DOMAIN}/api/categories`, {
       cache: "no-store",
     });
 

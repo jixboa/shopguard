@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
 
+const conn = require("../config/keys").mongoLocal;
+
 const connectMongo = async () => {
   try {
-    const { connection } = await mongoose.connect(process.env.mongoURI);
+    await mongoose.connect(conn, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-    if (connection.readyState == 1) {
-      console.log("Database Connected");
-    }
-  } catch (errors) {
-    return Promise.reject(errors);
+    console.log("Database Connected");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
 };
 

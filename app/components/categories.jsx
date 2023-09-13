@@ -36,7 +36,7 @@ function TrashIcon() {
 //get cats
 const getCategories = async () => {
   try {
-    const res = await fetch("/api/categories", {
+    const res = await fetch(`/api/categories`, {
       cache: "no-store",
     });
 
@@ -109,7 +109,7 @@ export function CategoryClient() {
     //e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("/api/categories", category);
+      const response = await axios.post(`/api/categories`, category);
       toast.success("Created successfully");
       return response.data;
     } catch (error) {

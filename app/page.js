@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <>
-      <Products />
+      <h1>Dashboard</h1>
     </>
   );
 }
