@@ -54,7 +54,7 @@ export default function SalesClient() {
 
   return (
     <>
-      <div className="p-5">
+      <div className="p-5 mb-16 mt-16">
         <input
           value={phrase}
           onChange={(e) => setPhrase(e.target.value)}

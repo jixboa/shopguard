@@ -206,7 +206,7 @@ export function CategoryClient() {
       <div className="margin-auto">
         <h1>Categories</h1>
 
-        <Card className="justify-center">
+        <Card className="justify-center mb-16">
           <List>
             {data.map((category) => (
               <ListItem
