@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
     <Provider>
       <html lang="en">
         <body className={inter.className}>
-          <div className=" px-5">
+          <div className="">
             <div className="">
               {" "}
               <NavbarNew />

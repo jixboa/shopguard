@@ -150,8 +150,6 @@ export function CategoryClient() {
     queryFn: getCategories,
   });
 
-  console.log(data);
-
   if (isLoading) {
     return (
       <>
