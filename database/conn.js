@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const conn = require("../config/keys").mongoLocal;
+const conn = require("../config/keys").mongoURI;
 
 const connectMongo = async () => {
   try {
