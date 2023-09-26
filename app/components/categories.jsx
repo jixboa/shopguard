@@ -103,6 +103,15 @@ export function CategoryClient() {
       );
       return { newCats };
     },
+    onError: (err, category, context) => {
+      queryClient.setQueriesData(["categories"]);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Deleted successfuly");
+    },
   });
 
   const addCategory = async () => {
@@ -122,7 +131,6 @@ export function CategoryClient() {
 
   const { mutate } = useMutation(addCategory, {
     onSuccess: async (data) => {
-      await console.log(data);
       // Update the cache with the newly added category
       await queryClient.setQueriesData("categories", (oldData) => [
         ...oldData,
@@ -141,6 +149,18 @@ export function CategoryClient() {
     queryKey: ["categories"],
     queryFn: getCategories,
   });
+
+  console.log(data);
+
+  if (isLoading) {
+    return (
+      <>
+        <div>
+          <h2 className="text-black">Loading...</h2>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

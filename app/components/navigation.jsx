@@ -3,54 +3,34 @@
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-
-import { Fragment, useEffect, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter, usePathname } from "next/navigation";
 
-//import Cookies from "js-cookie";
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+  ShoppingCartIcon,
+} from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "/", current: false },
+  { name: "Dashboard", href: "/", current: true },
   { name: "Categories", href: "/categories", current: false },
   { name: "Products", href: "/products", current: false },
   { name: "Sales", href: "/sales", current: false },
   { name: "Add User", href: "/users/signup", current: false },
 ];
-/* 
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
- */
-export default function Navbar() {
+
+export default function NavbarNew() {
   const router = useRouter();
   const pathname = usePathname();
-  //const [data, setData] = useState("nothing");
 
-  /*  const getUserDetails = async () => {
-    const res = await axios.get("/api/users/me");
-    const id = res.data.data.username;
-    setData(id);
-  }; */
-
-  /*  useEffect(() => {
-    const getUserDetails = async () => {
-      try {
-        const res = await axios.get("/api/users/me");
-        const id = res.data.data.username;
-        setData(id);
-        toast.success("Cookies delivered");
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
-    getUserDetails();
-  }, [data]); */
-
-  const isSignInRoute = "/users/signin";
-  const currentPath = pathname;
+  //console.log(pathname);
 
   const SignOut = async () => {
     try {
@@ -63,13 +43,13 @@ export default function Navbar() {
     }
   };
 
-  /*  if (pathname == isSignInRoute) {
+  if (pathname === "/users/signin") {
     return (
       <>
         <div></div>
       </>
     );
-  } */
+  }
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -91,28 +71,64 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
+                  {/*  <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
-                  />
+                  /> */}
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}>
-                        {item.name}
-                      </Link>
-                    ))}
+                    <Link
+                      href="/"
+                      className={classNames(
+                        pathname === "/"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/sales"
+                      className={classNames(
+                        pathname === "/sales"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Sales
+                    </Link>
+                    <Link
+                      href="/products"
+                      className={classNames(
+                        pathname === "/products"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Products
+                    </Link>
+                    <Link
+                      href="/categories"
+                      className={classNames(
+                        pathname === "/categories"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Categories
+                    </Link>
+                    <Link
+                      href="/users/signup"
+                      className={classNames(
+                        pathname === "/users/signup"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Add User
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -122,9 +138,9 @@ export default function Navbar() {
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-                <h1 className="px-2 text-white"></h1>
+
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
@@ -174,7 +190,6 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
                             onClick={SignOut}
                             className={classNames(
                               active ? "bg-gray-100" : "",

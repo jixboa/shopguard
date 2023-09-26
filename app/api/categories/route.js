@@ -13,7 +13,6 @@ export async function POST(request) {
 
 export async function GET(request) {
   await connectMongo();
-  //await initMiddleware(request);
   const categories = await Category.find();
   return NextResponse.json({ categories });
 }
