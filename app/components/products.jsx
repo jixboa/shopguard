@@ -25,7 +25,7 @@ export default function ProductItems({
         <div className="mt-2">
           <h3 className="font-bold text-lg">{name}</h3>
         </div>
-        <p className="text-sm mt-1 leading-4">{description}</p>
+        <p className="text-sm mt-1 leading-4 text-gray-500">{description}</p>
         <div className="flex mt-1">
           <div className="text-2xl font-bold grow">Gh₵ {price}</div>
           <button
