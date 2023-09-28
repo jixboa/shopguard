@@ -4,8 +4,11 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
+import { Avatar } from "@material-tailwind/react";
 
-import { Fragment } from "react";
+import { ProductsContext } from "./ProductsContext";
+
+import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -29,6 +32,8 @@ function classNames(...classes) {
 export default function NavbarNew() {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { selectedProducts } = useContext(ProductsContext);
 
   //console.log(pathname);
 
@@ -141,7 +146,11 @@ export default function NavbarNew() {
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
                   <span className="absolute -inset-1.5" />
                   <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  <span className="">3</span>
+                  {selectedProducts.length > 0 ? (
+                    <span className="">{selectedProducts.length}</span>
+                  ) : (
+                    <></>
+                  )}
                 </button>
 
                 {/* Profile dropdown */}
@@ -150,10 +159,11 @@ export default function NavbarNew() {
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Avatar
+                        variant="rounded"
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src="/images/placeholder.png"
+                        alt="avatar"
                       />
                     </Menu.Button>
                   </div>

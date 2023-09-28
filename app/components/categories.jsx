@@ -68,7 +68,7 @@ export function CategoryClient() {
   }, [category]);
 
   const deleteHandler = async (deletedCat) => {
-    console.log(deletedCat._id);
+    //console.log(deletedCat._id);
     const id = deletedCat._id;
 
     try {
@@ -203,7 +203,7 @@ export function CategoryClient() {
           </form>
         </div>
       </div>
-      <div className="margin-auto">
+      <div className="margin-auto py-10 px-60">
         <h1>Categories</h1>
 
         <Card className="justify-center mb-16">

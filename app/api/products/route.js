@@ -1,7 +1,6 @@
 import connectMongo from "../../../database/conn";
 import Product from "../../../models/productSchema";
-import { containerClasses } from "@mui/material";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(request) {
   const { name, description, category, price, picture } = await request.json();

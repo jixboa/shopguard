@@ -25,6 +25,7 @@ const getProducts = async () => {
 
 export default function SalesClient() {
   const [phrase, setPhrase] = useState("");
+
   const { data, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => fetch("/api/products").then((res) => res.json()),

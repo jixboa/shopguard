@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import connectMongo from "../../../../database/conn";
 import Product from "../../../../models/productSchema";
 
-connectMongo();
-
 export async function PUT(request, { params }) {
+  await connectMongo();
+
   const { id } = params;
   const {
     newName: name,
@@ -26,8 +26,23 @@ export async function PUT(request, { params }) {
   );
 }
 
-export async function GET(request, { params }) {
+/* export async function GET(request, { params }) {
+  await connectMongo;
   const { id } = params;
   const prod = await Product.findOne({ _id: id });
   return NextResponse.json({ prod }, { status: 200 });
 }
+ */
+
+/* export async function GET(request, { params }) {
+  await connectMongo;
+  const { id } = params;
+  const idArray = id.split(",");
+  try {
+    const products = await Product.find({ _id: { $in: idArray } });
+    return NextResponse.json({ products });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch products" });
+  }
+}
+ */
