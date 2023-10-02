@@ -6,6 +6,6 @@ export async function POST(request) {
   await connectMongo();
   //await initMiddleware(req, res);
   const { name } = await request.json();
-  const response = await Category.create({ name });
+  const response = await Order.create({ name });
   return NextResponse.json(response);
 }
