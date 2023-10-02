@@ -16,6 +16,23 @@ export default function ProductItems({
     const cart = selectedProducts;
   };
 
+  const moreOfThisProduct = (e, id) => {
+    e.preventDefault();
+    setSelectedProducts((prev) => [...prev, id]);
+    //console.log(id);
+  };
+
+  const lessOfThisProduct = (e, id) => {
+    e.preventDefault();
+    const pos = selectedProducts.indexOf(id);
+    if (pos !== -1) {
+      const newSelectProducts = selectedProducts.filter(
+        (value, index) => index !== pos
+      );
+      setSelectedProducts(newSelectProducts);
+    }
+  };
+
   return (
     <>
       <div className="w-64 ">
@@ -28,11 +45,21 @@ export default function ProductItems({
         <p className="text-sm mt-1 leading-4 text-gray-500">{description}</p>
         <div className="flex mt-1">
           <div className="text-2xl font-bold grow">Gh₵ {price}</div>
-          <button
-            onClick={addToCart}
-            className="bg-emerald-400 text-white py-1 px-3">
-            +
-          </button>
+          <div>
+            <button
+              onClick={(e) => lessOfThisProduct(e, _id)}
+              className="border border-emerald-500 py-1 px-3  text-emerald-500">
+              -
+            </button>
+            <span className="p-2">
+              {selectedProducts.filter((id) => id === _id).length}
+            </span>
+            <button
+              onClick={(e) => moreOfThisProduct(e, _id)}
+              className="bg-emerald-500 py-1 px-3  text-white">
+              +
+            </button>
+          </div>
         </div>
       </div>
     </>

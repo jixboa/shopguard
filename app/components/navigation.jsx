@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
-import { Avatar } from "@material-tailwind/react";
+import { Avatar, Badge, IconButton } from "@material-tailwind/react";
 
 import { ProductsContext } from "./ProductsContext";
 
@@ -125,6 +125,16 @@ export default function NavbarNew() {
                       Categories
                     </Link>
                     <Link
+                      href="/orders"
+                      className={classNames(
+                        pathname === "/orders"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}>
+                      Orders
+                    </Link>
+                    <Link
                       href="/users/signup"
                       className={classNames(
                         pathname === "/users/signup"
@@ -137,8 +147,32 @@ export default function NavbarNew() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex  pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
+
+              <div className="absolute inset-y-0 right-0 flex gap-5  pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div>
+                  <Badge
+                    onClick={(e) => {
+                      router.push("/checkout");
+                    }}
+                    withBorder
+                    className="font-bold mr-6 cursor-pointer"
+                    content={
+                      selectedProducts.length > 0 ? (
+                        <span className="">{selectedProducts.length} </span>
+                      ) : (
+                        ""
+                      )
+                    }>
+                    <IconButton
+                      className="p-2 bg-opacity-0 ml-2"
+                      onClick={(e) => {
+                        router.push("/checkout");
+                      }}>
+                      <ShoppingCartIcon className="h-7 w-7 ml-4" />
+                    </IconButton>
+                  </Badge>
+                </div>
+                {/* <button
                   type="button"
                   onClick={(e) => {
                     router.push("/checkout");
@@ -146,12 +180,12 @@ export default function NavbarNew() {
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
                   <span className="absolute -inset-1.5" />
                   <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  {selectedProducts.length > 0 ? (
-                    <span className="">{selectedProducts.length}</span>
-                  ) : (
-                    <></>
-                  )}
-                </button>
+                </button> */}
+                {/*  {selectedProducts.length > 0 ? (
+                  <span className="">{selectedProducts.length}</span>
+                ) : (
+                  <></>
+                )} */}
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">

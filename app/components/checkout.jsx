@@ -100,6 +100,14 @@ export default function CheckOutComponent() {
   const total = subtotal + deliveryPrice;
   return (
     <div className="mt-20 px-80 mb-20">
+      <div className=" flex-col justify-start border-b border-gray-700 py-5 mb-5">
+        <h1 className=" font-extrabold text-teal-700 text-xl capitalize">
+          Shop name
+        </h1>
+        <h4 className="    text-gray-800 text-sm">Adum, Kumasi - Ghana</h4>
+        <h4 className="   text-gray-800 text-sm">233 542 521 836</h4>
+        <h4 className="  text-gray-800 text-sm">2023-09-28 11:23:00</h4>
+      </div>
       {!data || (data.length < 1 && <div>No products in your cart</div>)}
       {data &&
         data.map((prodInfo) => {
@@ -108,12 +116,14 @@ export default function CheckOutComponent() {
           ).length;
           if (amount === 0) return;
           return (
-            <div key={prodInfo._id} className="flex mb-5">
-              <div className=" bg-gray-100 p-3 rounded-xl shrink-0">
+            <div
+              key={prodInfo._id}
+              className="flex mb-3 w-full justify-items-center">
+              {/* <div className=" bg-gray-100 p-3 rounded-xl shrink-0">
                 <img className="w-24" src={prodInfo.picture} alt=""></img>
-              </div>
-              <div className="pl-4">
-                <h3 className="font-bold text-lg">{prodInfo.name}</h3>
+              </div> */}
+              <div className="pl-4 w-full">
+                <h5 className="font-semibold">{prodInfo.name}</h5>
                 <p className="text-sm leading-3 text-gray-500">
                   {prodInfo.description}
                 </p>
@@ -149,7 +159,7 @@ export default function CheckOutComponent() {
         })}
 
       <div className="mt-4">
-        <input
+        {/* <input
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
           placeholder="street address"
@@ -158,16 +168,16 @@ export default function CheckOutComponent() {
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
           placeholder="City and Postal code"
-        />
-        <input
-          className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
-          type="email"
-          placeholder="Email address"
-        />
+        /> */}
         <input
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
           placeholder="Name"
+        />
+        <input
+          className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
+          type="text"
+          placeholder="Contact No."
         />
       </div>
       <div className="mt-4">
