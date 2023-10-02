@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectMongo from "../../../database/conn";
-import Order from "../../../models/categorySchema";
+import Order from "../../../models/orderSchema";
 
 export async function POST(request) {
   await connectMongo();
