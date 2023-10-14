@@ -11,6 +11,16 @@ import { toast } from "react-hot-toast";
 export default function CheckOutComponent() {
   const queryClient = useQueryClient();
 
+  const { mutate } = useMutation(addOrder, {
+    onSuccess: async (data) => {
+      // Update the cache with the newly added category
+      /* await queryClient.setQueriesData("orders", (oldData) => [
+        ...oldData,
+        data,
+      ]); */
+    },
+  });
+
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
   const [productInfo, setProductInfo] = useState([]);
   const [name, setName] = useState("");
@@ -129,16 +139,6 @@ export default function CheckOutComponent() {
     } finally {
     }
   };
-
-  const { mutate } = useMutation(addOrder, {
-    onSuccess: async (data) => {
-      // Update the cache with the newly added category
-      /* await queryClient.setQueriesData("orders", (oldData) => [
-        ...oldData,
-        data,
-      ]); */
-    },
-  });
 
   const handleAddOrder = (e) => {
     e.preventDefault();
