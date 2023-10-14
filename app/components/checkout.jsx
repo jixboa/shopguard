@@ -11,16 +11,6 @@ import { toast } from "react-hot-toast";
 export default function CheckOutComponent() {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(addOrder, {
-    onSuccess: async (data) => {
-      // Update the cache with the newly added category
-      /* await queryClient.setQueriesData("orders", (oldData) => [
-        ...oldData,
-        data,
-      ]); */
-    },
-  });
-
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
   const [productInfo, setProductInfo] = useState([]);
   const [name, setName] = useState("");
@@ -79,37 +69,6 @@ export default function CheckOutComponent() {
     queryFn: getCart,
   });
 
-  // Check if there's an error
-  if (isError) {
-    // Handle the error here, for example, show an error message or render an empty cart.
-    return (
-      <div>
-        <p>Error loading cart. Please try again later.</p>
-      </div>
-    );
-  }
-
-  // Check if the data is still loading
-  if (isLoading) {
-    // You can render a loading indicator here
-    return (
-      <div className="mt-20">
-        <p>Loading cart...</p>
-      </div>
-    );
-  }
-
-  // Check if there is no data returned
-  /*   if (data.length === 0) {
-    // Render an empty cart message
-    return (
-      <div>
-        <p className="mt-20">...Loading</p>
-      </div>
-    );
-  }
- */
-
   const deliveryPrice = 5;
   let subtotal = 0;
 
@@ -140,6 +99,16 @@ export default function CheckOutComponent() {
     }
   };
 
+  const { mutate } = useMutation(addOrder, {
+    onSuccess: async (data) => {
+      // Update the cache with the newly added category
+      /* await queryClient.setQueriesData("orders", (oldData) => [
+        ...oldData,
+        data,
+      ]); */
+    },
+  });
+
   const handleAddOrder = (e) => {
     e.preventDefault();
 
@@ -156,6 +125,37 @@ export default function CheckOutComponent() {
     });
     mutate(order);
   };
+
+  // Check if there's an error
+  if (isError) {
+    // Handle the error here, for example, show an error message or render an empty cart.
+    return (
+      <div>
+        <p>Error loading cart. Please try again later.</p>
+      </div>
+    );
+  }
+
+  // Check if the data is still loading
+  if (isLoading) {
+    // You can render a loading indicator here
+    return (
+      <div className="mt-20">
+        <p>Loading cart...</p>
+      </div>
+    );
+  }
+
+  // Check if there is no data returned
+  /*   if (data.length === 0) {
+    // Render an empty cart message
+    return (
+      <div>
+        <p className="mt-20">...Loading</p>
+      </div>
+    );
+  }
+ */
 
   return (
     <div className="mt-20 px-80 mb-20">
