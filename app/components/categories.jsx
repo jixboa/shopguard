@@ -156,16 +156,6 @@ export function CategoryClient() {
     queryFn: getCategories,
   });
 
-  if (isLoading) {
-    return (
-      <>
-        <div>
-          <h2 className="text-black">Loading...</h2>
-        </div>
-      </>
-    );
-  }
-
   const updateCategory = async () => {
     const newName = editCat.name;
     const id = editCat._id;
