@@ -5,7 +5,13 @@ const OrderSchema = new Schema(
     products: Object,
     name: String,
     contact: String,
-    paid: { type: Number, defaultValue: 0 },
+    total_amount: String,
+    invoice_number: String,
+    paid: { type: String, defaultValue: " " },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamp: true }
 );

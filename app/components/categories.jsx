@@ -8,14 +8,30 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Input,
+  Checkbox,
+} from "@material-tailwind/react";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 
-import { MdDelete } from "react-icons/md";
+import { Spinner } from "@material-tailwind/react";
+
+import { MdDelete, MdEdit, MdEditNotifications } from "react-icons/md";
 
 function TrashIcon() {
   return (
@@ -54,22 +70,40 @@ const getCategories = async () => {
 //main function
 export function CategoryClient() {
   const queryClient = useQueryClient();
-  const [category, setCategory] = React.useState({
+
+  const [category, setCategory] = useState({
     name: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const [loading, setLoading] = useState(false);
+  const [editCat, setEditCat] = useState({
+    _id: "",
+    name: "",
+  });
 
-  useEffect(() => {
-    if (category.name.length > 0) {
-      setButtonDisabled(false);
-    }
-  }, [category]);
+  const [delCategoryID, setDelCategoryID] = useState("");
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen((cur) => !cur);
+  };
+
+  const [editOpen, setEditOpen] = useState(false);
+
+  const handleEditOpen = (category) => {
+    setEditCat({ ...editCat, name: category.name, id: category._id });
+    setEditOpen((cur) => !cur);
+  };
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const handleDeleteOpen = (id) => {
+    setDelCategoryID(id);
+    setDeleteOpen((cur) => !cur);
+  };
 
   const deleteHandler = async (deletedCat) => {
     //console.log(deletedCat._id);
-    const id = deletedCat._id;
+    const id = delCategoryID;
 
     try {
       const response = await fetch(`/api/categories?id=${id}`, {
@@ -91,7 +125,7 @@ export function CategoryClient() {
 
   const delMutation = useMutation({
     mutationFn: deleteHandler,
-    onMutate: async (deletedCat) => {
+    onMutate: async (delCategoryID) => {
       await queryClient.cancelQueries({ queryKey: ["categories"] });
 
       const previousCategories = queryClient.getQueriesData(["categories"]);
@@ -99,7 +133,7 @@ export function CategoryClient() {
 
       queryClient.setQueriesData(
         ["categories"],
-        newCats.filter((category) => category._id !== deletedCat._id)
+        newCats.filter((category) => category._id !== delCategoryID)
       );
       return { newCats };
     },
@@ -110,40 +144,12 @@ export function CategoryClient() {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onSuccess(data, variables, context) {
+      setDeleteOpen(false);
       toast.success("Deleted successfuly");
     },
   });
 
-  const addCategory = async () => {
-    //e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await axios.post(`/api/categories`, category);
-      toast.success("Created successfully");
-      return response.data;
-    } catch (error) {
-      console.log("Creating Failed", error.message);
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const { mutate } = useMutation(addCategory, {
-    onSuccess: async (data) => {
-      // Update the cache with the newly added category
-      await queryClient.setQueriesData("categories", (oldData) => [
-        ...oldData,
-        data,
-      ]);
-    },
-  });
-
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-    // Call the mutation to add the new category
-    mutate(category);
-  };
+  const [showEditCategory, setShowEditCategory] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
@@ -160,51 +166,115 @@ export function CategoryClient() {
     );
   }
 
+  const updateCategory = async () => {
+    const newName = editCat.name;
+    const id = editCat._id;
+    try {
+      const res = await fetch(`api/categories/${editCat.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ newName }),
+      });
+
+      if (!res.ok) {
+        throw new Error("success upate Category");
+      }
+    } catch (error) {}
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    updateMutation.mutate(editCat);
+  };
+
+  const updateMutation = useMutation({
+    mutationFn: updateCategory,
+    onMutate: async (updatedCat) => {
+      await queryClient.cancelQueries({ queryKey: ["categories"] });
+
+      const previousCategories = queryClient.getQueriesData(["categories"]);
+      const newCats = previousCategories[0][1];
+
+      // Assuming your updateCategory function returns the updated category
+      queryClient.setQueriesData(
+        ["categories"],
+        newCats.map((category) =>
+          category._id === updatedCat._id ? updatedCat : category
+        )
+      );
+      return { newCats };
+    },
+    onError: (err, category, context) => {
+      queryClient.setQueriesData(["categories"]);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+    onSuccess(data, variables, context) {
+      setEditOpen(false);
+      toast.success("Updated successfully");
+    },
+  });
+
+  const addCategory = async () => {
+    //e.preventDefault();
+    try {
+      //setLoading(true);
+      const response = await axios.post(`/api/categories`, category);
+      toast.success("Created successfully");
+      return response.data;
+    } catch (error) {
+      console.log("Creating Failed", error.message);
+      toast.error(error.message);
+    } finally {
+      //setLoading(false);
+      setOpen(false);
+    }
+  };
+
+  const addMutation = useMutation(addCategory, {
+    onSuccess: async (data) => {
+      // Update the cache with the newly added category
+      await queryClient.setQueriesData("categories", (oldData) => [
+        ...oldData,
+        data,
+      ]);
+    },
+  });
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    // Call the mutation to add the new category
+    addMutation.mutate(category);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            {loading ? "Creating Category" : "Add new Category"}
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6">
-            <div>
-              <label
-                htmlFor="fullname"
-                className="block text-sm font-medium leading-6 text-gray-900">
-                Category name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  onChange={(e) =>
-                    setCategory({ ...category, name: e.target.value })
-                  }
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-
-              <div className="py-2">
-                <button
-                  type="submit"
-                  onClick={handleAddCategory}
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  {buttonDisabled ? "Enter new Category" : "Add Category"}
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+      {/*       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {showAddCategory && <AddCategory />}
       </div>
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {showEditCategory && <EditCategory />}
+      </div> */}
       <div className="margin-auto py-10 px-60">
-        <h1>Categories</h1>
+        <div className="flex flex-row justify-between mt-20">
+          <h1 className=" flex flex-grow"></h1>
+          <button
+            onClick={handleOpen}
+            className="bg-blue-800 text-white px-2 rounded">
+            Add +
+          </button>
+        </div>
 
         <Card className="justify-center mb-16">
           <List>
@@ -212,12 +282,20 @@ export function CategoryClient() {
               <ListItem
                 key={category._id}
                 ripple={false}
-                className="py-1 pr-1 pl-4">
-                {category.name}
-                <ListItemSuffix>
+                className="py-1 pr-1 pl-4 border-b-2">
+                {category.name}{" "}
+                <Typography className="border bg-green-400 text-white rounded-md px-1 text-sm ml-2">
+                  Active
+                </Typography>
+                <ListItemSuffix className="flex flex-row gap-2">
                   <IconButton
-                    key={category._id}
-                    onClick={() => delMutation.mutate(category)}
+                    onClick={() => handleEditOpen(category)}
+                    variant="text"
+                    color="blue-gray">
+                    <MdEdit />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleDeleteOpen(category._id)}
                     variant="text"
                     color="blue-gray">
                     <TrashIcon />
@@ -227,6 +305,149 @@ export function CategoryClient() {
             ))}
           </List>
         </Card>
+
+        <Dialog
+          size="xs"
+          open={open}
+          handler={handleOpen}
+          className="bg-transparent shadow-none">
+          <Card className="mx-auto w-full max-w-[24rem]">
+            <CardHeader
+              color="blue"
+              className="mb-4 grid h-28 place-items-center bg-blue-600">
+              <Typography
+                variant="h2"
+                color="white"
+                className="font-bold text-lg">
+                Add New Category
+              </Typography>
+            </CardHeader>
+            <CardBody className="flex flex-col gap-4">
+              <form className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="fullname"
+                    className="block text-sm font-medium leading-6 text-gray-900">
+                    Category name
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      onChange={(e) =>
+                        setCategory({ ...category, name: e.target.value })
+                      }
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+
+                  <div className="py-2">
+                    <button
+                      type="submit"
+                      onClick={handleAddCategory}
+                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      Add Category
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+            <CardFooter className="pt-0">
+              <Button className="bg-red-800" onClick={handleOpen} fullWidth>
+                Cancel
+              </Button>
+            </CardFooter>
+          </Card>
+        </Dialog>
+        <Dialog
+          size="xs"
+          open={editOpen}
+          handler={handleEditOpen}
+          className="bg-transparent shadow-none">
+          <Card className="mx-auto w-full max-w-[24rem]">
+            <CardHeader
+              color="blue"
+              className="mb-4 grid h-28 place-items-center bg-blue-600">
+              <Typography
+                variant="h2"
+                color="white"
+                className="font-bold text-lg">
+                Edit Category
+              </Typography>
+            </CardHeader>
+            <CardBody className="flex flex-col gap-4">
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                  <label
+                    htmlFor="fullname"
+                    className="block text-sm font-medium leading-6 text-gray-900">
+                    Category name
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={editCat.name}
+                      autoComplete="name"
+                      onChange={(e) =>
+                        setEditCat({ ...editCat, name: e.target.value })
+                      }
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+
+                  <div className="py-2">
+                    <button
+                      type="submit"
+                      onClick={(e) => {
+                        handleUpdate(e);
+                      }}
+                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      Update Category
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+            <CardFooter className="pt-0">
+              <Button className="bg-red-800" onClick={handleEditOpen} fullWidth>
+                Cancel
+              </Button>
+            </CardFooter>
+          </Card>
+        </Dialog>
+
+        <Dialog
+          open={deleteOpen}
+          size="sm"
+          className="w-100"
+          handler={handleDeleteOpen}>
+          <DialogHeader>Deleting category</DialogHeader>
+          <DialogBody divider>
+            Are you sure you want to Delete this category permanently?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={() => handleDeleteOpen(null)}
+              className="mr-1">
+              <span>Cancel</span>
+            </Button>
+            <Button
+              variant="gradient"
+              color="green"
+              className="bg-green-400 text-white text-sm"
+              onClick={() => delMutation.mutate(delCategoryID)}>
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
     </>
   );

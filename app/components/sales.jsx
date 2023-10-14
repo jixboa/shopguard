@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ProductItems from "./products";
 import { useState } from "react";
+import CheckOut from "app/checkout/page";
+import CheckOutComponent from "./checkout";
 
 //get prods
 const getProducts = async () => {
@@ -56,34 +58,39 @@ export default function SalesClient() {
   return (
     <>
       <div className="p-5 mb-16 mt-16">
-        <input
-          value={phrase}
-          onChange={(e) => setPhrase(e.target.value)}
-          type="text"
-          placeholder="Search for products.."
-          className="bg-gray-100 w-full py-2 px-4 rounded-xl"
-        />
-        <div>
-          {categoryNames.map((categoryName) => (
-            <div key={categoryName}>
-              {products.find((p) => p.category === categoryName) && (
-                <div>
-                  <h2 className="text-2xl py-5 capitalize">{categoryName}</h2>
-                  <div className="flex -mx-5 overflow-x-scroll snap-x ">
-                    {products
-                      .filter((p) => p.category === categoryName)
-                      .map((productInfo) => (
-                        <div className="px-5 snap-start" key={productInfo._id}>
-                          <ProductItems {...productInfo} />
-                        </div>
-                      ))}
+        <div className="w-2/3">
+          <input
+            value={phrase}
+            onChange={(e) => setPhrase(e.target.value)}
+            type="text"
+            placeholder="Search for products.."
+            className="bg-gray-100 w-full py-2 px-4 rounded-xl"
+          />
+          <div>
+            {categoryNames.map((categoryName) => (
+              <div key={categoryName}>
+                {products.find((p) => p.category === categoryName) && (
+                  <div>
+                    <h2 className="text-2xl py-5 capitalize">{categoryName}</h2>
+                    <div className="flex -mx-5 overflow-x-scroll snap-x ">
+                      {products
+                        .filter((p) => p.category === categoryName)
+                        .map((productInfo) => (
+                          <div
+                            className="px-5 snap-start"
+                            key={productInfo._id}>
+                            <ProductItems {...productInfo} />
+                          </div>
+                        ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
-          <div className="py-4"></div>
+                )}
+              </div>
+            ))}
+            <div className="py-4"></div>
+          </div>
         </div>
+        <div className="w-1/3"></div>
       </div>
     </>
   );

@@ -149,7 +149,7 @@ export default function NavbarNew() {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex gap-5  pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div>
+                {/*                 <div>
                   <Badge
                     onClick={(e) => {
                       router.push("/checkout");
@@ -171,8 +171,8 @@ export default function NavbarNew() {
                       <ShoppingCartIcon className="h-7 w-7 ml-4" />
                     </IconButton>
                   </Badge>
-                </div>
-                {/* <button
+                </div> */}
+                <button
                   type="button"
                   onClick={(e) => {
                     router.push("/checkout");
@@ -180,12 +180,12 @@ export default function NavbarNew() {
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
                   <span className="absolute -inset-1.5" />
                   <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
-                {/*  {selectedProducts.length > 0 ? (
+                </button>
+                {selectedProducts.length > 0 ? (
                   <span className="">{selectedProducts.length}</span>
                 ) : (
                   <></>
-                )} */}
+                )}
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">

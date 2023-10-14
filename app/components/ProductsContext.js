@@ -9,8 +9,18 @@ export function ProductsContextProvider({ children }) {
   const [selectedProducts, setSelectedProducts] = useLocalStorageState("cart", {
     defaultValue: [],
   });
+  const [catToBeUpdated, setCatToBeUpdated] = useLocalStorageState("carts", {
+    defaultValue: [],
+  });
+
   return (
-    <ProductsContext.Provider value={{ selectedProducts, setSelectedProducts }}>
+    <ProductsContext.Provider
+      value={{
+        selectedProducts,
+        setSelectedProducts,
+        catToBeUpdated,
+        setCatToBeUpdated,
+      }}>
       {children}
     </ProductsContext.Provider>
   );

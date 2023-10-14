@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Provider } from "./utils/reactQueryProvider";
-import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 
 import NavbarNew from "./components/navigation";

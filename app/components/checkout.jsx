@@ -5,9 +5,27 @@ import { ProductsContext } from "../components/ProductsContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
+import axios from "axios";
+import { toast } from "react-hot-toast";
+
 export default function CheckOutComponent() {
+  const queryClient = useQueryClient();
+
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
   const [productInfo, setProductInfo] = useState([]);
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+
+  const [order, setOrder] = useState({
+    name: "",
+    contact: "",
+    invoice_number: "",
+    selectedIds: "",
+    total_amount: "",
+    paid: "",
+  });
+
+  //setOrder({ ...order, selectedIds: selectedProducts.join(",") });
 
   const uniqueIds = [...new Set(selectedProducts)];
   const uniqueIdSet = uniqueIds.join(",");
@@ -98,6 +116,47 @@ export default function CheckOutComponent() {
   }
 
   const total = subtotal + deliveryPrice;
+
+  const addOrder = async () => {
+    //e.preventDefault();
+    try {
+      const response = await axios.post(`/api/orders`, order);
+      toast.success("Created successfully");
+      return response.data;
+    } catch (error) {
+      console.log("Creating Failed", error.message);
+      toast.error(error.message);
+    } finally {
+    }
+  };
+
+  const { mutate } = useMutation(addOrder, {
+    onSuccess: async (data) => {
+      // Update the cache with the newly added category
+      /* await queryClient.setQueriesData("orders", (oldData) => [
+        ...oldData,
+        data,
+      ]); */
+    },
+  });
+
+  const handleAddOrder = (e) => {
+    e.preventDefault();
+
+    const invoiceNumber =
+      Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000;
+    //console.log(invoiceNumber);
+
+    setOrder({
+      ...order,
+      invoice_number: invoiceNumber,
+      total_amount: total,
+      paid: "paid",
+      selectedIds: selectedProducts.join(","),
+    });
+    mutate(order);
+  };
+
   return (
     <div className="mt-20 px-80 mb-20">
       <div className=" flex-col justify-start border-b border-gray-700 py-5 mb-5">
@@ -159,6 +218,12 @@ export default function CheckOutComponent() {
         })}
 
       <div className="mt-4">
+        <input
+          className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
+          type="hidden"
+          value={selectedProducts.join(",")}
+          placeholder="street address"
+        />
         {/* <input
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
@@ -172,11 +237,20 @@ export default function CheckOutComponent() {
         <input
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
+          value={order.name}
+          onChange={(e) =>
+            setOrder({
+              ...order,
+              name: e.target.value,
+            })
+          }
           placeholder="Name"
         />
         <input
           className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
           type="text"
+          value={order.contact}
+          onChange={(e) => setOrder({ ...order, contact: e.target.value })}
           placeholder="Contact No."
         />
       </div>
@@ -194,7 +268,9 @@ export default function CheckOutComponent() {
           <h3 className="font-bold">GH₵ {total}</h3>
         </div>
       </div>
-      <button className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
+      <button
+        onClick={handleAddOrder}
+        className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
         Pay GH₵ {total}
       </button>
     </div>
