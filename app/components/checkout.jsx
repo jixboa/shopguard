@@ -130,8 +130,7 @@ export default function CheckOutComponent() {
     }
   };
 
-  const addMutation = useMutation({
-    mutationFn: addOrder,
+  const { mutate } = useMutation(addOrder, {
     onSuccess: async (data) => {
       // Update the cache with the newly added category
       /* await queryClient.setQueriesData("orders", (oldData) => [
@@ -155,7 +154,7 @@ export default function CheckOutComponent() {
       paid: "paid",
       selectedIds: selectedProducts.join(","),
     });
-    addMutation.mutate(order);
+    mutate(order);
   };
 
   return (

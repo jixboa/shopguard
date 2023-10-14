@@ -234,8 +234,7 @@ export function CategoryClient() {
     }
   };
 
-  const addMutation = useMutation({
-    mutationFn: addCategory,
+  const { mutate } = useMutation(addCategory, {
     onSuccess: async (data) => {
       // Update the cache with the newly added category
       await queryClient.setQueriesData("categories", (oldData) => [
@@ -248,7 +247,7 @@ export function CategoryClient() {
   const handleAddCategory = (e) => {
     e.preventDefault();
     // Call the mutation to add the new category
-    addMutation.mutate(category);
+    mutate(category);
   };
 
   if (isLoading) {
