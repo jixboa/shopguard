@@ -184,11 +184,6 @@ export function CategoryClient() {
     } catch (error) {}
   };
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    updateMutation.mutate(editCat);
-  };
-
   const updateMutation = useMutation({
     mutationFn: updateCategory,
     onMutate: async (updatedCat) => {
@@ -218,6 +213,11 @@ export function CategoryClient() {
     },
   });
 
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    updateMutation.mutate(editCat);
+  };
+
   const addCategory = async () => {
     //e.preventDefault();
     try {
@@ -234,7 +234,8 @@ export function CategoryClient() {
     }
   };
 
-  const addMutation = useMutation(addCategory, {
+  const addMutation = useMutation({
+    mutationFn: addCategory,
     onSuccess: async (data) => {
       // Update the cache with the newly added category
       await queryClient.setQueriesData("categories", (oldData) => [
