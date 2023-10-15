@@ -28,10 +28,17 @@ import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 
 import { Spinner } from "@material-tailwind/react";
 
 import { MdDelete, MdEdit, MdEditNotifications } from "react-icons/md";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowDownTrayIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 
 function TrashIcon() {
   return (
@@ -70,6 +77,15 @@ const getCategories = async () => {
 //main function
 export function CategoryClient() {
   const queryClient = useQueryClient();
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
+
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
 
   const [category, setCategory] = useState({
     name: "",
@@ -156,11 +172,13 @@ export function CategoryClient() {
     queryFn: getCategories,
   });
 
+  const displayedItems = data.slice(offset, offset + itemsPerPage);
+
   const updateCategory = async () => {
     const newName = editCat.name;
     const id = editCat._id;
     try {
-      const res = await fetch(`api/categories/${editCat.id}`, {
+      const res = await fetch(`api/categories/${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
@@ -224,20 +242,63 @@ export function CategoryClient() {
     }
   };
 
-  const { mutate } = useMutation(addCategory, {
-    onSuccess: async (data) => {
-      // Update the cache with the newly added category
-      await queryClient.setQueriesData("categories", (oldData) => [
-        ...oldData,
-        data,
-      ]);
+  const addMutation = useMutation(addCategory, {
+    onMutate: async (newCategory) => {
+      await queryClient.cancelQueries(["categories"]);
+
+      const previousCategories = queryClient.getQueryData(["categories"]);
+      const updatedCategories = [...previousCategories, newCategory];
+
+      queryClient.setQueryData(["categories"], updatedCategories);
+
+      return { updatedCategories };
+    },
+    onError: (error, newCategory, context) => {
+      // Handle errors, if needed
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["categories"]);
+    },
+    onSuccess: (data, variables, context) => {
+      // Handle success, if needed
+      toast.success("Category added successfully");
     },
   });
 
   const handleAddCategory = (e) => {
     e.preventDefault();
     // Call the mutation to add the new category
-    mutate(category);
+    addMutation.mutate(category);
+  };
+
+  const [inputValue, setInputValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const dropdownData = [
+    "Item 1",
+    "Item 2",
+    "Item 3",
+    "Item 4",
+    "Item 5",
+    "Item 6",
+    "Item 7",
+    "Item 8",
+    "Item 9",
+    "Item 10",
+    "Item 12",
+    "Item 13",
+  ];
+
+  const handleInputChange = (event) => {
+    const value = event.target.value.toLowerCase();
+    setInputValue(value);
+    setShowDropdown(true); // Show the dropdown when typing
+  };
+
+  // Function to handle selecting an item from the dropdown
+  const handleItemClick = (item) => {
+    setInputValue(item);
+    setShowDropdown(false); // Hide the dropdown
   };
 
   if (isLoading) {
@@ -256,19 +317,51 @@ export function CategoryClient() {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         {showEditCategory && <EditCategory />}
       </div> */}
-      <div className="margin-auto py-10 px-60">
-        <div className="flex flex-row justify-between mt-20">
+
+      <div className="margin-auto py-10 px-60 mt-20">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            {/*  {loading ? "Creating Category" : "Add new Category"} */}
+            Categories
+          </h2>
+
+          <div className="relative">
+            <input
+              type="text"
+              className="w-full py-2 px-4 border rounded-lg shadow-md"
+              placeholder="Type to filter..."
+              value={inputValue}
+              onChange={handleInputChange}
+              onClick={() => setShowDropdown(true)} // Show the dropdown when the input is clicked
+            />
+            {showDropdown && (
+              <ul className="absolute z-10 w-full border rounded-lg mt-2 bg-white shadow-md overflow-y-auto">
+                {dropdownData
+                  .filter((item) => item.toLowerCase().includes(inputValue))
+                  .map((item, index) => (
+                    <li
+                      key={index}
+                      className="py-2 px-4 cursor-pointer hover:bg-gray-200"
+                      onClick={() => handleItemClick(item)}>
+                      {item}
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-row justify-between mb-5">
           <h1 className=" flex flex-grow"></h1>
           <button
             onClick={handleOpen}
-            className="bg-blue-800 text-white px-2 rounded">
+            className=" bg-gray-800 text-white px-2 rounded">
             Add +
           </button>
         </div>
 
         <Card className="justify-center mb-16">
           <List>
-            {data.map((category) => (
+            {displayedItems.map((category) => (
               <ListItem
                 key={category._id}
                 ripple={false}
@@ -294,6 +387,19 @@ export function CategoryClient() {
               </ListItem>
             ))}
           </List>
+          <ReactPaginate
+            pageCount={Math.ceil(data.length / itemsPerPage)}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageChange}
+            pageClassName={"bg-slate-200 text-gray-600 rounded px-4"}
+            containerClassName="flex flex-row justify-center gap-4 mb-4"
+            activeClassName="text-green-600 font-extrabold bg-green-800 text-white"
+            nextLabel={<ArrowRightIcon style={{ fontSize: 18, width: 20 }} />}
+            previousLabel={
+              <ArrowLeftIcon style={{ fontSize: 18, width: 20 }} />
+            }
+          />
         </Card>
 
         <Dialog

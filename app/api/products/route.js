@@ -3,11 +3,20 @@ import Product from "../../../models/productSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(request) {
-  const { name, description, category, price, picture } = await request.json();
+  const { name, description, category, price, quantity, size, status } =
+    await request.json();
   await connectMongo();
-
-  await Product.create({ name, description, category, price, picture });
-  return NextResponse.json({ message: "Product Created" }, { status: 201 });
+  const response = await Product.create({
+    name,
+    description,
+    category,
+    price,
+    quantity,
+    size,
+    status,
+  });
+  console.log(description, status);
+  return NextResponse.json(response);
 }
 
 export async function GET(request) {

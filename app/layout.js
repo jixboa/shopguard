@@ -30,7 +30,6 @@ export default function RootLayout({ children }) {
           <body className={inter.className}>
             <div className="">
               <div className="">
-                {" "}
                 <NavbarNew />
               </div>
               <Toaster position="top-center" reverseOrder={false} />

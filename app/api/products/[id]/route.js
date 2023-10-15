@@ -11,14 +11,19 @@ export async function PUT(request, { params }) {
     newDescription: description,
     newCategory: category,
     newPrice: price,
-    newPicture: picture,
+    newSize: size,
+    newQuantity: quantity,
+    newStatus: status,
   } = await request.json();
+
   await Product.findByIdAndUpdate(id, {
     name,
     description,
     category,
     price,
-    picture,
+    quantity,
+    size,
+    status,
   });
   return NextResponse.json(
     { message: "Product updated successfully" },
