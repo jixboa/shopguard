@@ -67,13 +67,13 @@ export default function ProductClient() {
   const queryClient = useQueryClient();
 
   const [product, setProduct] = useState({
-    name: "Awake",
-    description: "Kasapreko bottle water",
-    category: "Drinks",
-    price: "3",
-    quantity: "50",
-    size: "md",
-    status: "Active",
+    name: "",
+    description: "",
+    category: "",
+    price: "",
+    quantity: "",
+    size: "",
+    status: "",
   });
 
   const [editProduct, setEditProduct] = useState({
