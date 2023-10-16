@@ -6,7 +6,6 @@ export async function GET(request) {
   await connectMongo();
 
   const ids = request.nextUrl.searchParams.get("ids");
-
   if (ids) {
     const idArray = ids.split(",");
     const products = await Product.find({ _id: { $in: idArray } });

@@ -365,7 +365,7 @@ export function CategoryClient() {
               <ListItem
                 key={category._id}
                 ripple={false}
-                className="py-1 pr-1 pl-4 border-b-2">
+                className="py-1 pr-1 pl-4 border-b-2 hover:shadow-sm hover:shadow-gray-300">
                 {category.name}{" "}
                 <Typography className="border bg-green-400 text-white rounded-md px-1 text-sm ml-2">
                   Active

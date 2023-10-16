@@ -285,13 +285,15 @@ export default function ProductClient() {
           <h1 className=" flex flex-grow"></h1>
           <button
             onClick={handleOpen}
-            className=" bg-purple-800 text-white px-2 rounded">
+            className=" bg-purple-800 text-white px-2 rounded hover:shadow-sm hover:bg-purple-700">
             Add +
           </button>
         </div>
         <ul role="list" className="divide-y divide-gray-100">
           {data.products.map((prod) => (
-            <li key={prod._id} className="py-5">
+            <li
+              key={prod._id}
+              className="py-5 hover:shadow-sm hover:shadow-gray-500">
               <div className="flex min-w-0 gap-x-4 justify-between">
                 <img
                   className="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -307,9 +309,7 @@ export default function ProductClient() {
                   </p>
                 </div>
                 <div className="px-10">
-                  <Typography
-                    color="purple"
-                    className=" bg-purple-900 text-white rounded-lg px-2 text-sm">
+                  <Typography className=" bg-green-400 text-white rounded-lg px-2 text-sm shadow-gray-600 shadow-md hover:bg-green-600">
                     Active
                   </Typography>
                 </div>
@@ -347,7 +347,7 @@ export default function ProductClient() {
         size="xs"
         open={open}
         handler={handleOpen}
-        className="bg-transparent shadow-none">
+        className="bg-transparent shadow-inherit transform">
         <Card className="mx-auto w-full max-w-[24rem]">
           <CardHeader
             color="blue"
@@ -620,6 +620,7 @@ export default function ProductClient() {
                         Select Status
                       </label>
                       <select
+                        defaultValue="Select status"
                         value={editProduct.status}
                         onChange={(e) => {
                           setEditProduct({
@@ -642,15 +643,7 @@ export default function ProductClient() {
             <div className="flex flex-row gap-2">
               <div className="w-1/2">
                 <Button
-                  className="bg-green-600"
-                  onClick={handleUpdate}
-                  fullWidth>
-                  Update
-                </Button>
-              </div>
-              <div className="w-1/2">
-                <Button
-                  className="bg-red-800"
+                  className=" bg-transparent text-red-700"
                   onClick={(e) => {
                     setEditProduct({
                       name: "",
@@ -665,6 +658,14 @@ export default function ProductClient() {
                   }}
                   fullWidth>
                   Cancel
+                </Button>
+              </div>
+              <div className="w-1/2">
+                <Button
+                  className="bg-green-400 text-white text-sm"
+                  onClick={handleUpdate}
+                  fullWidth>
+                  Update
                 </Button>
               </div>
             </div>

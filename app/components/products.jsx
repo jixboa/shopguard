@@ -1,5 +1,8 @@
 import { useContext } from "react";
 import { ProductsContext } from "./ProductsContext";
+import { useRouter } from "next/navigation";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function ProductItems({
   _id,
@@ -8,6 +11,9 @@ export default function ProductItems({
   description,
   picture,
 }) {
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
   const { setSelectedProducts } = useContext(ProductsContext);
   const { selectedProducts } = useContext(ProductsContext);
 
@@ -16,9 +22,12 @@ export default function ProductItems({
     const cart = selectedProducts;
   };
 
-  const moreOfThisProduct = (e, id) => {
+  const moreOfThisProduct = async (e, id) => {
     e.preventDefault();
-    setSelectedProducts((prev) => [...prev, id]);
+    await setSelectedProducts((prev) => [...prev, id]);
+    //await queryClient.invalidateQueries({ queryKey: ["cart"] });
+
+    await router.prefetch("/sales");
     //console.log(id);
   };
 
@@ -30,6 +39,7 @@ export default function ProductItems({
         (value, index) => index !== pos
       );
       setSelectedProducts(newSelectProducts);
+      router.prefetch("/sales");
     }
   };
 

@@ -9,12 +9,10 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 export default function CheckOutComponent() {
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
-  const [productInfo, setProductInfo] = useState([]);
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
+  //const [productInfo, setProductInfo] = useState([]);
 
   const [order, setOrder] = useState({
     name: "",
@@ -40,7 +38,7 @@ export default function CheckOutComponent() {
         throw new Error("Failed loading Cart");
       }
       const data = await res.json();
-      setProductInfo(data.products);
+      //setProductInfo(data.products);
       //console.log(productInfo);
       return data.products;
     } catch (error) {
@@ -76,7 +74,7 @@ export default function CheckOutComponent() {
     for (let id of selectedProducts) {
       const product = data.find((p) => p._id === id);
       if (product) {
-        const price = product.price;
+        const price = parseInt(product.price, 10);
         subtotal = subtotal + price;
       } else {
         console.log("No Selected Ids");
