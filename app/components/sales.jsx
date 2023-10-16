@@ -6,6 +6,9 @@ import ProductItems from "./products";
 import { useState, useEffect, useContext } from "react";
 import { ProductsContext } from "../components/ProductsContext";
 
+import { toast } from "react-hot-toast";
+import axios from "axios";
+
 import { useRouter } from "next/navigation";
 
 //get prods
@@ -28,6 +31,7 @@ const getProducts = async () => {
 
 export default function SalesClient() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
 
@@ -75,7 +79,6 @@ export default function SalesClient() {
   const moreOfThisProduct = (e, id) => {
     e.preventDefault();
     setSelectedProducts((prev) => [...prev, id]);
-    //console.log(id);
   };
 
   const lessOfThisProduct = (e, id) => {
@@ -89,12 +92,12 @@ export default function SalesClient() {
     }
   };
 
-  const { cartData, isError } = useQuery({
+  const { data: cartData, isError: cartIsError } = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
   });
 
-  console.log(cartData);
+  //console.log(cartData);
 
   const deliveryPrice = 5;
   let subtotal = 0;
@@ -103,7 +106,7 @@ export default function SalesClient() {
     for (let id of selectedProducts) {
       const product = productInfo.find((p) => p._id === id);
       if (product) {
-        const price = parseInt(product.price, 10);
+        const price = parseFloat(product.price, 10);
         subtotal = subtotal + price;
       } else {
         //console.log("No Selected Ids");
@@ -117,7 +120,7 @@ export default function SalesClient() {
     //e.preventDefault();
     try {
       const response = await axios.post(`/api/orders`, order);
-      toast.success("Created successfully");
+
       return response.data;
     } catch (error) {
       console.log("Creating Failed", error.message);
@@ -127,23 +130,39 @@ export default function SalesClient() {
   };
 
   const { mutate } = useMutation(addOrder, {
-    onSuccess: async (data) => {
-      // Update the cache with the newly added category
-      /* await queryClient.setQueriesData("orders", (oldData) => [
-          ...oldData,
-          data,
-        ]); */
+    onMutate: async (data) => {
+      await queryClient.cancelQueries(["products"]);
+    },
+    onError: (error, newCategory, context) => {
+      // Handle errors, if needed
+      toast.success("Error creating order");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["products"]);
+      setSelectedProducts([]);
+    },
+    onSuccess: (data, variables, context) => {
+      // Handle success, if needed
+      setOrder({
+        name: "",
+        contact: "",
+        invoice_number: "",
+        selectedIds: "",
+        total_amount: "",
+        paid: "",
+      });
+      toast.success("Order Created successfully");
     },
   });
 
-  const handleAddOrder = (e) => {
+  const handleAddOrder = async (e) => {
     e.preventDefault();
 
     const invoiceNumber =
       Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000;
     //console.log(invoiceNumber);
 
-    setOrder({
+    await setOrder({
       ...order,
       invoice_number: invoiceNumber,
       total_amount: total,
@@ -319,11 +338,14 @@ export default function SalesClient() {
               <h3 className="font-bold">GH₵ {total}</h3>
             </div>
           </div>
-          <button
-            onClick={handleAddOrder}
-            className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
-            Pay GH₵ {total}
-          </button>
+
+          {selectedProducts.length && (
+            <button
+              onClick={handleAddOrder}
+              className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
+              Pay GH₵ {total}
+            </button>
+          )}
         </div>
       </div>
     </>

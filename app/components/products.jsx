@@ -25,21 +25,16 @@ export default function ProductItems({
   const moreOfThisProduct = async (e, id) => {
     e.preventDefault();
     await setSelectedProducts((prev) => [...prev, id]);
-    //await queryClient.invalidateQueries({ queryKey: ["cart"] });
-
-    await router.prefetch("/sales");
-    //console.log(id);
   };
 
-  const lessOfThisProduct = (e, id) => {
+  const lessOfThisProduct = async (e, id) => {
     e.preventDefault();
     const pos = selectedProducts.indexOf(id);
     if (pos !== -1) {
       const newSelectProducts = selectedProducts.filter(
         (value, index) => index !== pos
       );
-      setSelectedProducts(newSelectProducts);
-      router.prefetch("/sales");
+      await setSelectedProducts(newSelectProducts);
     }
   };
 

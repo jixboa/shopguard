@@ -92,7 +92,7 @@ export function CategoryClient() {
   });
 
   const [editCat, setEditCat] = useState({
-    _id: "",
+    id: "",
     name: "",
   });
 
@@ -176,13 +176,10 @@ export function CategoryClient() {
 
   const updateCategory = async () => {
     const newName = editCat.name;
-    const id = editCat._id;
+    const id = editCat.id;
     try {
       const res = await fetch(`api/categories/${id}`, {
         method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-        },
         body: JSON.stringify({ newName }),
       });
 
@@ -246,12 +243,12 @@ export function CategoryClient() {
     onMutate: async (newCategory) => {
       await queryClient.cancelQueries(["categories"]);
 
-      const previousCategories = queryClient.getQueryData(["categories"]);
+      /*  const previousCategories = queryClient.getQueryData(["categories"]);
       const updatedCategories = [...previousCategories, newCategory];
 
       queryClient.setQueryData(["categories"], updatedCategories);
 
-      return { updatedCategories };
+      return { updatedCategories }; */
     },
     onError: (error, newCategory, context) => {
       // Handle errors, if needed

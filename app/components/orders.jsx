@@ -171,6 +171,7 @@ export default function OrdersClient() {
               {paginatedData.map(
                 (
                   {
+                    _id,
                     name,
                     contact,
                     invoice_number,
@@ -187,9 +188,7 @@ export default function OrdersClient() {
                     : "p-4 border-b border-blue-gray-50";
 
                   return (
-                    <tr
-                      key={invoice_number}
-                      className="even:bg-blue-gray-50/50">
+                    <tr key={_id} className="even:bg-blue-gray-50/50">
                       <td className={classes}>
                         <div className="flex items-center gap-3">
                           {/* <Avatar
@@ -198,45 +197,22 @@ export default function OrdersClient() {
                             size="md"
                             className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                           /> */}
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold">
-                            {name}
-                          </Typography>
+                          <h1 className="font-bold text-sm">{name}</h1>
                         </div>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal">
-                          {contact}
-                        </Typography>
+                        <h3 className="font-normal text-sm">{contact}</h3>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-semibold">
+                        <h1 className="font-semibold text-sm">
                           {invoice_number}
-                        </Typography>
+                        </h1>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal">
-                          ${total_amount}
-                        </Typography>
+                        <h1 className="font-normal text-sm">${total_amount}</h1>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal">
-                          {date}
-                        </Typography>
+                        <h1 className="font-normal text-sm">{date}</h1>
                       </td>
                       <td className={classes}>
                         <div className="w-max">

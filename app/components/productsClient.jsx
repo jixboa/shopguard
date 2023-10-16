@@ -138,7 +138,6 @@ export default function ProductClient() {
           newStatus,
         }),
       });
-      console.log(res.data);
       if (!res.ok) {
         throw new Error("success upate Product");
       }
@@ -263,6 +262,16 @@ export default function ProductClient() {
     },
     onSuccess: (data, variables, context) => {
       // Handle success, if needed
+      setProduct({
+        name: "",
+        description: "",
+        category: "",
+        price: "",
+        quantity: "",
+        size: "",
+        status: "",
+      });
+
       toast.success("Products added successfully");
     },
   });
@@ -467,15 +476,7 @@ export default function ProductClient() {
             <div className="flex flex-row gap-2">
               <div className="w-1/2">
                 <Button
-                  className="bg-green-600"
-                  onClick={handleAddProduct}
-                  fullWidth>
-                  Add product
-                </Button>
-              </div>
-              <div className="w-1/2">
-                <Button
-                  className="bg-red-800"
+                  className=" bg-transparent text-red-700"
                   onClick={(e) => {
                     setProduct({
                       name: "",
@@ -490,6 +491,14 @@ export default function ProductClient() {
                   }}
                   fullWidth>
                   Cancel
+                </Button>
+              </div>
+              <div className="w-1/2">
+                <Button
+                  className="bg-green-400 text-white text-sm"
+                  onClick={handleAddProduct}
+                  fullWidth>
+                  Add product
                 </Button>
               </div>
             </div>
@@ -620,7 +629,6 @@ export default function ProductClient() {
                         Select Status
                       </label>
                       <select
-                        defaultValue="Select status"
                         value={editProduct.status}
                         onChange={(e) => {
                           setEditProduct({
