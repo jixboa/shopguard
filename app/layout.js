@@ -9,12 +9,9 @@ import NavbarNew from "./components/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 
-const inter = Inter({ subsets: ["latin"] });
+//import getUserData from "utils/getUserData";
 
-/* const tokenData = async () => {
-  const auth = await cookies().get("token")?.value;
-  console.log(auth);
-}; */
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "ShopGuard",
@@ -22,7 +19,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  //tokenData()
+  //const userData = getUserData();
+
   return (
     <Provider>
       <ProductsContextProvider>

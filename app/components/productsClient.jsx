@@ -294,7 +294,7 @@ export default function ProductClient() {
           <h1 className=" flex flex-grow"></h1>
           <button
             onClick={handleOpen}
-            className=" bg-purple-800 text-white px-2 rounded hover:shadow-sm hover:bg-purple-700">
+            className=" bg-gray-800 text-white px-2 rounded hover:shadow-sm hover:bg-gray-700">
             Add +
           </button>
         </div>

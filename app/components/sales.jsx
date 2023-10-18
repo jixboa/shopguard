@@ -32,8 +32,10 @@ const getProducts = async () => {
 export default function SalesClient() {
   const router = useRouter();
   const queryClient = useQueryClient();
-
   const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
+
+  const [cashRecieved, setCashRecieve] = useState(0);
+  const [change, setChange] = useState(0);
 
   const [productInfo, setProductInfo] = useState([]);
 
@@ -99,7 +101,7 @@ export default function SalesClient() {
 
   //console.log(cartData);
 
-  const deliveryPrice = 5;
+  const deliveryPrice = 0;
   let subtotal = 0;
 
   if (selectedProducts?.length) {
@@ -155,8 +157,15 @@ export default function SalesClient() {
     },
   });
 
+  let newChange = 0.0;
+
+  if (cashRecieved > total) {
+    newChange = parseFloat(cashRecieved, 0) - parseFloat(total, 10);
+  }
+
   const handleAddOrder = async (e) => {
     e.preventDefault();
+    await setChange(newChange);
 
     const invoiceNumber =
       Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000;
@@ -169,7 +178,7 @@ export default function SalesClient() {
       paid: "paid",
       selectedIds: selectedProducts.join(","),
     });
-    mutate(order);
+    /*    mutate(order); */
   };
 
   /////////////////// checkout ######################
@@ -330,21 +339,50 @@ export default function SalesClient() {
               <h3 className="font-bold">GH₵ {subtotal}</h3>
             </div>
             <div className="flex my-3">
-              <h3 className="grow font-bold text-gray-400">Delivery:</h3>
+              <h3 className="grow font-bold text-gray-400">Other Charges:</h3>
               <h3 className="font-bold">GH₵ {deliveryPrice}</h3>
             </div>
+
+            {selectedProducts.length ? (
+              <div className="grid grid-cols-2 md:grid-col-1 sm:grid-col-1  gap-4  border border-b-2 p-1 bg-gray-100 rounded-md">
+                <div className="px-2 flex flex-row sm:flex-col xs-flex-col justify-start items-center w-full">
+                  <h3 className="text-sm  text-gray-600 font-normal">
+                    Cash recieved:
+                  </h3>
+                  <input
+                    type="text"
+                    onChange={async (e) => {
+                      await setCashRecieve(e.target.value);
+                    }}
+                    className="rounded w-1/2 h-8"
+                  />
+                </div>
+                <div className="flex flex-row  sm:flex-col xs-flex-col gap-2 justify-end items-center">
+                  <h3 className="text-sm  text-gray-600 font-normal">
+                    Change:
+                  </h3>
+                  <h3 className="text-lg font-semibold text-green-600">
+                    GH₵ {change}
+                  </h3>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             <div className="flex my-3 pt-3 border-t border-dashed border-emerald-500">
               <h3 className="grow font-bold text-gray-400">Total:</h3>
               <h3 className="font-bold">GH₵ {total}</h3>
             </div>
           </div>
 
-          {selectedProducts.length && (
+          {cashRecieved >= total && selectedProducts.length ? (
             <button
               onClick={handleAddOrder}
               className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
               Pay GH₵ {total}
             </button>
+          ) : (
+            <></>
           )}
         </div>
       </div>
