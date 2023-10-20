@@ -26,15 +26,15 @@ export default function SignIn() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("/api/users/signin", user);
-      toast.success("Login successful");
+      await axios.post("/api/users/signin", user);
       router.push("/");
-      router.refresh("/");
+      toast.success("Login successful");
     } catch (error) {
-      console.log("Login Failed", error.message);
-      toast.error(error.message);
+      //console.log("Login Failed", error.message);
+      toast.error("Login failed");
     } finally {
       setLoading(false);
+      router.refresh("/");
     }
   };
 

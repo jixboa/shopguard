@@ -31,7 +31,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavbarNew({ username }) {
+export default function NavbarNew() {
   const router = useRouter();
   const pathname = usePathname();
   //const name = username;
@@ -43,20 +43,20 @@ export default function NavbarNew({ username }) {
 
   //setProfileName(username);
 
-  /* useEffect(() => {
+  useEffect(() => {
     // Define the API request within the useEffect
-    async () => {
-      const response = await fetch("/api/users/me")
-        .then((res) => res.json())
-        .then((data) => {
-          setUserData(data);
-          setProfileName(data.username);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    };
-  }, [userData]); */
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data);
+        setProfileName(data.username);
+        console.log(profileName);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const SignOut = async () => {
     try {
@@ -78,13 +78,13 @@ export default function NavbarNew({ username }) {
 
   //console.log(data);
 
-  /*   if (pathname === "/users/signin") {
+  if (pathname === "/users/signin") {
     return (
       <>
         <div></div>
       </>
     );
-  } */
+  }
 
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed top-0 w-full">
@@ -248,7 +248,7 @@ export default function NavbarNew({ username }) {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}>
-                            {username}
+                            {profileName}
                           </a>
                         )}
                       </Menu.Item>

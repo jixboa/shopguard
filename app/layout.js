@@ -9,7 +9,7 @@ import NavbarNew from "./components/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 
-import { getTokenData } from "./utils/getTokenData";
+//import { getTokenData } from "./utils/getTokenData";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +19,13 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const userData = await getTokenData();
+  // const userData = await getTokenData();
 
-  let username = "";
-  if (userData.id) {
+  let username = "name";
+  /*  if (userData.id) {
     username = await userData.username;
   }
-
+ */
   return (
     <Provider>
       <ProductsContextProvider>
@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
               <div className="">
                 {username ? (
                   <>
-                    <NavbarNew username={username} />
+                    <NavbarNew />
                   </>
                 ) : null}
               </div>
