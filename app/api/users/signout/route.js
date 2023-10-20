@@ -10,9 +10,9 @@ export async function GET() {
 
     response.cookies.set("token", "", {
       httpOnly: true,
-      expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
+      expires: -1,
     });
-    console.log("Cookie removed");
+
     return response;
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

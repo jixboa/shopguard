@@ -1,5 +1,5 @@
 import { parse } from "cookie"; // Import the 'cookie' library to parse cookies
-import jwt from "jsonwebtoken";
+//import jwt from "jsonwebtoken";
 
 export function getUserData(req) {
   // Retrieve cookies from the request object
@@ -9,8 +9,9 @@ export function getUserData(req) {
   if (cookies.token) {
     // Verify and decode the token using your JWT secret key
     try {
-      const tokenData = jwt.verify(cookies.token, process.env.JWT_SECRET_KEY);
-      return tokenData;
+      console.log(cookies);
+      /* const tokenData = jwt.verify(cookies.token, process.env.JWT_SECRET_KEY);
+      return tokenData; */
     } catch (error) {
       // Token verification failed
       return null;

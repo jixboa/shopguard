@@ -80,7 +80,7 @@ export default function CheckOutComponent() {
         const price = parseInt(product.price, 10);
         subtotal = subtotal + price;
       } else {
-        console.log("No Selected Ids");
+        // console.log("No Selected Ids");
       }
     }
   }

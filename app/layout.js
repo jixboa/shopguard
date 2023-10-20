@@ -9,7 +9,7 @@ import NavbarNew from "./components/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 
-//import getUserData from "utils/getUserData";
+import { getTokenData } from "./utils/getTokenData";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +18,13 @@ export const metadata = {
   description: "A swift retail center",
 };
 
-export default function RootLayout({ children }) {
-  //const userData = getUserData();
+export default async function RootLayout({ children }) {
+  const userData = await getTokenData();
+
+  let username = "";
+  if (userData.id) {
+    username = await userData.username;
+  }
 
   return (
     <Provider>
@@ -28,7 +33,11 @@ export default function RootLayout({ children }) {
           <body className={inter.className}>
             <div className="">
               <div className="">
-                <NavbarNew />
+                {username ? (
+                  <>
+                    <NavbarNew username={username} />
+                  </>
+                ) : null}
               </div>
               <Toaster position="top-center" reverseOrder={false} />
               {children}

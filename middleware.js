@@ -22,6 +22,8 @@ export const config = {
     "/",
     "/products",
     "/sales",
+    "/orders",
+    "/checkout",
     "/categories",
     "/users/signin",
     "/users/signup",

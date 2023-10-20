@@ -3,9 +3,11 @@ import connectMongo from "../../../../database/conn";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
 export async function POST(request) {
   connectMongo();
+  const MAX_AGE = 60 * 60;
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;
@@ -32,10 +34,10 @@ export async function POST(request) {
 
     //create token
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1hr",
+      expiresIn: MAX_AGE,
     });
 
-    const response = NextResponse.json({
+    /*  const response = NextResponse.json({
       message: "Login successful",
       success: true,
     });
@@ -43,8 +45,24 @@ export async function POST(request) {
     response.cookies.set("token", token, {
       httpOnly: true,
     });
+ */
+    const serialized = serialize("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: MAX_AGE,
+      path: "/",
+    });
 
-    return response;
+    const response = {
+      message: "Authorized",
+    };
+
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { "Set-Cookie": serialized },
+    });
+    //return response;
   } catch (error) {
     return NextResponse.json({ error: error.message });
   }

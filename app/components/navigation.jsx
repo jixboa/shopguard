@@ -6,9 +6,11 @@ import { toast } from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
 import { Avatar, Badge, IconButton } from "@material-tailwind/react";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { ProductsContext } from "./ProductsContext";
 
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -29,32 +31,60 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavbarNew() {
+export default function NavbarNew({ username }) {
   const router = useRouter();
   const pathname = usePathname();
+  //const name = username;
 
   const { selectedProducts } = useContext(ProductsContext);
 
-  //console.log(pathname);
+  const [userData, setUserData] = useState();
+  const [profileName, setProfileName] = useState("");
+
+  //setProfileName(username);
+
+  /* useEffect(() => {
+    // Define the API request within the useEffect
+    async () => {
+      const response = await fetch("/api/users/me")
+        .then((res) => res.json())
+        .then((data) => {
+          setUserData(data);
+          setProfileName(data.username);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    };
+  }, [userData]); */
 
   const SignOut = async () => {
     try {
       await axios.get("/api/users/signout");
-      toast.success("Logout successful");
+      setProfileName("");
       router.push("/users/signin");
+      router.refresh("/users/signin");
+      toast.success("Logout successful");
     } catch (error) {
       console.log(error.message);
       toast.error("Logout failed");
     }
   };
 
-  if (pathname === "/users/signin") {
+  /*    const { data, isLoading } = useQuery({
+    queryKey: ["userData"],
+    queryFn: () => fetch("/api/users/me").then((res) => res.json()),
+  }); */
+
+  //console.log(data);
+
+  /*   if (pathname === "/users/signin") {
     return (
       <>
         <div></div>
       </>
     );
-  }
+  } */
 
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed top-0 w-full">
@@ -218,7 +248,7 @@ export default function NavbarNew() {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}>
-                            Your Profile
+                            {username}
                           </a>
                         )}
                       </Menu.Item>
