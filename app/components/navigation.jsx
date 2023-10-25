@@ -36,7 +36,7 @@ export default function NavbarNew() {
   const pathname = usePathname();
   const { username } = useContext(ProductsContext);
 
-  const { selectedProducts } = useContext(ProductsContext);
+  const { selectedProducts, userDetail } = useContext(ProductsContext);
 
   const [userData, setUserData] = useState();
   const [profileName, setProfileName] = useState("");
@@ -175,7 +175,7 @@ export default function NavbarNew() {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}>
-                            {username}
+                            {userDetail?.username}
                           </a>
                         )}
                       </Menu.Item>
