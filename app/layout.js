@@ -4,14 +4,13 @@ import { Provider } from "./utils/reactQueryProvider";
 import Footer from "./components/footer";
 
 import NavbarNew from "./components/navigation";
+import SidebarComponent from "./components/sidebarComponent";
 //import { cookies } from "next/headers";
 //import { NextUIProvider } from "@nextui-org/react";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 
-//import { getTokenData } from "./utils/getTokenData";
-
-const inter = Inter({ subsets: ["latin"] });
+//const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "ShopGuard",
@@ -19,10 +18,9 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // const userData = await getTokenData();
+  //const tokenString = token.value || ""; // Ensure token is a string
 
-  let username = "name";
-  /*  if (userData.id) {
+  /*   if (userData.id) {
     username = await userData.username;
   }
  */
@@ -30,20 +28,21 @@ export default async function RootLayout({ children }) {
     <Provider>
       <ProductsContextProvider>
         <html lang="en">
-          <body className={inter.className}>
-            <div className="">
+          <body>
+            <div className="flex">
               <div className="">
-                {username ? (
-                  <>
-                    <NavbarNew />
-                  </>
-                ) : null}
+                <SidebarComponent />
               </div>
-              <Toaster position="top-center" reverseOrder={false} />
-              {children}
+              <div className="p-7 ml-20 mb-20 h-screen flex-1">
+                <div className="w-full">
+                  <NavbarNew />
+                </div>
+                <Toaster position="top-center" reverseOrder={false} />
+                {children}
+              </div>
             </div>
             {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-            <Footer />
+            {/*   <Footer /> */}
           </body>
         </html>
       </ProductsContextProvider>

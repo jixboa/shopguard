@@ -34,7 +34,7 @@ function classNames(...classes) {
 export default function NavbarNew() {
   const router = useRouter();
   const pathname = usePathname();
-  //const name = username;
+  const { username } = useContext(ProductsContext);
 
   const { selectedProducts } = useContext(ProductsContext);
 
@@ -43,7 +43,7 @@ export default function NavbarNew() {
 
   //setProfileName(username);
 
-  useEffect(() => {
+  /* useEffect(() => {
     // Define the API request within the useEffect
 
     fetch("/api/users/me")
@@ -56,7 +56,7 @@ export default function NavbarNew() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, []);
+  }, []); */
 
   const SignOut = async () => {
     try {
@@ -76,7 +76,7 @@ export default function NavbarNew() {
     queryFn: () => fetch("/api/users/me").then((res) => res.json()),
   }); */
 
-  //console.log(data);
+  //console.log(pathname);
 
   if (pathname === "/users/signin") {
     return (
@@ -87,14 +87,14 @@ export default function NavbarNew() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 fixed top-0 w-full">
+    <Disclosure as="nav" className=" bg-transparent fixed top-0 w-full">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                {/* <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -102,80 +102,7 @@ export default function NavbarNew() {
                   ) : (
                     <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  {/*  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  /> */}
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    <Link
-                      href="/"
-                      className={classNames(
-                        pathname === "/"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Dashboard
-                    </Link>
-                    <Link
-                      href="/sales"
-                      className={classNames(
-                        pathname === "/sales"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Sales
-                    </Link>
-                    <Link
-                      href="/products"
-                      className={classNames(
-                        pathname === "/products"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Products
-                    </Link>
-                    <Link
-                      href="/categories"
-                      className={classNames(
-                        pathname === "/categories"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Categories
-                    </Link>
-                    <Link
-                      href="/orders"
-                      className={classNames(
-                        pathname === "/orders"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Orders
-                    </Link>
-                    <Link
-                      href="/users/signup"
-                      className={classNames(
-                        pathname === "/users/signup"
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}>
-                      Add User
-                    </Link>
-                  </div>
-                </div>
+                </Disclosure.Button> */}
               </div>
 
               <div className="absolute inset-y-0 right-0 flex gap-5  pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -248,7 +175,7 @@ export default function NavbarNew() {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}>
-                            {profileName}
+                            {username}
                           </a>
                         )}
                       </Menu.Item>
@@ -283,7 +210,7 @@ export default function NavbarNew() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          {/* <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
                 <Disclosure.Button
@@ -301,7 +228,7 @@ export default function NavbarNew() {
                 </Disclosure.Button>
               ))}
             </div>
-          </Disclosure.Panel>
+          </Disclosure.Panel> */}
         </>
       )}
     </Disclosure>

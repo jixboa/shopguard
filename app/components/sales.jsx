@@ -195,7 +195,7 @@ export default function SalesClient() {
 
   if (isLoading) {
     // Render a loading indicator while data is loading
-    return <p>Loading...</p>;
+    return <p className="ml-20 mt-20 text-black font-normal">Loading...</p>;
   }
 
   if (!data || !Array.isArray(data.products)) {
@@ -214,7 +214,7 @@ export default function SalesClient() {
 
   return (
     <>
-      <div className="p-5 mb-16 mt-16 flex flex-row">
+      <div className="p-5 mb-5 mt-5 flex flex-row">
         <div className="w-2/3">
           <input
             value={phrase}

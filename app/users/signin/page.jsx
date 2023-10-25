@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
+import { Spinner } from "@material-tailwind/react";
+
 export default function SignIn() {
   const router = useRouter();
   const [user, setUser] = React.useState({
@@ -28,15 +30,23 @@ export default function SignIn() {
       setLoading(true);
       await axios.post("/api/users/signin", user);
       router.push("/");
+      setLoading(false);
       toast.success("Login successful");
     } catch (error) {
       //console.log("Login Failed", error.message);
       toast.error("Login failed");
     } finally {
-      setLoading(false);
       router.refresh("/");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen duration-300">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <>
