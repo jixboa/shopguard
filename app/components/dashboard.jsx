@@ -12,7 +12,7 @@ export default function Dashboard() {
     fetch("/api/users/me")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setUserDetail(data);
       })
       .catch((error) => {

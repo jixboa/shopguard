@@ -6,6 +6,16 @@ dotenv.config();
 
 const nextConfig = {
   swcMinify: false,
+  webpack: (config, { buildId, dev, isServer, defaultLoaders }) => {
+    // Replace 'crypto' with 'crypto-browserify' and 'stream' with 'stream-browserify' using the fallback property
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify"),
+    };
+
+    return config;
+  },
 };
 
 module.exports = nextConfig;
@@ -21,4 +31,5 @@ module.exports = nextConfig;
 
     return config;
   },
-}; */
+};
+ */
