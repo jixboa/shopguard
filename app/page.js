@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { getTokenData } from "./utils/getTokenData";
 import Dashboard from "./components/dashboard";
 
+export const runtime = "edge";
+
 export default async function Home() {
   const cookieStore = await cookies();
   let token = await cookieStore.get("token");
