@@ -30,13 +30,12 @@ export default function SignIn() {
       setLoading(true);
       await axios.post("/api/users/signin", user);
       router.push("/");
-      setLoading(false);
       toast.success("Login successful");
     } catch (error) {
       //console.log("Login Failed", error.message);
       toast.error("Login failed");
     } finally {
-      router.refresh("/");
+      setLoading(false);
     }
   };
 

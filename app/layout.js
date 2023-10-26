@@ -5,8 +5,6 @@ import Footer from "./components/footer";
 
 import NavbarNew from "./components/navigation";
 import SidebarComponent from "./components/sidebarComponent";
-//import { cookies } from "next/headers";
-//import { NextUIProvider } from "@nextui-org/react";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 
@@ -18,12 +16,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  //const tokenString = token.value || ""; // Ensure token is a string
-
-  /*   if (userData.id) {
-    username = await userData.username;
-  }
- */
   return (
     <Provider>
       <ProductsContextProvider>
