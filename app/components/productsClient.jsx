@@ -357,7 +357,7 @@ export default function ProductClient() {
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-inherit transform">
-        <Card className="mx-auto w-full max-w-[24rem]">
+        <Card className="mx-auto w-full max-w-[24rem] p-2">
           <CardHeader
             color="blue"
             className="mb-2 grid h-10 place-items-center bg-blue-600">
@@ -379,14 +379,14 @@ export default function ProductClient() {
                     onChange={(e) =>
                       setProduct({ ...product, name: e.target.value })
                     }
-                    className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <textarea
                     onChange={(e) =>
                       setProduct({ ...product, description: e.target.value })
                     }
                     value={product.description}
-                    className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-3 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     id="example-textarea"
                     rows="4"
                     placeholder="Enter your text here..."></textarea>
@@ -416,7 +416,7 @@ export default function ProductClient() {
                         onChange={(e) => {
                           setProduct({ ...product, price: e.target.value });
                         }}
-                        className="mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                     <div className="w-1/2">
@@ -427,7 +427,7 @@ export default function ProductClient() {
                         onChange={(e) =>
                           setProduct({ ...product, quantity: e.target.value })
                         }
-                        className="mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -511,7 +511,7 @@ export default function ProductClient() {
         open={editOpen}
         handler={handleEditOpen}
         className="bg-transparent shadow-none">
-        <Card className="mx-auto w-full max-w-[24rem]">
+        <Card className="mx-auto w-full max-w-[24rem] p-2">
           <CardHeader
             color="blue"
             className="mb-2 grid h-10 place-items-center bg-blue-600">
@@ -522,7 +522,7 @@ export default function ProductClient() {
               Product Update
             </Typography>
           </CardHeader>
-          <CardBody className="flex flex-col gap-2">
+          <CardBody className="flex flex-col gap-2 p-4">
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div>
                 <div className="">
@@ -533,7 +533,7 @@ export default function ProductClient() {
                     onChange={(e) =>
                       setEditProduct({ ...editProduct, name: e.target.value })
                     }
-                    className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <textarea
                     onChange={(e) =>
@@ -543,7 +543,7 @@ export default function ProductClient() {
                       })
                     }
                     value={editProduct.description}
-                    className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-3 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     id="example-textarea"
                     rows="4"
                     placeholder="Enter your text here..."></textarea>
@@ -580,7 +580,7 @@ export default function ProductClient() {
                             price: e.target.value,
                           });
                         }}
-                        className="mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                     <div className="w-1/2">
@@ -594,7 +594,7 @@ export default function ProductClient() {
                             quantity: e.target.value,
                           })
                         }
-                        className="mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>

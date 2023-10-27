@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
               <div className="">
                 <SidebarComponent />
               </div>
-              <div className="p-7 ml-20 mb-20 h-screen flex-1">
+              <div className="p-7 ml-20 mb-20 flex-1">
                 <div className="w-full">
                   <NavbarNew />
                 </div>

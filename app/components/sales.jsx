@@ -354,7 +354,7 @@ export default function SalesClient() {
                     onChange={async (e) => {
                       await setCashRecieve(e.target.value);
                     }}
-                    className="rounded w-1/2 h-8"
+                    className="rounded w-1/2 h-8 px-2"
                   />
                 </div>
                 <div className="flex flex-row  sm:flex-col xs-flex-col gap-2 justify-end items-center">

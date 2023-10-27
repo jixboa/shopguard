@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
-import { Avatar, Badge, IconButton } from "@material-tailwind/react";
+import { Avatar, Badge, IconButton, Button } from "@material-tailwind/react";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -91,7 +91,7 @@ export default function NavbarNew() {
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
+            <div className="relative flex h-16 items-center justify-center">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 {/* <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -105,14 +105,14 @@ export default function NavbarNew() {
                 </Disclosure.Button> */}
               </div>
 
-              <div className="absolute inset-y-0 right-0 flex gap-5  pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/*                 <div>
-                  <Badge
+              <div className="flex flex-row gap-2">
+                <div>
+                  {/*  <Badge
                     onClick={(e) => {
                       router.push("/checkout");
                     }}
                     withBorder
-                    className="font-bold mr-6 cursor-pointer"
+                    className="font-bold mr-6 cursor-pointer bg-gray-800"
                     content={
                       selectedProducts.length > 0 ? (
                         <span className="">{selectedProducts.length} </span>
@@ -121,91 +121,95 @@ export default function NavbarNew() {
                       )
                     }>
                     <IconButton
-                      className="p-2 bg-opacity-0 ml-2"
+                      className="p-2 bg-opacity-0 ml-2 bg-gray-800"
                       onClick={(e) => {
                         router.push("/checkout");
                       }}>
-                      <ShoppingCartIcon className="h-7 w-7 ml-4" />
+                      <ShoppingCartIcon className="h-7 w-7 ml-4 bg-gray-600" />
                     </IconButton>
-                  </Badge>
-                </div> */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    router.push("/checkout");
-                  }}
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
-                  <span className="absolute -inset-1.5" />
-                  <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-                {selectedProducts.length > 0 ? (
-                  <span className="">{selectedProducts.length}</span>
-                ) : (
-                  <></>
-                )}
+                  </Badge> */}
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      router.push("/checkout");
+                    }}
+                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
+                    <span className="absolute -inset-1.5" />
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                  {selectedProducts.length > 0 ? (
+                    <span className="">{selectedProducts.length}</span>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div>
+                  <Menu as="div" className="relative ml-3 ">
+                    <div>
+                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Open user menu</span>
+                        <Avatar
+                          variant="rounded"
+                          className="h-8 w-8 rounded-full bg-gray-800"
+                          src="/images/placeholder.png"
+                          alt="avatar"
+                        />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95">
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}>
+                              {userDetail?.username}
+                            </a>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}>
+                              Settings
+                            </a>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              onClick={SignOut}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}>
+                              Sign out
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <Avatar
-                        variant="rounded"
-                        className="h-8 w-8 rounded-full"
-                        src="/images/placeholder.png"
-                        alt="avatar"
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95">
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}>
-                            {userDetail?.username}
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}>
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            onClick={SignOut}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}>
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
               </div>
             </div>
           </div>
