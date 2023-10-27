@@ -1,4 +1,4 @@
-export const runtime = "edge";
+//export const runtime = "edge";
 import ProductClient from "../components/productsClient";
 
 import { CategoryClient } from "../components/categories";

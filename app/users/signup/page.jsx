@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
-import { UserIcon } from "@heroicons/react/24/outline";
+import {
+  PencilSquareIcon,
+  TrashIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 
 import { data } from "../../data/data";
 
@@ -75,14 +79,18 @@ export default function SignUp() {
                   </p>
                 </div>
                 <p className="text-gray-600 sm:text-left text-right  items-center text-sm p-2">
-                  {order.name.first}@gmail.coom
+                  {order.name.first}@gmail.com
                 </p>
                 <p className=" hidden md:flex text-gray-600 sm:text-left text-right  items-center text-sm p-2">
                   User
                 </p>
-                <p className=" hidden md:flex sm:text-left text-right  items-center text-sm text-white p-2 rounded-md bg-green-500">
-                  Active
-                </p>
+                <div className=" flex-row justify-between hidden md:flex">
+                  <p className="  sm:text-left text-right  items-center text-sm text-white p-2 rounded-md bg-green-500">
+                    Active
+                  </p>
+                  <PencilSquareIcon className="h-4 w-4" />
+                  <TrashIcon className="h-4 w-4" />
+                </div>
               </li>
             ))}
           </ul>
