@@ -56,7 +56,7 @@ const navigation = [
   },
 
   {
-    name: "Add User",
+    name: "Users",
     icon: <UserPlusIcon className="h-6 w-6" />,
     href: "/users/signup",
     current: false,
