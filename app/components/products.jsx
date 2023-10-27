@@ -40,8 +40,8 @@ export default function ProductItems({
 
   return (
     <>
-      <div className="w-64 ">
-        <div className="bg-blue-100 p-5 rounded-xl w-26">
+      <div className=" w-64 ">
+        <div className="bg-gray-100 p-5 rounded-xl w-26">
           <img className="" src={picture} alt="" />
         </div>
         <div className="mt-2">
