@@ -91,7 +91,7 @@ export default function SidebarComponent() {
       onMouseLeave={handleMouseLeave}
       className={`${
         open ? "w-72" : "w-20"
-      } duration-300 h-full fixed  bg-gray-800 text-white`}>
+      } duration-300 h-full fixed  bg-gray-800 text-white z-50`}>
       <div className="p-5 items-center flex gap-x-4">
         <AcademicCapIcon
           className={`w-6 h-6 duration-500 ${!open && " rotate-[360deg]"}`}

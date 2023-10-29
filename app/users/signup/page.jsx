@@ -10,7 +10,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
   UserIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
 
 import { data } from "../../data/data";
 

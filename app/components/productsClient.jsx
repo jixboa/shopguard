@@ -298,7 +298,9 @@ export default function ProductClient() {
             Add +
           </button>
         </div>
-        <ul role="list" className="divide-y divide-gray-100">
+        <ul
+          role="list"
+          className="divide-y divide-gray-100 lg:h-[100vh] h-[70vh] overflow-scroll p-4">
           {data.products.map((prod) => (
             <li
               key={prod._id}

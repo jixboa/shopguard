@@ -4,7 +4,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 export default function RecentOrders() {
   return (
     <>
-      <div className="w-full col-span-1 relative lg:h-[70vh] h-[50vh] m-auto p-4 rounded-lg bg-white  overflow-scroll">
+      <div className="w-full col-span-1 relative z-10 lg:h-[70vh] h-[50vh] m-auto p-4 rounded-lg bg-white  overflow-scroll">
         <h1>Recent orders</h1>
         <ul>
           {data.map((order, id) => (
