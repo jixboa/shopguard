@@ -7,6 +7,8 @@ import NavbarNew from "./components/navigation";
 import SidebarComponent from "./components/sidebarComponent";
 import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
+import Loading from "./loading";
+import { Suspense } from "react";
 
 //const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +27,12 @@ export default async function RootLayout({ children }) {
               <div className="">
                 <SidebarComponent />
               </div>
-              <div className="p-7 ml-20 mb-20 flex-1">
+              <div className="p-5 ml-20 flex-1">
                 <div className="w-full">
                   <NavbarNew />
                 </div>
                 <Toaster position="top-center" reverseOrder={false} />
-                {children}
+                <Suspense fallback={<Loading />}>{children}</Suspense>
               </div>
             </div>
             {/* <ReactQueryDevtools initialIsOpen={false} /> */}

@@ -85,7 +85,7 @@ export default function SignUp() {
                   User
                 </p>
                 <div className=" flex-row justify-between hidden md:flex">
-                  <p className="  sm:text-left text-right  items-center text-sm text-white p-2 rounded-md bg-green-500">
+                  <p className="  sm:text-left text-right  items-center text-sm text-white p-2 rounded-lg bg-green-500">
                     Active
                   </p>
                   <PencilSquareIcon className="h-4 w-4" />

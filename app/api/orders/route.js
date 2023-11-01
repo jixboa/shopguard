@@ -6,6 +6,7 @@ import Product from "../../../models/productSchema";
 export async function POST(request) {
   await connectMongo();
 
+  const productQuantity = {};
   const { name, contact, invoice_number, total_amount, paid, selectedIds } =
     await request.json();
 
@@ -33,6 +34,24 @@ export async function POST(request) {
     paid: paid,
     total_amount: total_amount,
   });
+
+  productIds.forEach((id) => {
+    productQuantity[id] = (productQuantity[id] || 0) + 1;
+  });
+
+  for (const id in productQuantity) {
+    const count = productQuantity[id];
+    const product = await Product.findOne({ _id: id });
+
+    if (product) {
+      // Convert the product_quantity to a number, decrement it, and then convert it back to a string
+      const currentQuantity = parseInt(product.quantity, 10);
+      product.quantity = (currentQuantity - count).toString();
+      await product.save();
+    }
+  }
+  //console.log(productQuantity);
+
   //response = await Order.create({ name });
   return NextResponse.json({ order });
 }

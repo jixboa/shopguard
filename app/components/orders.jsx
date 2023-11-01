@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {
@@ -25,6 +26,7 @@ import {
   Tooltip,
   Input,
 } from "@material-tailwind/react";
+import Link from "next/link";
 
 const TABLE_HEAD = [
   "Name",
@@ -107,6 +109,7 @@ const getOrders = async () => {
 };
 
 export default function OrdersClient() {
+  const router = useRouter();
   const { data, isLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
@@ -120,37 +123,36 @@ export default function OrdersClient() {
   };
 
   const offset = currentPage * itemsPerPage;
-  const paginatedData = data.slice(offset, offset + itemsPerPage);
+  const paginatedData = data?.slice(offset, offset + itemsPerPage);
 
   return (
     <div className="mt-20 mb-20 p-5">
-      <Card className="h-full w-full">
+      <Card className="h-full lg:w-full w-auto">
         <CardHeader floated={false} shadow={false} className="rounded-none">
-          <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+          <div className="mb-4 flex flex-col justify-between gap-8 lg:flex-row sm:items-center">
             <div>
               <Typography variant="h5" color="blue-gray">
-                Recent Transactions
+                All Transactions
               </Typography>
-              <Typography color="gray" className="mt-1 font-normal">
+              {/* <Typography color="gray" className="mt-1 font-normal">
                 These are details about the last transactions
-              </Typography>
+              </Typography> */}
             </div>
-            <div className="flex w-full shrink-0 gap-2 md:w-max">
-              <div className="w-full md:w-72">
+            <div className="flex w-full shrink-0 gap-2 md:w-max sm:w-max sm:justify-start">
+              <div className="w-72 md:w-72">
                 <Input
-                  label="Search"
+                  placeholder="Search"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
               <Button className="flex items-center gap-3" size="sm">
                 <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" />{" "}
-                Download
               </Button>
             </div>
           </div>
         </CardHeader>
         <CardBody className="overflow-scroll px-0">
-          <table className="w-full min-w-max table-auto text-left">
+          <table className="sm:w-full w-72 min-w-max table-auto text-left">
             <thead>
               <tr>
                 {TABLE_HEAD.map((head) => (
@@ -168,7 +170,7 @@ export default function OrdersClient() {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map(
+              {paginatedData?.map(
                 (
                   {
                     _id,
@@ -247,7 +249,9 @@ export default function OrdersClient() {
                     </td> */}
                       <td className={classes}>
                         <Tooltip content="Edit User">
-                          <IconButton variant="text">
+                          <IconButton
+                            variant="text"
+                            onClick={(e) => router.push(`/orderDetail/${_id}`)}>
                             <PencilIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
@@ -300,7 +304,7 @@ export default function OrdersClient() {
               height: "100%",
             }}>
             <ReactPaginate
-              pageCount={Math.ceil(data.length / itemsPerPage)}
+              pageCount={Math.ceil(data?.length / itemsPerPage)}
               pageRangeDisplayed={5}
               marginPagesDisplayed={2}
               onPageChange={handlePageChange}

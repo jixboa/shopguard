@@ -107,44 +107,24 @@ export default function NavbarNew() {
 
               <div className="flex flex-row gap-2">
                 <div>
-                  {/*  <Badge
-                    onClick={(e) => {
-                      router.push("/checkout");
-                    }}
-                    withBorder
-                    className="font-bold mr-6 cursor-pointer bg-gray-800"
+                  <Badge
                     content={
                       selectedProducts.length > 0 ? (
-                        <span className="">{selectedProducts.length} </span>
+                        <span className="">{selectedProducts.length}</span>
                       ) : (
-                        ""
+                        <></>
                       )
                     }>
                     <IconButton
-                      className="p-2 bg-opacity-0 ml-2 bg-gray-800"
+                      className="rounded-full"
                       onClick={(e) => {
                         router.push("/checkout");
                       }}>
-                      <ShoppingCartIcon className="h-7 w-7 ml-4 bg-gray-600" />
+                      <ShoppingCartIcon className="h-6 w-6 rounded-lg" />
                     </IconButton>
-                  </Badge> */}
+                  </Badge>
                 </div>
-                <div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      router.push("/checkout");
-                    }}
-                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flw">
-                    <span className="absolute -inset-1.5" />
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                  {selectedProducts.length > 0 ? (
-                    <span className="">{selectedProducts.length}</span>
-                  ) : (
-                    <></>
-                  )}
-                </div>
+
                 <div>
                   <Menu as="div" className="relative ml-3 ">
                     <div>
@@ -153,7 +133,7 @@ export default function NavbarNew() {
                         <span className="sr-only">Open user menu</span>
                         <Avatar
                           variant="rounded"
-                          className="h-8 w-8 rounded-full bg-gray-800"
+                          className="h-10 w-10 rounded-full bg-gray-800"
                           src="/images/placeholder.png"
                           alt="avatar"
                         />

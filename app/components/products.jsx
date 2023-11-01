@@ -53,7 +53,7 @@ export default function ProductItems({
           <div>
             <button
               onClick={(e) => lessOfThisProduct(e, _id)}
-              className="border border-emerald-500 py-1 px-3  text-emerald-500">
+              className="border border-green-500 py-1 px-3  text-emerald-500">
               -
             </button>
             <span className="p-2">
@@ -61,7 +61,7 @@ export default function ProductItems({
             </span>
             <button
               onClick={(e) => moreOfThisProduct(e, _id)}
-              className="bg-emerald-500 py-1 px-3  text-white">
+              className=" bg-green-500 py-1 px-3  text-white">
               +
             </button>
           </div>

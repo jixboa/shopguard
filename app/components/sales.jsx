@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
+import { Typography } from "@material-tailwind/react";
 
 //get prods
 const getProducts = async () => {
@@ -178,10 +179,10 @@ export default function SalesClient() {
       paid: "paid",
       selectedIds: selectedProducts.join(","),
     });
-    /*    mutate(order); */
+    mutate(order);
   };
 
-  /////////////////// checkout ######################
+  /////////////////// checkout END ######################
 
   const [phrase, setPhrase] = useState("");
 
@@ -190,7 +191,7 @@ export default function SalesClient() {
     queryFn: () => fetch("/api/products").then((res) => res.json()),
   });
 
-  const categoryNames = [...new Set(data.products.map((p) => p.category))];
+  const categoryNames = [...new Set(data?.products.map((p) => p.category))];
   // console.log(categoryNames);
 
   if (isLoading) {
@@ -198,24 +199,24 @@ export default function SalesClient() {
     return <p className="ml-20 mt-20 text-black font-normal">Loading...</p>;
   }
 
-  if (!data || !Array.isArray(data.products)) {
+  if (!data || !Array.isArray(data?.products)) {
     return <p>No products available.</p>;
   }
 
   let products;
 
   if (phrase) {
-    products = data.products.filter((p) =>
+    products = data?.products.filter((p) =>
       p.name.toLowerCase().includes(phrase)
     );
   } else {
-    products = data.products;
+    products = data?.products;
   }
 
   return (
     <>
-      <div className="p-5 mb-5 mt-5 flex flex-row">
-        <div className="w-2/3">
+      <div className="p-2 mb-5 mt-10  grid  grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="col-span-2 p-2 md:p-1 min-h-screen overflow-scroll md:w-full">
           <input
             value={phrase}
             onChange={(e) => setPhrase(e.target.value)}
@@ -224,12 +225,20 @@ export default function SalesClient() {
             className="bg-gray-100 w-full py-2 px-4 rounded-xl"
           />
           <div>
-            {categoryNames.map((categoryName) => (
+            {categoryNames?.map((categoryName) => (
               <div key={categoryName}>
-                {products.find((p) => p.category === categoryName) && (
+                {products?.find((p) => p.category === categoryName) && (
                   <div>
-                    <h2 className="text-2xl py-5 capitalize">{categoryName}</h2>
-                    <div className="flex -mx-5 overflow-x-scroll snap-x ">
+                    {/* <h2 className="text-2xl py-5 capitalize">{categoryName}</h2> */}
+                    <div className="pt-5">
+                      <Typography
+                        variant="h3"
+                        color="blue-gray"
+                        className="capitalize">
+                        {categoryName}
+                      </Typography>
+                    </div>
+                    <div className="flex -mx-5 overflow-x-scroll snap-x p-4 bg-gray-50">
                       {products
                         .filter((p) => p.category === categoryName)
                         .map((productInfo) => (
@@ -248,7 +257,7 @@ export default function SalesClient() {
           </div>
         </div>
 
-        <div className="w-1/3 px-5 ml-10 bg-gray-50">
+        <div className=" col-span-1 p-2  bg-gray-50 hidden md:grid h-fit">
           <div className=" flex-col justify-start border-b border-gray-700 py-5 mb-5">
             <h1 className=" font-extrabold text-teal-700 text-xl capitalize">
               Shop name
@@ -271,18 +280,18 @@ export default function SalesClient() {
                   className="flex mb-3 w-full justify-items-center">
                   <div className="pl-4 w-full">
                     <h5 className="font-semibold">{prodInfo.name}</h5>
-                    <p className="text-sm leading-3 text-gray-500">
+                    <p className="text-sm leading-3 text-gray-500 hidden lg:grid">
                       {prodInfo.description}
                     </p>
                     <div className="flex mt-2 flex-row justify-between">
-                      <div className=" ">GH₵ {prodInfo.price}</div>
-                      <div>
+                      <div className=" ">₵ {prodInfo.price}</div>
+                      <div className="flex flex-row ">
                         <button
                           onClick={(e) => lessOfThisProduct(e, prodInfo._id)}
-                          className="border border-emerald-500 px-2 rounded-lg text-emerald-500">
+                          className="border border-green-500 px-1 text-emerald-500 text-sm">
                           -
                         </button>
-                        <span className="p-2">
+                        <span className="px-1">
                           {
                             selectedProducts.filter((id) => id === prodInfo._id)
                               .length
@@ -290,12 +299,12 @@ export default function SalesClient() {
                         </span>
                         <button
                           onClick={(e) => moreOfThisProduct(e, prodInfo._id)}
-                          className="bg-emerald-500 px-2 rounded-lg text-white">
+                          className="bg-green-500 px-1 text-white">
                           +
                         </button>
                       </div>
                       <div>
-                        -----: GH₵{" "}
+                        ---: ₵{" "}
                         {selectedProducts.filter((id) => id === prodInfo._id)
                           .length * prodInfo.price}
                       </div>
@@ -378,7 +387,7 @@ export default function SalesClient() {
           {cashRecieved >= total && selectedProducts.length ? (
             <button
               onClick={handleAddOrder}
-              className=" border p-5 text-white py-2 w-full bg-emerald-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
+              className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
               Pay GH₵ {total}
             </button>
           ) : (

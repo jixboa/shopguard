@@ -91,7 +91,7 @@ export default function SidebarComponent() {
       onMouseLeave={handleMouseLeave}
       className={`${
         open ? "w-72" : "w-20"
-      } duration-300 h-full fixed  bg-gray-800 text-white z-50`}>
+      } duration-300 h-full fixed bg-blue-gray-800 text-white z-50`}>
       <div className="p-5 items-center flex gap-x-4">
         <AcademicCapIcon
           className={`w-6 h-6 duration-500 ${!open && " rotate-[360deg]"}`}
@@ -109,7 +109,7 @@ export default function SidebarComponent() {
                 className={`flex gap-x-2 mb-4  px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white
                 ${
                   pathname === item.href
-                    ? "bg-gray-900 shadow-md shadow-gray-950"
+                    ? " bg-blue-gray-900 shadow-md shadow-gray-950"
                     : "bg-transparent"
                 }
                 ${item.gap && "mt-10"}

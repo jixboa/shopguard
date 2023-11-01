@@ -27,5 +27,6 @@ export const config = {
     "/categories",
     "/users/signin",
     "/users/signup",
+    "/orderDetails",
   ],
 };
