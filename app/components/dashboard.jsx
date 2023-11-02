@@ -108,7 +108,10 @@ export default function Dashboard() {
 
   const ordersTotal = ordersData?.reduce((total, order) => {
     const orderTotal = parseFloat(order.total_amount); // Convert the total_amount to a float
-    return total + orderTotal;
+    if (orderTotal) {
+      return total + orderTotal;
+    }
+    return 0;
   }, 0);
 
   return (
@@ -182,11 +185,12 @@ export default function Dashboard() {
           <BarChart />
         </div>
       </div>
-      <div>
+      <div className="">
         <Button onClick={handleOpen} variant="gradient">
           Open Dialog
         </Button>
         <Dialog
+          className="items-center align-middle justify-center"
           open={open}
           handler={handleOpen}
           animate={{

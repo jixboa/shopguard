@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import UserList from "../../components/userList";
 
 import {
   PencilSquareIcon,
@@ -56,45 +57,7 @@ export default function SignUp() {
   return (
     <>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-10">
-        <div className="p-4 lg:h-[100vh] h-[70vh] overflow-scroll">
-          <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
-            <div className="my-3 p-2 grid md:grid-cols-4 grid-cols-2 items-center justify-between cursor-pointer">
-              <span>Name</span>
-              <span className="sm:text-left text-right">email</span>
-              <span className="hidden md:grid">Role</span>
-              <span className="hidden sm:grid">Status</span>
-            </div>
-          </div>
-          <ul>
-            {data.map((order, id) => (
-              <li
-                key={id}
-                className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 align-center justify-between cursor-pointer">
-                <div className="flex items-center">
-                  <div className="bg-gray-200 p-3 rounded-lg">
-                    <UserIcon className="h-4 w-4 text-gray-800" />
-                  </div>
-                  <p className="pl-4">
-                    {order.name.first + " " + order.name.last}
-                  </p>
-                </div>
-                <p className="text-gray-600 sm:text-left text-right  items-center text-sm p-2">
-                  {order.name.first}@gmail.com
-                </p>
-                <p className=" hidden md:flex text-gray-600 sm:text-left text-right  items-center text-sm p-2">
-                  User
-                </p>
-                <div className=" flex-row justify-between hidden md:flex">
-                  <p className="  sm:text-left text-right  items-center text-sm text-white p-2 rounded-lg bg-green-500">
-                    Active
-                  </p>
-                  <PencilSquareIcon className="h-4 w-4" />
-                  <TrashIcon className="h-4 w-4" />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <UserList />
 
         <div className="p-4 justify-end">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
