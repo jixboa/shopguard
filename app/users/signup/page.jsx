@@ -71,8 +71,8 @@ export default function SignUp() {
                 key={id}
                 className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 align-center justify-between cursor-pointer">
                 <div className="flex items-center">
-                  <div className="bg-purple-100 p-3 rounded-lg">
-                    <UserIcon className="h-4 w-4 text-purple-800" />
+                  <div className="bg-gray-200 p-3 rounded-lg">
+                    <UserIcon className="h-4 w-4 text-gray-800" />
                   </div>
                   <p className="pl-4">
                     {order.name.first + " " + order.name.last}
@@ -167,7 +167,7 @@ export default function SignUp() {
                 <div className="py-3">
                   <button
                     onClick={onSignup}
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     {buttonDisabled ? "Complete  form" : "Signup"}
                   </button>
                 </div>

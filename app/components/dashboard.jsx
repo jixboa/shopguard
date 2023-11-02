@@ -14,54 +14,70 @@ import RecentOrders from "./recentOders";
 import { ProductsContext } from "./ProductsContext";
 import { Fragment, useContext, useEffect, useState } from "react";
 import React, { PureComponent } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+
+const getProducts = async () => {
+  try {
+    const res = await fetch(`/api/products`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed loading Products");
+    }
+
+    return res.json(); // Return the categories array
+  } catch (error) {
+    console.log("error Loading Products", error);
+  }
+};
+
+const getCategories = async () => {
+  try {
+    const res = await fetch(`/api/categories`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed loading Categories");
+    }
+
+    const data = await res.json();
+    return data.categories; // Return the categories array
+  } catch (error) {
+    console.log("error Loading Categories", error);
+  }
+};
+
+const getOrders = async () => {
+  try {
+    const res = await fetch(`/api/orders`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed loading Orders");
+    }
+
+    const data = await res.json();
+    return data.orders; // Return the orders array
+  } catch (error) {
+    console.log("error Loading Orders", error);
+  }
+};
 
 export default function Dashboard() {
   const { userDetail, setUserDetail } = useContext(ProductsContext);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(!open);
 
   useEffect(() => {
     // Define the API request within the useEffect
@@ -77,6 +93,24 @@ export default function Dashboard() {
       });
   }, []);
 
+  const { data: productsData, isLoading: productsIsLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
+  const { data: categoriesData, isLoading: categoriesIsLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
+  const { data: ordersData } = useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+  });
+
+  const ordersTotal = ordersData?.reduce((total, order) => {
+    const orderTotal = parseFloat(order.total_amount); // Convert the total_amount to a float
+    return total + orderTotal;
+  }, 0);
+
   return (
     <>
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
@@ -91,9 +125,9 @@ export default function Dashboard() {
           </div>
           <div className="pr-4">
             <Typography
-              className="text-right font-extrabold h-25 text-8xl text-white pl-15 "
+              className="text-right font-extrabold h-25 text-8xl text-white pl-15 duration-300"
               style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-              140
+              {productsData?.products.length || ""}
             </Typography>
           </div>
           <div className="pl-4">
@@ -113,7 +147,7 @@ export default function Dashboard() {
             <Typography
               className="text-right font-extrabold h-25 text-8xl text-white pl-15 "
               style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-              35
+              {categoriesData?.length || ""}
             </Typography>
           </div>
           <div className="pl-4">
@@ -133,7 +167,7 @@ export default function Dashboard() {
             <Typography
               className="p-1 mx-auto text-right font-extrabold h-25 text-5xl xs:text-5xl text-white flex flex-col"
               style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-              $117,500.00
+              ₵{ordersTotal}
             </Typography>
           </div>
           <div className="pl-4">
@@ -147,6 +181,38 @@ export default function Dashboard() {
           <RecentOrders />
           <BarChart />
         </div>
+      </div>
+      <div>
+        <Button onClick={handleOpen} variant="gradient">
+          Open Dialog
+        </Button>
+        <Dialog
+          open={open}
+          handler={handleOpen}
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0.9, y: -100 },
+          }}>
+          <DialogHeader>Its a simple dialog.</DialogHeader>
+          <DialogBody>
+            The key to more success is to have a lot of pillows. Put it this
+            way, it took me twenty five years to get these plants, twenty five
+            years of blood sweat and tears, and I&apos;m never giving up,
+            I&apos;m just getting started. I&apos;m up to something. Fan luv.
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1">
+              <span>Cancel</span>
+            </Button>
+            <Button variant="gradient" color="green" onClick={handleOpen}>
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
     </>
   );

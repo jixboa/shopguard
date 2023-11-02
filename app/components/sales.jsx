@@ -11,6 +11,7 @@ import axios from "axios";
 
 import { useRouter } from "next/navigation";
 import { Typography } from "@material-tailwind/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 //get prods
 const getProducts = async () => {
@@ -43,8 +44,8 @@ export default function SalesClient() {
   // ###################### checkout ######################
 
   const [order, setOrder] = useState({
-    name: "",
-    contact: "",
+    name: "Cash Customer",
+    contact: "##",
     invoice_number: "",
     selectedIds: "",
     total_amount: "",
@@ -93,6 +94,12 @@ export default function SalesClient() {
       );
       setSelectedProducts(newSelectProducts);
     }
+  };
+
+  const removeAllOfThisProduct = (e, id) => {
+    e.preventDefault();
+    const newSelectProducts = selectedProducts.filter((value) => value !== id);
+    setSelectedProducts(newSelectProducts);
   };
 
   const { data: cartData, isError: cartIsError } = useQuery({
@@ -277,9 +284,16 @@ export default function SalesClient() {
               return (
                 <div
                   key={prodInfo._id}
-                  className="flex mb-3 w-full justify-items-center">
-                  <div className="pl-4 w-full">
-                    <h5 className="font-semibold">{prodInfo.name}</h5>
+                  className="flex mb-3 w-full justify-items-center border-b border-gray-200 p-2">
+                  <div className="pl-4 w-full ">
+                    <div className="flex justify-between">
+                      <h5 className="font-semibold">{prodInfo.name}</h5>
+                      <XMarkIcon
+                        onClick={(e) => removeAllOfThisProduct(e, prodInfo._id)}
+                        className="h-4 w-4  hover:bg-gray-400 text-red-200 rounded-md"
+                      />
+                    </div>
+
                     <p className="text-sm leading-3 text-gray-500 hidden lg:grid">
                       {prodInfo.description}
                     </p>

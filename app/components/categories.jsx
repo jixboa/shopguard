@@ -399,11 +399,7 @@ export function CategoryClient() {
           />
         </Card>
 
-        <Dialog
-          size="xs"
-          open={open}
-          handler={handleOpen}
-          className="bg-transparent shadow-none">
+        <Dialog size="xs" open={open} handler={handleOpen} className="">
           <Card className="mx-auto w-full max-w-[24rem]">
             <CardHeader
               color="blue"

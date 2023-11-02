@@ -11,6 +11,7 @@ import {
   ArrowRightIcon,
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
+  EyeIcon,
 } from "@heroicons/react/24/outline";
 
 import {
@@ -190,7 +191,11 @@ export default function OrdersClient() {
                     : "p-4 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={_id} className="even:bg-blue-gray-50/50">
+                    <tr
+                      enter="ease-in-out duration-500"
+                      leave="ease-in-out duration-500"
+                      key={_id}
+                      className="even:bg-blue-gray-50/50 ease-in-out duration-500">
                       <td className={classes}>
                         <div className="flex items-center gap-3">
                           {/* <Avatar
@@ -251,8 +256,10 @@ export default function OrdersClient() {
                         <Tooltip content="Edit User">
                           <IconButton
                             variant="text"
-                            onClick={(e) => router.push(`/orderDetail/${_id}`)}>
-                            <PencilIcon className="h-4 w-4" />
+                            onClick={(e) =>
+                              router.push(`/orderDetails?id=${_id}`)
+                            }>
+                            <EyeIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
                       </td>
@@ -264,35 +271,6 @@ export default function OrdersClient() {
           </table>
         </CardBody>
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-          {/* <Button variant="outlined" size="sm">
-            Previous
-          </Button>
-          <div className="flex items-center gap-2">
-            <IconButton variant="outlined" size="sm">
-              1
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              2
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              3
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              ...
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              8
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              9
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              10
-            </IconButton>
-          </div>
-          <Button variant="outlined" size="sm">
-            Next
-          </Button> */}
           <div
             style={{
               display: "flex",
@@ -304,13 +282,13 @@ export default function OrdersClient() {
               height: "100%",
             }}>
             <ReactPaginate
-              pageCount={Math.ceil(data?.length / itemsPerPage)}
+              pageCount={Math.ceil(data.length / itemsPerPage)}
               pageRangeDisplayed={5}
               marginPagesDisplayed={2}
               onPageChange={handlePageChange}
-              pageClassName={"bg-slate-200 text-gray-600 border rounded px-4"}
-              containerClassName="flex flex-row justify-center gap-3"
-              activeClassName="border  bg-grsy-800 text-white px-4 rounded mx-4"
+              pageClassName={"bg-slate-200 text-gray-600 rounded-lg px-2"}
+              containerClassName="flex flex-row justify-center gap-4 mb-4"
+              activeClassName="text-green-600 font-extrabold bg-green-800 text-white"
               nextLabel={<ArrowRightIcon style={{ fontSize: 18, width: 20 }} />}
               previousLabel={
                 <ArrowLeftIcon style={{ fontSize: 18, width: 20 }} />
