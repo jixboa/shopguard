@@ -115,7 +115,7 @@ export default function Dashboard() {
   }, 0);
 
   return (
-    <>
+    <div className="bg-white rounded-lg p-4">
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         <div className="bg-gray-200 p-2 bg-gradient-to-r from-purple-400 to-purple-700 bg-opacity-50 shadow-md shadow-gray-800 hover:bg-purple-900 cursor-pointer rounded-xl">
           <div className="pl-4 pt-3 ">
@@ -218,6 +218,6 @@ export default function Dashboard() {
           </DialogFooter>
         </Dialog>
       </div>
-    </>
+    </div>
   );
 }

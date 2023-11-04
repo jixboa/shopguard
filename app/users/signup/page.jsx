@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import UserList from "../../components/userList";
+import { SortableTable } from "../../components/userList2";
 
 import {
   PencilSquareIcon,
@@ -56,7 +57,10 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-10">
+      <div className="mt-20">
+        <SortableTable />
+      </div>
+      {/*  <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-10">
         <UserList />
 
         <div className="p-4 justify-end">
@@ -138,7 +142,7 @@ export default function SignUp() {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

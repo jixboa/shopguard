@@ -124,7 +124,35 @@ export default function OrdersClient() {
   };
 
   const offset = currentPage * itemsPerPage;
-  const paginatedData = data?.slice(offset, offset + itemsPerPage);
+
+  const sortedData = data?.slice().sort((a, b) => {
+    // Parse the date strings into Date objects
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+
+    // Compare the dates to sort in descending order (latest date first)
+    return dateB - dateA;
+  });
+
+  // Then, apply pagination to the sorted data
+  const paginatedData = sortedData.slice(offset, offset + itemsPerPage);
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+    return date.toLocaleString("en-US", options);
+  }
+
+  //paginatedData?.sort((a, b) => b.date - a.date);
 
   return (
     <div className="mt-20 mb-20 p-5">
@@ -219,7 +247,9 @@ export default function OrdersClient() {
                         <h1 className="font-normal text-sm">${total_amount}</h1>
                       </td>
                       <td className={classes}>
-                        <h1 className="font-normal text-sm">{date}</h1>
+                        <h1 className="font-normal text-sm">
+                          {formatDate(date)}
+                        </h1>
                       </td>
                       <td className={classes}>
                         <div className="w-max">

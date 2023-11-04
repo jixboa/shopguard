@@ -39,12 +39,13 @@ const getOrders = async () => {
 };
 
 export default function BarChart() {
+  const [dailyData, setDailyData] = useState([]);
   const [chartData, setChartData] = useState({
     labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
     datasets: [
       {
         label: "Sales ₵",
-        data: [0, 0, 0, 28.5, 110, 0, 0],
+        data: dailyData,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgb(53, 162, 235, 0.4)",
       },
@@ -77,6 +78,8 @@ export default function BarChart() {
 
         // Add the order total to the corresponding day of the week
         dailyTotals[dayOfWeek] += orderTotal;
+        console.log(dailyTotals);
+        setDailyData(dailyTotals);
       });
 
       // Now, update your chart data with the calculated daily totals

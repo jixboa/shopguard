@@ -221,7 +221,7 @@ export default function SalesClient() {
   }
 
   return (
-    <>
+    <div className="bg-white rounded-lg p-4">
       <div className="p-2 mb-5 mt-10  grid  grid-cols-1 md:grid-cols-3 gap-2">
         <div className="col-span-2 p-2 md:p-1 min-h-screen overflow-scroll md:w-full">
           <input
@@ -409,6 +409,6 @@ export default function SalesClient() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

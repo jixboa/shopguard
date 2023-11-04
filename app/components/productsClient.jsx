@@ -281,7 +281,7 @@ export default function ProductClient() {
   };
 
   return (
-    <>
+    <div className="">
       <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {/*  {loading ? "Creating Category" : "Add new Category"} */}
@@ -709,6 +709,6 @@ export default function ProductClient() {
           </Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </div>
   );
 }
