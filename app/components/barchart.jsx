@@ -85,7 +85,7 @@ export default function BarChart() {
       // Now, update your chart data with the calculated daily totals
       setChartData((prevData) => {
         const newData = { ...prevData };
-        newData.datasets[0].data = dailyTotals;
+        newData.datasets[0].data = dailyData;
         console.log(chartData);
         return newData;
       });

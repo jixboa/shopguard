@@ -7,7 +7,7 @@ const OrderSchema = new Schema(
     contact: { type: String, defaultValue: "-" },
     total_amount: String,
     invoice_number: String,
-    paid: { type: String, defaultValue: " " },
+    status: String,
     date: {
       type: Date,
       default: Date.now,

@@ -208,12 +208,12 @@ export default function OrdersClient() {
                     invoice_number,
                     total_amount,
                     date,
-                    paid,
+                    status,
                     products,
                   },
                   index
                 ) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
+                  const isLast = index === paginatedData?.length - 1;
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-blue-gray-50";
@@ -257,9 +257,9 @@ export default function OrdersClient() {
                             size="sm"
                             variant="ghost"
                             className="border border-slate-200"
-                            value={paid}
+                            value={status}
                             color={
-                              paid === "paid"
+                              status === "paid"
                                 ? "green"
                                 : status === "pending"
                                 ? "amber"
@@ -283,7 +283,7 @@ export default function OrdersClient() {
                       </ol>
                     </td> */}
                       <td className={classes}>
-                        <Tooltip content="Edit User">
+                        <Tooltip content="View Order">
                           <IconButton
                             variant="text"
                             onClick={(e) =>

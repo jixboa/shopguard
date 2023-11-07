@@ -56,6 +56,7 @@ export default function RecentOrders() {
     name: order.name,
     id: order._id,
     total_amount: order.total_amount,
+    status: order.status,
     date: new Date(order.date), // Convert date to a Date object
   }));
   allOrders?.sort((a, b) => b.date - a.date);
@@ -69,12 +70,22 @@ export default function RecentOrders() {
             <li
               key={id}
               className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 flex items-center cursor-pointer">
-              <div className="bg-purple-100 rounded-lg p-3">
-                <ShoppingBagIcon className="h-4 w-4 text-purple-800" />
+              <div className="bg-gray-100 rounded-lg p-3">
+                <ShoppingBagIcon className="h-4 w-4 text-gray-800" />
               </div>
               <div className="pl-4">
                 <p className="text-gray-800 font-bold">₵{order.total_amount}</p>
-                <p className=" text-gray-400 text-sm">{order.name}</p>
+                {/* <p className=" text-gray-400 text-sm">{order.name}</p> */}
+                <p
+                  className={`font-normal px-1 rounded-md text-sm text-${
+                    order.status === "paid"
+                      ? "green-500"
+                      : order.status === "pending"
+                      ? "orange-500"
+                      : "red-500"
+                  } `}>
+                  {order.status}
+                </p>
               </div>
               <p className="lg:flex md:hidden absolute right-6 text-sm">
                 {formatDateAgo(order.date)}

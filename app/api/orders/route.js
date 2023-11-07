@@ -7,7 +7,7 @@ export async function POST(request) {
   await connectMongo();
 
   const productQuantity = {};
-  const { name, contact, invoice_number, total_amount, paid, selectedIds } =
+  const { name, contact, invoice_number, total_amount, status, selectedIds } =
     await request.json();
 
   const productIds = selectedIds.split(",");
@@ -31,7 +31,7 @@ export async function POST(request) {
     name: name,
     contact: contact,
     invoice_number: invoice_number,
-    paid: paid,
+    status: status,
     total_amount: total_amount,
   });
 

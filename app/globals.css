@@ -23,15 +23,16 @@
 }
 
 html {
-  zoom: 90%;
+  zoom: 100%;
 }
 
-/* body {
-  color: rgb(var(--foreground-rgb));
+body {
+  zoom: 100%;
+ /*  color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
-} */
+    rgb(var(--background-start-rgb)); */
+}

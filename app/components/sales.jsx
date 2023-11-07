@@ -49,7 +49,7 @@ export default function SalesClient() {
     invoice_number: "",
     selectedIds: "",
     total_amount: "",
-    paid: "",
+    status: "paid",
   });
 
   //setOrder({ ...order, selectedIds: selectedProducts.join(",") });
@@ -159,8 +159,9 @@ export default function SalesClient() {
         invoice_number: "",
         selectedIds: "",
         total_amount: "",
-        paid: "",
+        status: "paid",
       });
+      setCashRecieve(0);
       toast.success("Order Created successfully");
     },
   });
@@ -183,7 +184,6 @@ export default function SalesClient() {
       ...order,
       invoice_number: invoiceNumber,
       total_amount: total,
-      paid: "paid",
       selectedIds: selectedProducts.join(","),
     });
     mutate(order);
@@ -365,8 +365,31 @@ export default function SalesClient() {
               <h3 className="grow font-bold text-gray-400">Other Charges:</h3>
               <h3 className="font-bold">GH₵ {deliveryPrice}</h3>
             </div>
+            {selectedProducts.length && (
+              <div className="w-full p-2">
+                <label
+                  className="text-xs font-extralight text-gray-500 ml-1"
+                  htmlFor="status">
+                  Order status
+                </label>
+                <select
+                  value={order.status}
+                  onChange={(e) => {
+                    setOrder({
+                      ...order,
+                      status: e.target.value,
+                    });
+                    setCashRecieve(0);
+                  }}
+                  className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="size">
+                  <option value="paid">cash Paid</option>
+                  <option value="pending">Create Order</option>
+                </select>
+              </div>
+            )}
 
-            {selectedProducts.length ? (
+            {selectedProducts.length && order.status === "paid" ? (
               <div className="grid grid-cols-2 md:grid-col-1 sm:grid-col-1  gap-4  border border-b-2 p-1 bg-gray-100 rounded-md">
                 <div className="px-2 flex flex-row sm:flex-col xs-flex-col justify-start items-center w-full">
                   <h3 className="text-sm  text-gray-600 font-normal">
@@ -398,14 +421,21 @@ export default function SalesClient() {
             </div>
           </div>
 
-          {cashRecieved >= total && selectedProducts.length ? (
+          {cashRecieved >= total &&
+            selectedProducts.length &&
+            order.status == "paid" && (
+              <button
+                onClick={handleAddOrder}
+                className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
+                Pay GH₵ {total}
+              </button>
+            )}
+          {selectedProducts.length && order.status == "pending" && (
             <button
               onClick={handleAddOrder}
               className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
-              Pay GH₵ {total}
+              Save Order
             </button>
-          ) : (
-            <></>
           )}
         </div>
       </div>

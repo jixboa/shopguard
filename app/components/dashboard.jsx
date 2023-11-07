@@ -97,6 +97,7 @@ export default function Dashboard() {
     queryKey: ["products"],
     queryFn: getProducts,
   });
+
   const { data: categoriesData, isLoading: categoriesIsLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
@@ -106,13 +107,15 @@ export default function Dashboard() {
     queryFn: getOrders,
   });
 
-  const ordersTotal = ordersData?.reduce((total, order) => {
-    const orderTotal = parseFloat(order.total_amount); // Convert the total_amount to a float
-    if (orderTotal) {
-      return total + orderTotal;
-    }
-    return 0;
-  }, 0);
+  const ordersTotal = ordersData
+    ?.filter((order) => order.status === "paid")
+    .reduce((total, order) => {
+      const orderTotal = parseFloat(order.total_amount);
+      if (orderTotal) {
+        return total + orderTotal;
+      }
+      return total;
+    }, 0);
 
   return (
     <div className="bg-white rounded-lg p-4">
@@ -189,6 +192,7 @@ export default function Dashboard() {
         <Button onClick={handleOpen} variant="gradient">
           Open Dialog
         </Button>
+
         <Dialog
           className="items-center align-middle justify-center"
           open={open}
