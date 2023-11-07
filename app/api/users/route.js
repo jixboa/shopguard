@@ -4,6 +4,6 @@ import User from "../../../models/userSchema";
 
 export async function GET(request) {
   await connectMongo();
-  const response = await User.find();
-  return NextResponse.json(response);
+  const users = await User.find();
+  return NextResponse.json({ users });
 }

@@ -8,6 +8,14 @@ import Loading from "app/loading";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
+import {
+  Dialog,
+  Button,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+
 export default function OrderDetailsClient({ params }) {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -15,6 +23,15 @@ export default function OrderDetailsClient({ params }) {
   const [newStatus, setNewStatus] = useState();
 
   const id = searchParams[1];
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open);
+
+  const [openCancel, setOpenCancel] = useState(false);
+  const handleOpenCancel = () => setOpenCancel(!openCancel);
+
+  const [openReturn, setOpenReturn] = useState(false);
+  const handleOpenReturn = () => setOpenReturn(!openReturn);
 
   const getOrder = async () => {
     try {
@@ -108,19 +125,16 @@ export default function OrderDetailsClient({ params }) {
 
   const payOrder = (e, data) => {
     e.preventDefault();
-    console.log(data);
     setNewStatus("paid");
     updateMutation.mutate(data);
   };
   const returnOrder = (e, data) => {
     e.preventDefault();
-    console.log(data);
     setNewStatus("returned");
     updateMutation.mutate(data);
   };
   const cancelOrder = (e, data) => {
     e.preventDefault();
-    console.log(data);
     setNewStatus("cancelled");
     updateMutation.mutate(data);
   };
@@ -193,27 +207,21 @@ export default function OrderDetailsClient({ params }) {
       <div className="flex gap-2 justify-center items-center">
         {data?.status == "pending" && (
           <button
-            onClick={(e) => {
-              payOrder(e, data);
-            }}
+            onClick={handleOpen}
             className="p-2 rounded-md bg-teal-400 text-white hover:bg-teal-500 hover:shadow-md hover:shadow-gray-900">
             Pay Order
           </button>
         )}
         {data?.status == "pending" && (
           <button
-            onClick={(e) => {
-              cancelOrder(e, data);
-            }}
+            onClick={handleOpenCancel}
             className="p-2 rounded-md bg-teal-400 text-white hover:bg-teal-500 hover:shadow-md hover:shadow-gray-900">
             Cancel Order
           </button>
         )}
         {data?.status == "paid" && (
           <button
-            onClick={(e) => {
-              returnOrder(e, data);
-            }}
+            onClick={handleOpenReturn}
             className="p-2 rounded-md bg-teal-400 text-white hover:bg-teal-500 hover:shadow-md hover:shadow-gray-900">
             Return Order
           </button>
@@ -227,6 +235,102 @@ export default function OrderDetailsClient({ params }) {
           Recreate Order
         </button>
       </div>
+
+      <Dialog
+        className="items-center align-middle justify-center"
+        open={open}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}>
+        <DialogHeader>Payment Confirmation</DialogHeader>
+        <DialogBody>
+          Confirm Payment of Order #{data?.invoice_number}
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1">
+            <span>Cancel</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={(e) => {
+              payOrder(e, data);
+              handleOpen;
+            }}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      <Dialog
+        className="items-center align-middle justify-center"
+        open={openCancel}
+        handler={handleOpenCancel}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}>
+        <DialogHeader>Cancel Order</DialogHeader>
+        <DialogBody>
+          Confirm cancellation of Order #{data?.invoice_number}
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpenCancel}
+            className="mr-1">
+            <span>Cancel</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={(e) => {
+              cancelOrder(e, data);
+              handleOpenCancel;
+            }}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      <Dialog
+        className="items-center align-middle justify-center"
+        open={openReturn}
+        handler={handleOpenReturn}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}>
+        <DialogHeader>Return Order</DialogHeader>
+        <DialogBody>
+          Confirm Returning of Order #{data?.invoice_number}
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpenReturn}
+            className="mr-1">
+            <span>Cancel</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={(e) => {
+              returnOrder(e, data);
+              handleOpenReturn;
+            }}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </>
   );
 }

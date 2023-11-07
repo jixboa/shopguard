@@ -134,8 +134,22 @@ export default function OrdersClient() {
     return dateB - dateA;
   });
 
+  const [phrase, setPhrase] = useState("");
+
+  let paginatedData;
+
+  if (phrase) {
+    /* paginatedData = sortedData?.filter((p) =>
+      p.invoice_number.toLowerCase().includes(phrase)
+      ); */
+    paginatedData = sortedData
+      .slice(offset, offset + itemsPerPage)
+      .filter((p) => p.invoice_number.toLowerCase().includes(phrase));
+  } else {
+    paginatedData = sortedData.slice(offset, offset + itemsPerPage);
+  }
+
   // Then, apply pagination to the sorted data
-  const paginatedData = sortedData.slice(offset, offset + itemsPerPage);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -170,7 +184,8 @@ export default function OrdersClient() {
             <div className="flex w-full shrink-0 gap-2 md:w-max sm:w-max sm:justify-start">
               <div className="w-72 md:w-72">
                 <Input
-                  placeholder="Search"
+                  onChange={(e) => setPhrase(e.target.value)}
+                  placeholder="Search by invoice#"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
@@ -244,7 +259,7 @@ export default function OrdersClient() {
                         </h1>
                       </td>
                       <td className={classes}>
-                        <h1 className="font-normal text-sm">${total_amount}</h1>
+                        <h1 className="font-normal text-sm">₵{total_amount}</h1>
                       </td>
                       <td className={classes}>
                         <h1 className="font-normal text-sm">

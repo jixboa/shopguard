@@ -10,7 +10,30 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 
+const getUsers = async () => {
+  try {
+    const res = await fetch(`/api/users/signup`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed loading Users");
+    }
+
+    const data = await res.json();
+    return data.users; // Return the categories array
+  } catch (error) {
+    console.log("error Loading Users", error);
+  }
+};
+
 export default function UserList() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+
+  console.log(data?.username);
   return (
     <>
       <div className="p-4 lg:h-[100vh] h-[70vh] overflow-scroll">

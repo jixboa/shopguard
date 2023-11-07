@@ -366,7 +366,7 @@ export default function SalesClient() {
               <h3 className="font-bold">GH₵ {deliveryPrice}</h3>
             </div>
             {selectedProducts.length && (
-              <div className="w-full p-2">
+              <div className="w-full">
                 <label
                   className="text-xs font-extralight text-gray-500 ml-1"
                   htmlFor="status">
@@ -381,9 +381,9 @@ export default function SalesClient() {
                     });
                     setCashRecieve(0);
                   }}
-                  className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className=" p-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   id="size">
-                  <option value="paid">cash Paid</option>
+                  <option value="paid">Cash Paid</option>
                   <option value="pending">Create Order</option>
                 </select>
               </div>
@@ -400,7 +400,7 @@ export default function SalesClient() {
                     onChange={async (e) => {
                       await setCashRecieve(e.target.value);
                     }}
-                    className="rounded w-1/2 h-8 px-2"
+                    className="rounded w-full h-8 px-2"
                   />
                 </div>
                 <div className="flex flex-row  sm:flex-col xs-flex-col gap-2 justify-end items-center">

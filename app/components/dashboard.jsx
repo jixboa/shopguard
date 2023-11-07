@@ -189,9 +189,9 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="">
-        <Button onClick={handleOpen} variant="gradient">
+        {/*  <Button onClick={handleOpen} variant="gradient">
           Open Dialog
-        </Button>
+        </Button> */}
 
         <Dialog
           className="items-center align-middle justify-center"

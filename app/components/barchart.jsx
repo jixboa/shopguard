@@ -45,7 +45,7 @@ export default function BarChart() {
     datasets: [
       {
         label: "Sales ₵",
-        data: dailyData,
+        data: [5700, 2000.5, 0, 0, 0, 0, 0],
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgb(53, 162, 235, 0.4)",
       },
@@ -85,7 +85,7 @@ export default function BarChart() {
       // Now, update your chart data with the calculated daily totals
       setChartData((prevData) => {
         const newData = { ...prevData };
-        newData.datasets[0].data = dailyData;
+        newData.datasets[0].data = [5700, 199.5, 0, 0, 0, 0, 0];
         console.log(chartData);
         return newData;
       });

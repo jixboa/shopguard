@@ -1,13 +1,14 @@
-"use client";
-
-import axios from "axios";
+/* import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; */
 import { toast } from "react-hot-toast";
 import UserList from "../../components/userList";
 import { SortableTable } from "../../components/userList2";
 
+import getQueryClient from "../../utils/getQueryClient";
+import { Hydrate, dehydrate } from "@tanstack/react-query";
+/* 
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -16,10 +17,31 @@ import {
 
 import { data } from "../../data/data";
 
-import { Spinner } from "@material-tailwind/react";
+import { Spinner } from "@material-tailwind/react"; */
 
-export default function SignUp() {
-  const router = useRouter();
+const getUsers = async () => {
+  try {
+    const res = await fetch(`${process.env.DOMAIN}/api/users`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed loading Users");
+    }
+
+    const data = res.json();
+    return data();
+  } catch (error) {
+    console.log("error Loading Users", error);
+  }
+};
+
+export default async function SignUp() {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(["users"], getUsers);
+  const dehydratedState = dehydrate(queryClient);
+
+  /*   const router = useRouter();
   const [user, setUser] = React.useState({
     username: "",
     email: "",
@@ -53,13 +75,15 @@ export default function SignUp() {
     } finally {
       setLoading(false);
     }
-  };
+  }; */
 
   return (
     <>
-      <div className="mt-20">
-        <SortableTable />
-      </div>
+      <Hydrate state={dehydratedState}>
+        <div className="mt-20">
+          <SortableTable />
+        </div>
+      </Hydrate>
       {/*  <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-10">
         <UserList />
 

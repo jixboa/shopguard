@@ -301,7 +301,7 @@ export default function ProductClient() {
         <ul
           role="list"
           className="divide-y divide-gray-100 lg:h-[100vh] h-[70vh] overflow-scroll p-4">
-          {data.products.map((prod) => (
+          {data?.products.map((prod) => (
             <li
               key={prod._id}
               className="py-5 hover:shadow-sm hover:shadow-gray-500">
