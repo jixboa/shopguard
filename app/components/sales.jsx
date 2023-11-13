@@ -34,12 +34,27 @@ const getProducts = async () => {
 export default function SalesClient() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { selectedProducts, setSelectedProducts } = useContext(ProductsContext);
+  const { setUserDetail, selectedProducts, setSelectedProducts } =
+    useContext(ProductsContext);
 
   const [cashRecieved, setCashRecieve] = useState(0);
   const [change, setChange] = useState(0);
 
   const [productInfo, setProductInfo] = useState([]);
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   // ###################### checkout ######################
 

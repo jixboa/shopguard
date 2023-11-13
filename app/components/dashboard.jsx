@@ -22,6 +22,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 const getProducts = async () => {
   try {
@@ -74,6 +75,7 @@ const getOrders = async () => {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
   const [open, setOpen] = React.useState(false);
 
@@ -137,7 +139,11 @@ export default function Dashboard() {
             </Typography>
           </div>
           <div className="pl-4">
-            <Button className="bg-purple-800 mb-5">See Details</Button>
+            <Button
+              className="bg-purple-800 mb-5"
+              onClick={(e) => router.push("/products")}>
+              See Details
+            </Button>
           </div>
         </div>
         <div className="bg-gray-200 p-2 bg-gradient-to-r from-cyan-400 to-cyan-700 bg-opacity-50 shadow-md shadow-gray-800 hover:bg-purple-900 cursor-pointer rounded-xl">
@@ -157,7 +163,11 @@ export default function Dashboard() {
             </Typography>
           </div>
           <div className="pl-4">
-            <Button className="bg-cyan-800 mb-5">See Details</Button>
+            <Button
+              className="bg-cyan-800 mb-5"
+              onClick={(e) => router.push("/categories")}>
+              See Details
+            </Button>
           </div>
         </div>
         <div className="bg-gray-200 p-2 bg-gradient-to-r from-orange-400 to-orange-700 bg-opacity-50 shadow-md shadow-gray-800 hover:bg-purple-900 cursor-pointer rounded-xl">
@@ -177,7 +187,11 @@ export default function Dashboard() {
             </Typography>
           </div>
           <div className="pl-4">
-            <Button className="bg-orange-800 mt-10">See Details</Button>
+            <Button
+              className="bg-orange-800 mt-10"
+              onClick={(e) => router.push("/orders")}>
+              See Details
+            </Button>
           </div>
         </div>
       </div>

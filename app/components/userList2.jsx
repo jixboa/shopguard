@@ -103,6 +103,7 @@ const getUsers = async () => {
     }
 
     const data = await res.json();
+    console.log(data);
     return data.users; // Return the categories array
   } catch (error) {
     console.log("error Loading Users", error);

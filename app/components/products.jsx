@@ -38,6 +38,11 @@ export default function ProductItems({
     }
   };
 
+  const setSelectedIds = async (e, id) => {
+    e.preventDefault();
+    await setSelectedProducts((prev) => [...prev, id]);
+  };
+
   return (
     <>
       <div className=" w-64 ">
@@ -59,6 +64,15 @@ export default function ProductItems({
             <span className="p-2">
               {selectedProducts.filter((id) => id === _id).length}
             </span>
+            {/* <span className="px-2">
+              <input
+                type="text"
+                value={selectedProducts.filter((id) => id === _id).length}
+                onChange={(e) => {
+                  setSelectedIds(e, _id);
+                }}
+                className="w-12 bg-gray-200 border border-black rounded-md px-2 py-1 text-md"></input>
+            </span> */}
             <button
               onClick={(e) => moreOfThisProduct(e, _id)}
               className=" bg-green-500 py-1 px-3  text-white">

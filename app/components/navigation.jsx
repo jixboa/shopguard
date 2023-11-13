@@ -34,36 +34,17 @@ function classNames(...classes) {
 export default function NavbarNew() {
   const router = useRouter();
   const pathname = usePathname();
-  const { username } = useContext(ProductsContext);
+  ///const { username } = useContext(ProductsContext);
 
   const { selectedProducts, userDetail } = useContext(ProductsContext);
 
-  const [userData, setUserData] = useState();
-  const [profileName, setProfileName] = useState("");
-
-  //setProfileName(username);
-
-  /* useEffect(() => {
-    // Define the API request within the useEffect
-
-    fetch("/api/users/me")
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data);
-        setProfileName(data.username);
-        console.log(profileName);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []); */
+  //const [userData, setUserData] = useState();
+  //const [profileName, setProfileName] = useState("");
 
   const SignOut = async () => {
     try {
       await axios.get("/api/users/signout");
-      setProfileName("");
       router.push("/users/signin");
-      router.refresh("/users/signin");
       toast.success("Logout successful");
     } catch (error) {
       console.log(error.message);

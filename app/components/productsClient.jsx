@@ -329,7 +329,7 @@ export default function ProductClient() {
                     <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     </div>
-                    <p className="text-xs  text-gray-500">
+                    <p className="text-md font-semibold  text-gray-500">
                       {prod.quantity} Available
                     </p>
                   </div>

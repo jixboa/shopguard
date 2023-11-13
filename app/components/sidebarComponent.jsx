@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   AcademicCapIcon,
   CreditCardIcon,
@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { ProductsContext } from "./ProductsContext";
 
 const navigation = [
   {
@@ -65,6 +66,9 @@ const navigation = [
 
 export default function SidebarComponent() {
   const pathname = usePathname();
+
+  const { userDetail } = useContext(ProductsContext);
+
   const [open, setOpen] = useState(false);
 
   // Add a function to handle hover events
@@ -84,6 +88,13 @@ export default function SidebarComponent() {
       </>
     );
   }
+  const isAdmin = userDetail.isAdmin;
+
+  const filteredNavigation = isAdmin
+    ? navigation
+    : navigation.filter(
+        (item) => item.name === "Dashboard" || item.name === "Sales"
+      );
 
   return (
     <div
@@ -102,7 +113,7 @@ export default function SidebarComponent() {
       </div>
       <div className="p-5 items-center">
         <ul>
-          {navigation.map((item, index) => (
+          {filteredNavigation.map((item, index) => (
             <li key={index} className="">
               <Link
                 href={item.href}
