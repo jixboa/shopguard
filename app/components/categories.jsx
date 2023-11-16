@@ -27,7 +27,9 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { ProductsContext } from "./ProductsContext";
+
 import ReactPaginate from "react-paginate";
 
 import { Spinner } from "@material-tailwind/react";
@@ -77,6 +79,7 @@ const getCategories = async () => {
 //main function
 export function CategoryClient() {
   const queryClient = useQueryClient();
+  const { userDetail, setUserDetail } = useContext(ProductsContext);
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
@@ -116,6 +119,20 @@ export function CategoryClient() {
     setDelCategoryID(id);
     setDeleteOpen((cur) => !cur);
   };
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const deleteHandler = async (deletedCat) => {
     //console.log(deletedCat._id);
@@ -315,7 +332,7 @@ export function CategoryClient() {
         {showEditCategory && <EditCategory />}
       </div> */}
 
-      <div className="margin-auto py-10 px-60 mt-20">
+      <div className="margin-auto py-10 px-60 mt-20 ml-20">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             {/*  {loading ? "Creating Category" : "Add new Category"} */}

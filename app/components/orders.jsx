@@ -2,7 +2,9 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ProductsContext } from "./ProductsContext";
+
 import { useRouter, usePathname } from "next/navigation";
 
 import { PencilIcon } from "@heroicons/react/24/solid";
@@ -118,10 +120,25 @@ export default function OrdersClient() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5; // Number of items to display per page
+  const { userDetail, setUserDetail } = useContext(ProductsContext);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const offset = currentPage * itemsPerPage;
 
@@ -169,7 +186,7 @@ export default function OrdersClient() {
   //paginatedData?.sort((a, b) => b.date - a.date);
 
   return (
-    <div className="mt-20 mb-20 p-5">
+    <div className="mt-20 mb-20 p-5 ml-20">
       <Card className="h-full lg:w-full w-auto">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-4 flex flex-col justify-between gap-8 lg:flex-row sm:items-center">

@@ -5,8 +5,9 @@ import Example from "./shoppingcart";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loading from "app/loading";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { toast } from "react-hot-toast";
+import { ProductsContext } from "./ProductsContext";
 
 import {
   Dialog,
@@ -21,6 +22,7 @@ export default function OrderDetailsClient({ params }) {
   const router = useRouter();
   const [searchParams] = useSearchParams();
   const [newStatus, setNewStatus] = useState();
+  const { userDetail, setUserDetail } = useContext(ProductsContext);
 
   const id = searchParams[1];
 
@@ -32,6 +34,20 @@ export default function OrderDetailsClient({ params }) {
 
   const [openReturn, setOpenReturn] = useState(false);
   const handleOpenReturn = () => setOpenReturn(!openReturn);
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const getOrder = async () => {
     try {
@@ -141,7 +157,7 @@ export default function OrderDetailsClient({ params }) {
 
   return (
     <>
-      <div className="flex flex-col pt-20 items-center justify-center gap-8">
+      <div className="flex flex-col pt-20 items-center justify-center gap-8 ml-20">
         <h1 className="font-bold text-lg mb-5 ">Order Details</h1>
         <div className="flex flex-row justify-between gap-8 border-b border-gray-300">
           <div className="flex flex-col p-2 ">
@@ -219,7 +235,7 @@ export default function OrderDetailsClient({ params }) {
             Cancel Order
           </button>
         )}
-        {data?.status == "paid" && (
+        {data?.status == "paid" && userDetail?.isAdmin && (
           <button
             onClick={handleOpenReturn}
             className="p-2 rounded-md bg-teal-400 text-white hover:bg-teal-500 hover:shadow-md hover:shadow-gray-900">

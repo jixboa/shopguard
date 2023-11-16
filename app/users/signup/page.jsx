@@ -29,14 +29,16 @@ const getUsers = async () => {
       throw new Error("Failed loading Users");
     }
 
-    const data = res.json();
-    return data();
+    return res.json();
   } catch (error) {
     console.log("error Loading Users", error);
   }
 };
 
 export default async function SignUp() {
+  /*  const users = await getUsers();
+  console.log(users); */
+
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["users"], getUsers);
   const dehydratedState = dehydrate(queryClient);

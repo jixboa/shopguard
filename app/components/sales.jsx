@@ -236,7 +236,7 @@ export default function SalesClient() {
   }
 
   return (
-    <div className="bg-white rounded-lg p-4">
+    <div className="bg-white rounded-lg p-4 ml-20">
       <div className="p-2 mb-5 mt-10  grid  grid-cols-1 md:grid-cols-3 gap-2">
         <div className="col-span-2 p-2 md:p-1 min-h-screen overflow-scroll md:w-full">
           <input
@@ -445,7 +445,7 @@ export default function SalesClient() {
                 Pay GH₵ {total}
               </button>
             )}
-          {selectedProducts.length && order.status == "pending" && (
+          {selectedProducts.length > 1 && order.status == "pending" && (
             <button
               onClick={handleAddOrder}
               className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">

@@ -162,7 +162,7 @@ export default function CheckOutComponent() {
   if (isLoading) {
     // You can render a loading indicator here
     return (
-      <div className="mt-20">
+      <div className="mt-20 ml-20">
         <p>Loading cart...</p>
       </div>
     );
@@ -180,7 +180,7 @@ export default function CheckOutComponent() {
  */
 
   return (
-    <div className="mt-20 p-4 flex justify-center items-center">
+    <div className="mt-20 p-4 flex justify-center items-center ml-20">
       <div className=" col-span-1">
         <div className=" flex-col justify-start border-b border-gray-700 py-5 mb-5">
           <h1 className=" font-extrabold text-teal-700 text-xl capitalize">

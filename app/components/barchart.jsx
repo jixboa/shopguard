@@ -40,7 +40,7 @@ const getOrders = async () => {
 
 export default function BarChart() {
   const [dailyData, setDailyData] = useState([]);
-  const [chartData, setChartData] = useState({
+  /* const [chartData, setChartData] = useState({
     labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
     datasets: [
       {
@@ -50,7 +50,7 @@ export default function BarChart() {
         backgroundColor: "rgb(53, 162, 235, 0.4)",
       },
     ],
-  });
+  }); */
 
   const { data: ordersData } = useQuery({
     queryKey: ["orders"],
@@ -83,12 +83,6 @@ export default function BarChart() {
       });
 
       // Now, update your chart data with the calculated daily totals
-      setChartData((prevData) => {
-        const newData = { ...prevData };
-        newData.datasets[0].data = [5700, 199.5, 0, 0, 0, 0, 0];
-        console.log(chartData);
-        return newData;
-      });
     }
   }, [ordersData]);
 
@@ -109,7 +103,20 @@ export default function BarChart() {
   return (
     <>
       <div className="w-full md:col-span-2 relative  lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white">
-        <Bar data={chartData} options={chartOptions} />
+        <Bar
+          data={{
+            labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
+            datasets: [
+              {
+                label: "Sales ₵",
+                data: dailyData,
+                borderColor: "rgb(53, 162, 235)",
+                backgroundColor: "rgb(53, 162, 235, 0.4)",
+              },
+            ],
+          }}
+          options={chartOptions}
+        />
       </div>
     </>
   );

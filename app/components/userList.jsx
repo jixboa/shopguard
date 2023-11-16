@@ -3,6 +3,7 @@
 import { data } from "../data/data";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useContext, useEffect, useState } from "react";
+import { ProductsContext } from "./ProductsContext";
 
 import {
   PencilSquareIcon,
@@ -28,15 +29,32 @@ const getUsers = async () => {
 };
 
 export default function UserList() {
-  const { data, isLoading } = useQuery({
+  const { userDetail, setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
+  /*   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
-  });
+  }); */
 
-  console.log(data?.username);
+  //console.log(data?.username);
+
   return (
     <>
-      <div className="p-4 lg:h-[100vh] h-[70vh] overflow-scroll">
+      {/* <div className="p-4 lg:h-[100vh] h-[70vh] overflow-scroll">
         <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
           <div className="my-3 p-2 grid md:grid-cols-4 grid-cols-2 items-center justify-between cursor-pointer">
             <span>Name</span>
@@ -74,7 +92,7 @@ export default function UserList() {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </>
   );
 }

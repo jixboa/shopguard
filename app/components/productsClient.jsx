@@ -5,9 +5,10 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { Chip } from "@material-tailwind/react";
+import { ProductsContext } from "./ProductsContext";
 
 import {
   Button,
@@ -65,6 +66,21 @@ const getProducts = async () => {
 
 export default function ProductClient() {
   const queryClient = useQueryClient();
+  const { userDetail, setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    // Define the API request within the useEffect
+
+    fetch("/api/users/me")
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserDetail(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const [product, setProduct] = useState({
     name: "",
@@ -281,7 +297,7 @@ export default function ProductClient() {
   };
 
   return (
-    <div className="">
+    <div className=" ml-20">
       <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {/*  {loading ? "Creating Category" : "Add new Category"} */}

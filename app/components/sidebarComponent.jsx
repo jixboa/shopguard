@@ -93,7 +93,7 @@ export default function SidebarComponent() {
   const filteredNavigation = isAdmin
     ? navigation
     : navigation.filter(
-        (item) => item.name === "Dashboard" || item.name === "Sales"
+        (item) => item.name === "Orders" || item.name === "Sales"
       );
 
   return (

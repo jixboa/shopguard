@@ -45,10 +45,11 @@ export default function NavbarNew() {
     try {
       await axios.get("/api/users/signout");
       router.push("/users/signin");
-      toast.success("Logout successful");
     } catch (error) {
       console.log(error.message);
       toast.error("Logout failed");
+    } finally {
+      toast.success("Logout successful");
     }
   };
 
@@ -68,7 +69,9 @@ export default function NavbarNew() {
   }
 
   return (
-    <Disclosure as="nav" className=" bg-transparent fixed top-0 w-full  z-50">
+    <Disclosure
+      as="nav"
+      className=" bg-transparent fixed top-0 w-full  z-50 ml-20">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 z-50">
