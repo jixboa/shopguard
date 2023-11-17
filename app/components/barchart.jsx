@@ -78,7 +78,6 @@ export default function BarChart() {
 
         // Add the order total to the corresponding day of the week
         dailyTotals[dayOfWeek] += orderTotal;
-        console.log(dailyTotals);
         setDailyData(dailyTotals);
       });
 

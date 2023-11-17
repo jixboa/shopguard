@@ -4,7 +4,10 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const nextConfig = {};
+const nextConfig = {
+  /* distDir: "build", // Specify your desired output directory here */
+  /*   output: "standalone", */
+};
 
 module.exports = nextConfig;
 
