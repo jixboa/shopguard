@@ -1,18 +1,25 @@
 import mongoose from "mongoose";
 
-const conn = require("../config/keys").mongoURI;
+let isConnected = false; // Variable to track the connection status
 
-const connectMongo = async () => {
-  try {
-    await mongoose.connect(conn, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+export default async function connectMongo() {
+  // Set strict query mode for Mongoose to prevent unknown field queries.
+  mongoose.set("strictQuery", true);
 
-    // console.log("Database Connected");
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+  if (!process.env.mongoURI) return console.log("Missing MongoDB URL");
+
+  // If the connection is already established, return without creating a new connection.
+  if (isConnected) {
+    console.log("MongoDB connection already established");
+    return;
   }
-};
 
-export default connectMongo;
+  try {
+    await mongoose.connect(process.env.mongoURI);
+
+    isConnected = true; // Set the connection status to true
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.log(error);
+  }
+}

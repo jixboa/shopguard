@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import { Provider } from "./utils/reactQueryProvider";
 import Footer from "./components/footer";
 
@@ -10,7 +10,14 @@ import { ProductsContextProvider } from "./components/ProductsContext";
 import Loading from "./loading";
 import { Suspense } from "react";
 
+import { cn } from "@/lib/utils";
+
 //const inter = Inter({ subsets: ["latin"] });
+
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata = {
   title: "ShopGuard",

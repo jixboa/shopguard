@@ -7,6 +7,11 @@ dotenv.config();
 const nextConfig = {
   /* distDir: "build", // Specify your desired output directory here */
   /*   output: "standalone", */
+  /* output: "export", */
+  experimental: {
+    serverActions: true,
+    serverComponentsExternalPackages: ["mongoose"],
+  },
 };
 
 module.exports = nextConfig;

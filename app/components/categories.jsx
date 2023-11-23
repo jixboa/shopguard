@@ -41,6 +41,7 @@ import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
+import { AddCategory } from "../actions";
 
 function TrashIcon() {
   return (
@@ -315,6 +316,10 @@ export function CategoryClient() {
     setShowDropdown(false); // Hide the dropdown
   };
 
+  const handleFormSubmit = async () => {
+    await AddCategory();
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -338,6 +343,17 @@ export function CategoryClient() {
             {/*  {loading ? "Creating Category" : "Add new Category"} */}
             Categories
           </h2>
+
+          <form action={handleFormSubmit}>
+            <button
+              onClick={(e) => {
+                e.preventDefault;
+              }}
+              className="text-black font-bold mt-20 border bg-gray-200 rounded-md p-2"
+              type="submit">
+              Add to Cart
+            </button>
+          </form>
 
           <div className="relative">
             <input
