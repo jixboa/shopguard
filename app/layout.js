@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Provider } from "./utils/reactQueryProvider";
 import Footer from "./components/footer";
 
@@ -9,8 +9,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { ProductsContextProvider } from "./components/ProductsContext";
 import Loading from "./loading";
 import { Suspense } from "react";
-
-import { cn } from "@/lib/utils";
 
 //const inter = Inter({ subsets: ["latin"] });
 
