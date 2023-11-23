@@ -12,11 +12,6 @@ import { Suspense } from "react";
 
 //const inter = Inter({ subsets: ["latin"] });
 
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 export const metadata = {
   title: "ShopGuard",
   description: "A swift retail center",
