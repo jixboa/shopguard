@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ProductItems from "./products";
 import { useState, useEffect, useContext } from "react";
 import { ProductsContext } from "../components/ProductsContext";
+import { Input } from "@material-tailwind/react";
 
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -12,6 +13,10 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Typography } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  MagnifyingGlassIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
 
 //get prods
 const getProducts = async () => {
@@ -239,12 +244,22 @@ export default function SalesClient() {
     <div className="bg-white rounded-lg p-4 ml-20">
       <div className="p-2 mb-5 mt-10  grid  grid-cols-1 md:grid-cols-3 gap-2">
         <div className="col-span-2 p-2 md:p-1 min-h-screen overflow-scroll md:w-full">
-          <input
+          <Input
             value={phrase}
             onChange={(e) => setPhrase(e.target.value)}
-            type="text"
-            placeholder="Search for products.."
-            className="bg-gray-100 w-full py-2 px-4 rounded-xl"
+            label="Search for product"
+            icon={
+              phrase ? (
+                <XMarkIcon
+                  onClick={(e) => {
+                    setPhrase("");
+                  }}
+                  className="h-5 w-5"
+                />
+              ) : (
+                <MagnifyingGlassIcon className="h-5 w-5" />
+              )
+            }
           />
           <div>
             {categoryNames?.map((categoryName) => (
@@ -343,15 +358,15 @@ export default function SalesClient() {
               );
             })}
 
-          <div className="mt-4">
-            <input
+          <div className="mt-4 flex flex-col gap-2">
+            {/* <Input
               className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
-              type="hidden"
+              type="text"
               value={selectedProducts.join(",")}
-              placeholder="street address"
-            />
+              hidden
+            /> */}
 
-            <input
+            <Input
               className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
               type="text"
               value={order.name}
@@ -363,12 +378,12 @@ export default function SalesClient() {
               }
               placeholder="Name"
             />
-            <input
+            <Input
               className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
               type="text"
               value={order.contact}
               onChange={(e) => setOrder({ ...order, contact: e.target.value })}
-              placeholder="Contact No."
+              label="Contact No."
             />
           </div>
           <div className="mt-4">
@@ -407,11 +422,9 @@ export default function SalesClient() {
             {selectedProducts.length && order.status === "paid" ? (
               <div className="grid grid-cols-2 md:grid-col-1 sm:grid-col-1  gap-4  border border-b-2 p-1 bg-gray-100 rounded-md">
                 <div className="px-2 flex flex-row sm:flex-col xs-flex-col justify-start items-center w-full">
-                  <h3 className="text-sm  text-gray-600 font-normal">
-                    Cash recieved:
-                  </h3>
-                  <input
+                  <Input
                     type="text"
+                    label="cash recieved"
                     onChange={async (e) => {
                       await setCashRecieve(e.target.value);
                     }}

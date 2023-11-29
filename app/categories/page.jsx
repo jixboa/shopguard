@@ -2,7 +2,7 @@ import { CategoryClient } from "../components/categories";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const getCategories = async () => {
   try {

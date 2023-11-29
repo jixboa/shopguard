@@ -3,13 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"; */
 import { toast } from "react-hot-toast";
-import UserList from "../../components/userList";
+//import UserList from "../../components/userList";
 import { SortableTable } from "../../components/userList2";
 
 import getQueryClient from "../../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 /* 
 import {
   PencilSquareIcon,
@@ -38,48 +38,12 @@ const getUsers = async () => {
 };
 
 export default async function SignUp() {
-  /*  const users = await getUsers();
+  /*   const users = await getUsers();
   console.log(users); */
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["users"], getUsers);
   const dehydratedState = dehydrate(queryClient);
-
-  /*   const router = useRouter();
-  const [user, setUser] = React.useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (
-      user.username.length > 0 &&
-      user.email.length &&
-      user.password.length > 0
-    ) {
-      setButtonDisabled(false);
-    }
-  }, [user]);
-
-  const onSignup = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      console.log(user);
-      const response = await axios.post("/api/users/signup", user);
-      toast.success("User Added");
-      console.log("Signup successfull", response.data);
-      router.push("/users/signin");
-    } catch (error) {
-      console.log("Signup failed", error.message);
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }; */
 
   return (
     <>

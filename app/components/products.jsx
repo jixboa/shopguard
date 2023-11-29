@@ -3,6 +3,7 @@ import { ProductsContext } from "./ProductsContext";
 import { useRouter } from "next/navigation";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 
 export default function ProductItems({
   _id,
@@ -47,7 +48,7 @@ export default function ProductItems({
     <>
       <div className=" w-64 ">
         <div className="bg-gray-100 p-5 rounded-xl w-26">
-          <img className="" src={picture} alt="" />
+          <Image className="" src={picture} alt="" width={220} height={220} />
         </div>
         <div className="mt-2">
           <h3 className="font-bold text-lg">{name}</h3>

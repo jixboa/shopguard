@@ -12,6 +12,8 @@ import * as yup from "yup";
 
 import { Spinner } from "@material-tailwind/react";
 
+// export const runtime = "edge";
+
 const schema = yup
   .object({
     email: yup.string().email().required(),

@@ -388,104 +388,100 @@ export default function ProductClient() {
           </CardHeader>
           <CardBody className="flex flex-col gap-2">
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <div className="">
-                  <input
-                    type="text"
-                    value={product.name}
-                    placeholder="product name"
-                    onChange={(e) =>
-                      setProduct({ ...product, name: e.target.value })
-                    }
-                    className="px-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                  <textarea
-                    onChange={(e) =>
-                      setProduct({ ...product, description: e.target.value })
-                    }
-                    value={product.description}
-                    className="px-3 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="example-textarea"
-                    rows="4"
-                    placeholder="Enter your text here..."></textarea>
-                  <label
-                    className="text-xs font-extralight text-gray-500"
-                    htmlFor="category">
-                    Select Category
-                  </label>
+              <Input
+                type="text"
+                value={product.name}
+                label="product name"
+                onChange={(e) =>
+                  setProduct({ ...product, name: e.target.value })
+                }
+                className="pb-2"
+              />
+              <Textarea
+                onChange={(e) =>
+                  setProduct({ ...product, description: e.target.value })
+                }
+                value={product.description}
+                id="example-textarea"
+                label="Enter your text here..."
+              />
 
+              <div>
+                <label
+                  className="text-xs font-extralight text-gray-500"
+                  htmlFor="category">
+                  Select Category
+                </label>
+
+                <select
+                  onChange={(e) => {
+                    setProduct({ ...product, category: e.target.value });
+                  }}
+                  className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="category">
+                  <option value="Biscuit">Biscuit</option>
+                  <option value="Drinks">Drinks</option>
+                  <option value="Noodles">Noodles</option>
+                  <option value="Oil">Oil</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Input
+                  value={product.quantity}
+                  type="text"
+                  label="quantity"
+                  onChange={(e) =>
+                    setProduct({ ...product, quantity: e.target.value })
+                  }
+                  className="w-full"
+                />
+                <Input
+                  value={product.price}
+                  type="text"
+                  label="price"
+                  onChange={(e) => {
+                    setProduct({ ...product, price: e.target.value });
+                  }}
+                  className="w-full"
+                />
+              </div>
+
+              <div className=" flex flex-row gap-2">
+                <div className="w-1/2">
+                  <label
+                    className="text-xs font-extralight text-gray-500 ml-1 pl-2"
+                    htmlFor="category">
+                    Select Size
+                  </label>
                   <select
                     onChange={(e) => {
-                      setProduct({ ...product, category: e.target.value });
+                      setProduct({ ...product, size: e.target.value });
                     }}
                     className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="category">
-                    <option value="Biscuit">Biscuit</option>
-                    <option value="Drinks">Drinks</option>
-                    <option value="Noodles">Noodles</option>
-                    <option value="Oil">Oil</option>
+                    id="size">
+                    <option value="normal">normal</option>
+                    <option value="sm">sm</option>
+                    <option value="md">md</option>
+                    <option value="lg">lg</option>
                   </select>
-                  <div className="flex flex-row gap-2">
-                    <div className="w-1/2">
-                      <input
-                        value={product.price}
-                        type="text"
-                        placeholder="price"
-                        onChange={(e) => {
-                          setProduct({ ...product, price: e.target.value });
-                        }}
-                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                    <div className="w-1/2">
-                      <input
-                        value={product.quantity}
-                        type="text"
-                        placeholder="Quantity"
-                        onChange={(e) =>
-                          setProduct({ ...product, quantity: e.target.value })
-                        }
-                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className=" flex flex-row gap-2">
-                    <div className="w-1/2">
-                      <label
-                        className="text-xs font-extralight text-gray-500 ml-1"
-                        htmlFor="category">
-                        Select Size
-                      </label>
-                      <select
-                        onChange={(e) => {
-                          setProduct({ ...product, size: e.target.value });
-                        }}
-                        className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="size">
-                        <option value="normal">normal</option>
-                        <option value="sm">sm</option>
-                        <option value="md">md</option>
-                        <option value="lg">lg</option>
-                      </select>
-                    </div>
+                </div>
 
-                    <div className="w-1/2">
-                      <label
-                        className="text-xs font-extralight text-gray-500 ml-1"
-                        htmlFor="category">
-                        Select Status
-                      </label>
-                      <select
-                        onChange={(e) => {
-                          setProduct({ ...product, status: e.target.value });
-                        }}
-                        className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="status">
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                      </select>
-                    </div>
-                  </div>
+                <div className="w-1/2">
+                  <label
+                    className="text-xs font-extralight text-gray-500 ml-1"
+                    htmlFor="category">
+                    Select Status
+                  </label>
+                  <select
+                    onChange={(e) => {
+                      setProduct({ ...product, status: e.target.value });
+                    }}
+                    className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -542,125 +538,119 @@ export default function ProductClient() {
           </CardHeader>
           <CardBody className="flex flex-col gap-2 p-4">
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <div className="">
-                  <input
-                    type="text"
-                    value={editProduct.name}
-                    placeholder="product name"
-                    onChange={(e) =>
-                      setEditProduct({ ...editProduct, name: e.target.value })
-                    }
-                    className="px-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                  <textarea
-                    onChange={(e) =>
-                      setEditProduct({
-                        ...editProduct,
-                        description: e.target.value,
-                      })
-                    }
-                    value={editProduct.description}
-                    className="px-3 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="example-textarea"
-                    rows="4"
-                    placeholder="Enter your text here..."></textarea>
-                  <label
-                    className="text-xs font-extralight text-gray-500"
-                    htmlFor="category">
-                    Select Category
-                  </label>
+              <Input
+                type="text"
+                value={editProduct.name}
+                label="product name"
+                onChange={(e) =>
+                  setEditProduct({ ...editProduct, name: e.target.value })
+                }
+              />
+              <Textarea
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    description: e.target.value,
+                  })
+                }
+                value={editProduct.description}
+                id="example-textarea"
+                rows="4"
+                label="Enter description"></Textarea>
 
+              <div>
+                <label
+                  className="text-xs font-extralight text-gray-500"
+                  htmlFor="category">
+                  Select Category
+                </label>
+
+                <select
+                  value={editProduct.category}
+                  onChange={(e) => {
+                    setEditProduct({
+                      ...editProduct,
+                      category: e.target.value,
+                    });
+                  }}
+                  className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="category">
+                  <option value="Biscuit">Biscuit</option>
+                  <option value="Drinks">Drinks</option>
+                  <option value="Noodles">Noodles</option>
+                  <option value="Oil">Oil</option>
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Input
+                  value={editProduct.price}
+                  type="text"
+                  label="price"
+                  onChange={(e) => {
+                    setEditProduct({
+                      ...editProduct,
+                      price: e.target.value,
+                    });
+                  }}
+                  className="w-full"
+                />
+
+                <Input
+                  value={editProduct.quantity}
+                  type="text"
+                  label="quantity"
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      quantity: e.target.value,
+                    })
+                  }
+                  className="w-full"
+                />
+              </div>
+              <div className=" flex flex-row gap-2">
+                <div className="w-1/2">
+                  <label
+                    className="text-xs font-extralight text-gray-500 ml-1"
+                    htmlFor="category">
+                    Select Size
+                  </label>
                   <select
-                    value={editProduct.category}
+                    value={editProduct.size}
                     onChange={(e) => {
                       setEditProduct({
                         ...editProduct,
-                        category: e.target.value,
+                        size: e.target.value,
                       });
                     }}
                     className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="category">
-                    <option value="Biscuit">Biscuit</option>
-                    <option value="Drinks">Drinks</option>
-                    <option value="Noodles">Noodles</option>
-                    <option value="Oil">Oil</option>
+                    id="size">
+                    <option value="normal">normal</option>
+                    <option value="sm">sm</option>
+                    <option value="md">md</option>
+                    <option value="lg">lg</option>
                   </select>
-                  <div className="flex flex-row gap-2">
-                    <div className="w-1/2">
-                      <input
-                        value={editProduct.price}
-                        type="text"
-                        placeholder="price"
-                        onChange={(e) => {
-                          setEditProduct({
-                            ...editProduct,
-                            price: e.target.value,
-                          });
-                        }}
-                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                    <div className="w-1/2">
-                      <input
-                        value={editProduct.quantity}
-                        type="text"
-                        placeholder="Quantity"
-                        onChange={(e) =>
-                          setEditProduct({
-                            ...editProduct,
-                            quantity: e.target.value,
-                          })
-                        }
-                        className="py-2 mb-1 block w-full rounded-md border-0 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className=" flex flex-row gap-2">
-                    <div className="w-1/2">
-                      <label
-                        className="text-xs font-extralight text-gray-500 ml-1"
-                        htmlFor="category">
-                        Select Size
-                      </label>
-                      <select
-                        value={editProduct.size}
-                        onChange={(e) => {
-                          setEditProduct({
-                            ...editProduct,
-                            size: e.target.value,
-                          });
-                        }}
-                        className="mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="size">
-                        <option value="normal">normal</option>
-                        <option value="sm">sm</option>
-                        <option value="md">md</option>
-                        <option value="lg">lg</option>
-                      </select>
-                    </div>
+                </div>
 
-                    <div className="w-1/2">
-                      <label
-                        className="text-xs font-extralight text-gray-500 ml-1"
-                        htmlFor="category">
-                        Select Status
-                      </label>
-                      <select
-                        value={editProduct.status}
-                        onChange={(e) => {
-                          setEditProduct({
-                            ...editProduct,
-                            status: e.target.value,
-                          });
-                        }}
-                        className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="status">
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                      </select>
-                    </div>
-                  </div>
+                <div className="w-1/2">
+                  <label
+                    className="text-xs font-extralight text-gray-500 ml-1"
+                    htmlFor="category">
+                    Select Status
+                  </label>
+                  <select
+                    value={editProduct.status}
+                    onChange={(e) => {
+                      setEditProduct({
+                        ...editProduct,
+                        status: e.target.value,
+                      });
+                    }}
+                    className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
             </form>
