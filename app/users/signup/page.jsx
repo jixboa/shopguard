@@ -8,6 +8,8 @@ import { SortableTable } from "../../components/userList2";
 
 import getQueryClient from "../../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
+
+export const runtime = "edge";
 /* 
 import {
   PencilSquareIcon,

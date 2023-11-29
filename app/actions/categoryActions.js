@@ -1,8 +1,8 @@
 // Your Server Action file
 "use server";
 
-import connectMongo from "../database/conn";
-import Category from "../models/categorySchema";
+import connectMongo from "../../database/conn";
+import Category from "../../models/categorySchema";
 
 export async function AddCategory() {
   await connectMongo();

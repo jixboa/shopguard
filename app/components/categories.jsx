@@ -41,7 +41,7 @@ import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { AddCategory } from "../actions";
+import { AddCategory } from "../actions/categoryActions";
 
 function TrashIcon() {
   return (
@@ -246,7 +246,7 @@ export function CategoryClient() {
     try {
       //setLoading(true);
       const response = await axios.post(`/api/categories`, category);
-      toast.success("Created successfully");
+      //toast.success("Created successfully");
       return response.data;
     } catch (error) {
       console.log("Creating Failed", error.message);

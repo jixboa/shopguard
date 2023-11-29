@@ -49,7 +49,7 @@ export default function NavbarNew() {
       console.log(error.message);
       toast.error("Logout failed");
     } finally {
-      toast.success("Logout successful");
+      //toast.success("Logout successful");
     }
   };
 

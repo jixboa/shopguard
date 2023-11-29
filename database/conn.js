@@ -10,7 +10,7 @@ export default async function connectMongo() {
 
   // If the connection is already established, return without creating a new connection.
   if (isConnected) {
-    console.log("MongoDB connection already established");
+    //console.log("MongoDB connection already established");
     return;
   }
 
@@ -18,7 +18,7 @@ export default async function connectMongo() {
     await mongoose.connect(process.env.mongoURI);
 
     isConnected = true; // Set the connection status to true
-    console.log("MongoDB connected");
+    //console.log("MongoDB connected");
   } catch (error) {
     console.log(error);
   }

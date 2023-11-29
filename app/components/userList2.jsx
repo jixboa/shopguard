@@ -211,7 +211,11 @@ export function SortableTable() {
                       <tr key={_id}>
                         <td className={classes}>
                           <div className="flex items-center gap-3">
-                            <Avatar src={""} alt={username} size="sm" />
+                            <Avatar
+                              src={"/images/placeholder.png"}
+                              alt={username}
+                              size="sm"
+                            />
                             <div className="flex flex-col">
                               <Typography
                                 variant="small"
