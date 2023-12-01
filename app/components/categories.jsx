@@ -41,7 +41,7 @@ import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { AddCategory } from "../actions/categoryActions";
+import { AddCategory, GetCategories } from "../actions/categoryActions";
 
 function TrashIcon() {
   return (
@@ -187,8 +187,11 @@ export function CategoryClient() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
-    queryFn: getCategories,
+    queryFn: GetCategories,
   });
+
+  /*  const data = GetCategories();
+  console.log(data); */
 
   const displayedItems = data.slice(offset, offset + itemsPerPage);
 
@@ -257,8 +260,9 @@ export function CategoryClient() {
     }
   };
 
-  const addMutation = useMutation(addCategory, {
-    onMutate: async (newCategory) => {
+  const addMutation = useMutation(AddCategory, {
+    onMutate: async (data) => {
+      console.log(data);
       await queryClient.cancelQueries(["categories"]);
 
       /*  const previousCategories = queryClient.getQueryData(["categories"]);
@@ -276,6 +280,7 @@ export function CategoryClient() {
     },
     onSuccess: (data, variables, context) => {
       // Handle success, if needed
+      setOpen(false);
       toast.success("Category added successfully");
     },
   });
@@ -286,7 +291,7 @@ export function CategoryClient() {
     addMutation.mutate(category);
   };
 
-  const [inputValue, setInputValue] = useState("");
+  /*   const [inputValue, setInputValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const dropdownData = [
@@ -302,9 +307,9 @@ export function CategoryClient() {
     "Item 10",
     "Item 12",
     "Item 13",
-  ];
+  ]; */
 
-  const handleInputChange = (event) => {
+  /* const handleInputChange = (event) => {
     const value = event.target.value.toLowerCase();
     setInputValue(value);
     setShowDropdown(true); // Show the dropdown when typing
@@ -314,19 +319,22 @@ export function CategoryClient() {
   const handleItemClick = (item) => {
     setInputValue(item);
     setShowDropdown(false); // Hide the dropdown
+  }; */
+
+  const handleFormSubmit = async (data) => {
+    /* let name = data.get("name")?.valueOf();
+    console.log(name); */
+    //await AddCategory(data);
+    addMutation.mutate(data);
   };
 
-  const handleFormSubmit = async () => {
-    await AddCategory();
-  };
-
-  if (isLoading) {
+  /*   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Spinner />
       </div>
     );
-  }
+  } */
 
   return (
     <>
@@ -344,22 +352,11 @@ export function CategoryClient() {
             Categories
           </h2>
 
-          <form action={handleFormSubmit}>
-            <button
-              onClick={(e) => {
-                e.preventDefault;
-              }}
-              className="text-black font-bold mt-20 border bg-gray-200 rounded-md p-2"
-              type="submit">
-              Add to Cart
-            </button>
-          </form>
-
-          <div className="relative">
-            <input
+          {/*       <div className="relative">
+            <Input
               type="text"
               className="w-full py-2 px-4 border rounded-lg shadow-md"
-              placeholder="Type to filter..."
+              label="Type to filter..."
               value={inputValue}
               onChange={handleInputChange}
               onClick={() => setShowDropdown(true)} // Show the dropdown when the input is clicked
@@ -378,7 +375,7 @@ export function CategoryClient() {
                   ))}
               </ul>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-row justify-between mb-5">
           <h1 className=" flex flex-grow"></h1>
@@ -445,31 +442,26 @@ export function CategoryClient() {
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4 p-4">
-              <form className="space-y-6">
+              <form className="space-y-6" action={handleFormSubmit}>
                 <div>
-                  <label
-                    htmlFor="fullname"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Category name
-                  </label>
                   <div className="mt-2">
-                    <input
+                    <Input
                       id="name"
                       name="name"
                       type="text"
                       autoComplete="name"
+                      label="Category name"
                       onChange={(e) =>
                         setCategory({ ...category, name: e.target.value })
                       }
                       required
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
 
                   <div className="py-2">
                     <button
                       type="submit"
-                      onClick={handleAddCategory}
+                      /*   onClick={handleAddCategory} */
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       Add Category
                     </button>

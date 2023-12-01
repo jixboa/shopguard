@@ -450,7 +450,7 @@ export default function SalesClient() {
           </div>
 
           {cashRecieved >= total &&
-            selectedProducts.length &&
+            selectedProducts.length > 0 &&
             order.status == "paid" && (
               <button
                 onClick={handleAddOrder}
@@ -458,7 +458,7 @@ export default function SalesClient() {
                 Pay GH₵ {total}
               </button>
             )}
-          {selectedProducts.length > 1 && order.status == "pending" && (
+          {selectedProducts.length > 0 && order.status == "pending" && (
             <button
               onClick={handleAddOrder}
               className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">

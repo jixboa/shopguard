@@ -1,6 +1,8 @@
+import { get } from "mongoose";
 import { CategoryClient } from "../components/categories";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { GetCategories } from "app/actions/categoryActions";
 
 // export const runtime = "edge";
 
@@ -22,17 +24,21 @@ const getCategories = async () => {
 };
 
 export default async function Categories() {
+  //const data = await GetCategories();
+
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["categories"], getCategories);
+  await queryClient.prefetchQuery(["categories"], GetCategories);
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <>
-      <Hydrate state={dehydratedState}>
-        <div>
-          <CategoryClient />
-        </div>
-      </Hydrate>
+      {
+        <Hydrate state={dehydratedState}>
+          <div>
+            <CategoryClient />
+          </div>
+        </Hydrate>
+      }
     </>
   );
 }

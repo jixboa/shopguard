@@ -371,7 +371,7 @@ export default function ProductClient() {
       </div>
 
       <Dialog
-        size="xs"
+        size="md"
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-inherit transform">
@@ -521,7 +521,7 @@ export default function ProductClient() {
       </Dialog>
 
       <Dialog
-        size="xs"
+        size="sm"
         open={editOpen}
         handler={handleEditOpen}
         className="bg-transparent shadow-none">

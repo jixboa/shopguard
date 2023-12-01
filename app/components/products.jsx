@@ -48,7 +48,7 @@ export default function ProductItems({
     <>
       <div className=" w-64 ">
         <div className="bg-gray-100 p-5 rounded-xl w-26">
-          <Image className="" src={picture} alt="" width={220} height={220} />
+          {<Image className="" src={picture} alt="" width={220} height={220} />}
         </div>
         <div className="mt-2">
           <h3 className="font-bold text-lg">{name}</h3>

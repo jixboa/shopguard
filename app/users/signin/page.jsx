@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { Spinner } from "@material-tailwind/react";
+import { Spinner, Input } from "@material-tailwind/react";
 
 // export const runtime = "edge";
 
@@ -93,22 +93,17 @@ export default function SignIn() {
           <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-4">
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-xs font-medium leading-6 text-gray-600">
-                  email address
-                </label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     id="email"
                     name="email"
                     autoComplete="email"
+                    label="email address"
                     /*  onChange={(e) =>
                       setUser({ ...user, email: e.target.value })
                     }
                     required */
                     {...register("email")}
-                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   {errors.email?.message && (
                     <p className="pt-1 text-red-600  rounded-md text-xs  font-semibold">
@@ -119,25 +114,18 @@ export default function SignIn() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-xs font-medium leading-6 text-gray-600">
-                    Password
-                  </label>
-                </div>
+                <div className="flex items-center justify-between"></div>
                 <div className="mt-2">
-                  <input
+                  <Input
                     id="password"
                     name="password"
                     type="password"
-                    autoComplete="current-password"
+                    label="Password"
                     /* onChange={(e) =>
                       setUser({ ...user, password: e.target.value })
                     } */
                     {...register("password")}
                     required
-                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   {errors.password?.message && (
                     <p className="pt-1 text-red-600 rounded-md text-xs  font-semibold">

@@ -15,6 +15,7 @@ import { ProductsContext } from "./ProductsContext";
 import { Fragment, useContext, useEffect, useState } from "react";
 import React, { PureComponent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { GetCategories } from "app/actions/categoryActions";
 
 import {
   Dialog,
