@@ -9,6 +9,7 @@ import React, { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { Chip } from "@material-tailwind/react";
 import { ProductsContext } from "./ProductsContext";
+import Image from "next/image";
 
 import {
   Button,
@@ -322,11 +323,13 @@ export default function ProductClient() {
               key={prod._id}
               className="py-5 hover:shadow-sm hover:shadow-gray-500">
               <div className="flex min-w-0 gap-x-4 justify-between">
-                <img
-                  className="h-12 w-12 flex-none rounded-full bg-gray-50"
-                  src={prod.picture}
-                  alt=""
-                />
+                {
+                  <img
+                    className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                    src={prod.picture}
+                    alt=""
+                  />
+                }
                 <div className="min-w-0 flex-auto">
                   <p className="text-sm font-semibold leading-6 text-gray-900">
                     {prod.name} {"("} {prod.size} {")"} {"-"} {"₵" + prod.price}

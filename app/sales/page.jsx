@@ -1,6 +1,7 @@
 import SalesClient from "../components/sales";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { GetProducts } from "app/actions/productActions";
 
 // export const runtime = "edge";
 
@@ -39,6 +40,8 @@ const getCart = async () => {
 };
 
 export default async function Sales() {
+  const products = await GetProducts();
+
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["products"], getProducts);
   await queryClient.prefetchQuery(["cart"], getCart);
@@ -48,7 +51,7 @@ export default async function Sales() {
     <>
       <Hydrate state={dehydratedState}>
         <div>
-          <SalesClient />
+          <SalesClient productss={products} />
         </div>
       </Hydrate>
     </>

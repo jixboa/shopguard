@@ -41,7 +41,12 @@ import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { AddCategory, GetCategories } from "../actions/categoryActions";
+import {
+  AddCategory,
+  GetCategories,
+  DeleteCategory,
+  UpdateCategory,
+} from "../actions/categoryActions";
 
 function TrashIcon() {
   return (
@@ -78,7 +83,7 @@ const getCategories = async () => {
 };
 
 //main function
-export function CategoryClient() {
+export function CategoryClient({ data }) {
   const queryClient = useQueryClient();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
 
@@ -185,15 +190,15 @@ export function CategoryClient() {
 
   const [showEditCategory, setShowEditCategory] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  /*  const { data, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: GetCategories,
   });
-
+ */
   /*  const data = GetCategories();
   console.log(data); */
 
-  const displayedItems = data.slice(offset, offset + itemsPerPage);
+  const displayedItems = data?.slice(offset, offset + itemsPerPage);
 
   const updateCategory = async () => {
     const newName = editCat.name;
@@ -262,7 +267,6 @@ export function CategoryClient() {
 
   const addMutation = useMutation(AddCategory, {
     onMutate: async (data) => {
-      console.log(data);
       await queryClient.cancelQueries(["categories"]);
 
       /*  const previousCategories = queryClient.getQueryData(["categories"]);
@@ -345,7 +349,7 @@ export function CategoryClient() {
         {showEditCategory && <EditCategory />}
       </div> */}
 
-      <div className="margin-auto py-10 px-60 mt-20 ml-20">
+      <div className="margin-auto py-10 px-60 mt-20 ml-20 bg-gray-100">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             {/*  {loading ? "Creating Category" : "Add new Category"} */}
@@ -494,7 +498,13 @@ export function CategoryClient() {
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4 p-4">
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form
+                className="space-y-6"
+                action={(e) => {
+                  setEditOpen(false);
+                  const cat = editCat;
+                  UpdateCategory(cat);
+                }}>
                 <div>
                   <label
                     htmlFor="fullname"
@@ -519,9 +529,9 @@ export function CategoryClient() {
                   <div className="py-2">
                     <button
                       type="submit"
-                      onClick={(e) => {
+                      /* onClick={(e) => {
                         handleUpdate(e);
-                      }}
+                      }} */
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       Update Category
                     </button>
@@ -547,20 +557,29 @@ export function CategoryClient() {
             Are you sure you want to Delete this category permanently?
           </DialogBody>
           <DialogFooter>
-            <Button
-              variant="text"
-              color="red"
-              onClick={() => handleDeleteOpen(null)}
-              className="mr-1">
-              <span>Cancel</span>
-            </Button>
-            <Button
-              variant="gradient"
-              color="green"
-              className="bg-green-400 text-white text-sm"
-              onClick={() => delMutation.mutate(delCategoryID)}>
-              <span>Confirm</span>
-            </Button>
+            <form
+              action={(e) => {
+                setDeleteOpen(false);
+                const id = delCategoryID;
+                DeleteCategory(id);
+              }}>
+              <Button
+                variant="text"
+                color="red"
+                onClick={() => handleDeleteOpen(null)}
+                className="mr-1">
+                <span>Cancel</span>
+              </Button>
+              <Button
+                variant="gradient"
+                color="green"
+                type="submit"
+                className="bg-green-400 text-white text-sm"
+                /* onClick={() => delMutation.mutate(delCategoryID)} */
+              >
+                <span>Confirm</span>
+              </Button>
+            </form>
           </DialogFooter>
         </Dialog>
       </div>

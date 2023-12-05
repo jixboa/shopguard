@@ -75,7 +75,7 @@ const getOrders = async () => {
   }
 };
 
-export default function Dashboard() {
+export default function Dashboard({ categories, products, orders }) {
   const router = useRouter();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
   const [open, setOpen] = React.useState(false);
@@ -101,16 +101,16 @@ export default function Dashboard() {
     queryFn: getProducts,
   });
 
-  const { data: categoriesData, isLoading: categoriesIsLoading } = useQuery({
+  /* const { data: categoriesData, isLoading: categoriesIsLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
-  });
+  }); */
   const { data: ordersData } = useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
   });
 
-  const ordersTotal = ordersData
+  const ordersTotal = orders
     ?.filter((order) => order.status === "paid")
     .reduce((total, order) => {
       const orderTotal = parseFloat(order.total_amount);
@@ -136,7 +136,7 @@ export default function Dashboard() {
             <Typography
               className="text-right font-extrabold h-25 text-8xl text-white pl-15 duration-300"
               style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-              {productsData?.products.length || ""}
+              {products?.length || ""}
             </Typography>
           </div>
           <div className="pl-4">
@@ -160,7 +160,7 @@ export default function Dashboard() {
             <Typography
               className="text-right font-extrabold h-25 text-8xl text-white pl-15 "
               style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-              {categoriesData?.length || ""}
+              {categories?.length || ""}
             </Typography>
           </div>
           <div className="pl-4">
@@ -199,8 +199,8 @@ export default function Dashboard() {
 
       <div>
         <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-          <RecentOrders />
-          <BarChart />
+          <RecentOrders orders={orders} />
+          <BarChart orders={orders} />
         </div>
       </div>
       <div className="">

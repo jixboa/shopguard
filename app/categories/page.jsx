@@ -5,6 +5,7 @@ import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { GetCategories } from "app/actions/categoryActions";
 
 // export const runtime = "edge";
+//export const dynamic = "dynamic-force"
 
 const getCategories = async () => {
   try {
@@ -24,7 +25,7 @@ const getCategories = async () => {
 };
 
 export default async function Categories() {
-  //const data = await GetCategories();
+  const data = await GetCategories();
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["categories"], GetCategories);
@@ -35,7 +36,7 @@ export default async function Categories() {
       {
         <Hydrate state={dehydratedState}>
           <div>
-            <CategoryClient />
+            <CategoryClient data={data} />
           </div>
         </Hydrate>
       }

@@ -38,7 +38,7 @@ const getOrders = async () => {
   }
 };
 
-export default function BarChart() {
+export default function BarChart({ orders }) {
   const [dailyData, setDailyData] = useState([]);
   /* const [chartData, setChartData] = useState({
     labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
@@ -58,9 +58,9 @@ export default function BarChart() {
   });
 
   useEffect(() => {
-    if (ordersData) {
+    if (orders) {
       // Map all orders to a new constant
-      const allOrders = ordersData?.map((order) => ({
+      const allOrders = orders?.map((order) => ({
         name: order.name,
         id: order._id,
         total_amount: order.total_amount,
@@ -83,7 +83,7 @@ export default function BarChart() {
 
       // Now, update your chart data with the calculated daily totals
     }
-  }, [ordersData]);
+  }, [orders]);
 
   const [chartOptions, setChartOptions] = useState({
     plugins: {

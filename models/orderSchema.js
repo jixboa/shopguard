@@ -8,6 +8,10 @@ const OrderSchema = new Schema(
     total_amount: String,
     invoice_number: String,
     status: String,
+    payment_mode: String,
+    amount_recieved: String,
+    change: String,
+    created_by: String,
     date: {
       type: Date,
       default: Date.now,

@@ -21,7 +21,7 @@ const getOrders = async () => {
   }
 };
 
-export default function RecentOrders() {
+export default function RecentOrders({ orders }) {
   function formatDateAgo(fetchedDate) {
     const currentDate = new Date();
     const parsedDate = new Date(fetchedDate);
@@ -52,7 +52,7 @@ export default function RecentOrders() {
   });
 
   // Map all orders to a new constant
-  const allOrders = ordersData?.map((order) => ({
+  const allOrders = orders?.map((order) => ({
     name: order.name,
     id: order._id,
     total_amount: order.total_amount,

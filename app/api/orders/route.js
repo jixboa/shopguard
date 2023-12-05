@@ -7,8 +7,18 @@ export async function POST(request) {
   await connectMongo();
 
   const productQuantity = {};
-  const { name, contact, invoice_number, total_amount, status, selectedIds } =
-    await request.json();
+  const {
+    name,
+    contact,
+    invoice_number,
+    total_amount,
+    amount_recieved,
+    change,
+    mode,
+    status,
+    selectedIds,
+    created_by,
+  } = await request.json();
 
   const productIds = selectedIds.split(",");
   const uniqIds = [...new Set(productIds)];
@@ -31,8 +41,12 @@ export async function POST(request) {
     name: name,
     contact: contact,
     invoice_number: invoice_number,
+    payment_mode: mode,
+    amount_recieved: amount_recieved,
+    change: change,
     status: status,
     total_amount: total_amount,
+    created_by: created_by,
   });
 
   productIds.forEach((id) => {

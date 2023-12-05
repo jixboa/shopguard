@@ -3,14 +3,14 @@
 
 import { revalidatePath } from "next/cache";
 import connectMongo from "../../database/conn";
-import Category from "../../models/categorySchema";
+import Product from "../../models/productSchema";
 
 export async function AddCategory(data) {
   await connectMongo();
 
   try {
     let name = data.get("name")?.valueOf();
-    const saveCategory = new Category({ name });
+    const saveCategory = new Product({ name });
 
     const newCategory = await saveCategory.save();
 
@@ -18,7 +18,7 @@ export async function AddCategory(data) {
 
     return simplifiedCategory;
   } catch (error) {
-    console.error("Error creating category:", error);
+    console.error("Error creating product:", error);
     throw error;
   } finally {
     revalidatePath("/categories");
@@ -26,21 +26,21 @@ export async function AddCategory(data) {
 }
 
 // Server
-export async function GetCategories() {
+export async function GetProducts() {
   await connectMongo();
   try {
-    const categories = await Category.find({});
+    const products = await Product.find({});
 
-    const serialisedCategory = categories.map((category) => {
-      return { ...category._doc, _id: category._id.toString() };
+    const serialisedProducts = products.map((product) => {
+      return { ...product._doc, _id: product._id.toString() };
     });
     //console.log(serialisedCategory);
 
     // Convert the array of objects to plain JavaScript objects
-    /*  const simplifiedCategories = categories.map((category) =>
-      JSON.parse(JSON.stringify(category))
+    /*  const simplifiedCategories = categories.map((product) =>
+      JSON.parse(JSON.stringify(product))
     ); */
-    return serialisedCategory;
+    return serialisedProducts;
   } catch (error) {
     console.error("Error retrieving categories:", error);
     throw error;
@@ -56,7 +56,7 @@ export async function DeleteCategory(ID) {
   }
 
   try {
-    await Category.findByIdAndDelete(id);
+    await Product.findByIdAndDelete(id);
     revalidatePath("/categories");
   } catch (error) {
     console.log(error);
@@ -69,6 +69,6 @@ export async function UpdateCategory(editCat) {
   const name = editCat.name;
   await connectMongo();
 
-  await Category.findByIdAndUpdate(id, { name });
+  await Product.findByIdAndUpdate(id, { name });
   revalidatePath("/categories");
 }

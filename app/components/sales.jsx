@@ -17,6 +17,7 @@ import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
+import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 
 //get prods
 const getProducts = async () => {
@@ -36,10 +37,10 @@ const getProducts = async () => {
   }
 };
 
-export default function SalesClient() {
+export default function SalesClient({ productss }) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { setUserDetail, selectedProducts, setSelectedProducts } =
+  const { userDetail, setUserDetail, selectedProducts, setSelectedProducts } =
     useContext(ProductsContext);
 
   const [cashRecieved, setCashRecieve] = useState(0);
@@ -69,7 +70,11 @@ export default function SalesClient() {
     invoice_number: "",
     selectedIds: "",
     total_amount: "",
-    status: "paid",
+    mode: "cash",
+    amount_recieved: "",
+    change: "",
+    status: "",
+    created_by: userDetail?.username,
   });
 
   //setOrder({ ...order, selectedIds: selectedProducts.join(",") });
@@ -162,6 +167,7 @@ export default function SalesClient() {
   const { mutate } = useMutation(addOrder, {
     onMutate: async (data) => {
       await queryClient.cancelQueries(["products"]);
+      await queryClient.cancelQueries(["orders"]);
     },
     onError: (error, newCategory, context) => {
       // Handle errors, if needed
@@ -169,32 +175,39 @@ export default function SalesClient() {
     },
     onSettled: () => {
       queryClient.invalidateQueries(["products"]);
+      queryClient.invalidateQueries(["orders"]);
       setSelectedProducts([]);
     },
     onSuccess: (data, variables, context) => {
       // Handle success, if needed
       setOrder({
-        name: "",
-        contact: "",
+        name: "Cash Customer",
+        contact: "##",
         invoice_number: "",
         selectedIds: "",
         total_amount: "",
-        status: "paid",
+        mode: "cash",
+        amount_recieved: "",
+        change: "",
+        status: "",
       });
       setCashRecieve(0);
       toast.success("Order Created successfully");
     },
   });
 
-  let newChange = 0.0;
-
-  if (cashRecieved > total) {
-    newChange = parseFloat(cashRecieved, 0) - parseFloat(total, 10);
-  }
-
   const handleAddOrder = async (e) => {
     e.preventDefault();
-    await setChange(newChange);
+    console.log(userDetail?.username);
+
+    let orderStatus;
+
+    if (order?.mode == "pending") {
+      orderStatus = "pending";
+      setChange(0);
+    } else {
+      orderStatus = "paid";
+    }
 
     const invoiceNumber =
       Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000;
@@ -204,8 +217,12 @@ export default function SalesClient() {
       ...order,
       invoice_number: invoiceNumber,
       total_amount: total,
+      amount_recieved: cashRecieved,
+      change: change,
+      status: orderStatus,
       selectedIds: selectedProducts.join(","),
     });
+    //console.log(order);
     mutate(order);
   };
 
@@ -226,18 +243,18 @@ export default function SalesClient() {
     return <p className="ml-20 mt-20 text-black font-normal">Loading...</p>;
   }
 
-  if (!data || !Array.isArray(data?.products)) {
+  if (!productss || !Array.isArray(productss)) {
     return <p>No products available.</p>;
   }
 
   let products;
 
   if (phrase) {
-    products = data?.products.filter((p) =>
+    products = data?.productss.filter((p) =>
       p.name.toLowerCase().includes(phrase)
     );
   } else {
-    products = data?.products;
+    products = productss;
   }
 
   return (
@@ -367,7 +384,7 @@ export default function SalesClient() {
             /> */}
 
             <Input
-              className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
+              className=" bg-white w-full rounded-lg px-4 py-2 mb-2"
               type="text"
               value={order.name}
               onChange={(e) =>
@@ -379,7 +396,7 @@ export default function SalesClient() {
               placeholder="Name"
             />
             <Input
-              className="bg-gray-100 w-full rounded-lg px-4 py-2 mb-2"
+              className="w-full rounded-lg px-4 py-2 mb-2  bg-white"
               type="text"
               value={order.contact}
               onChange={(e) => setOrder({ ...order, contact: e.target.value })}
@@ -398,28 +415,29 @@ export default function SalesClient() {
             {selectedProducts.length && (
               <div className="w-full">
                 <label
-                  className="text-xs font-extralight text-gray-500 ml-1"
+                  className="text-sm font-normal text-gray-500 ml-1"
                   htmlFor="status">
-                  Order status
+                  Payment Mode
                 </label>
                 <select
-                  value={order.status}
+                  value={order.mode}
                   onChange={(e) => {
                     setOrder({
                       ...order,
-                      status: e.target.value,
+                      mode: e.target.value,
                     });
                     setCashRecieve(0);
                   }}
                   className=" p-2 mb-1 block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   id="size">
-                  <option value="paid">Cash Paid</option>
+                  <option value="cash">Cash Paid</option>
+                  <option value="momo">Momo</option>
                   <option value="pending">Create Order</option>
                 </select>
               </div>
             )}
 
-            {selectedProducts.length && order.status === "paid" ? (
+            {selectedProducts.length && order.mode === "cash" ? (
               <div className="grid grid-cols-2 md:grid-col-1 sm:grid-col-1  gap-4  border border-b-2 p-1 bg-gray-100 rounded-md">
                 <div className="px-2 flex flex-row sm:flex-col xs-flex-col justify-start items-center w-full">
                   <Input
@@ -427,18 +445,26 @@ export default function SalesClient() {
                     label="cash recieved"
                     onChange={async (e) => {
                       await setCashRecieve(e.target.value);
+                      setChange(
+                        (
+                          parseFloat(e.target.value, 0) - parseFloat(total, 10)
+                        ).toFixed(2)
+                      );
                     }}
-                    className="rounded w-full h-8 px-2"
+                    className="rounded w-full h-8 px-2 bg-white"
                   />
                 </div>
-                <div className="flex flex-row  sm:flex-col xs-flex-col gap-2 justify-end items-center">
-                  <h3 className="text-sm  text-gray-600 font-normal">
-                    Change:
-                  </h3>
-                  <h3 className="text-lg font-semibold text-green-600">
-                    GH₵ {change}
-                  </h3>
-                </div>
+
+                {change > 0 && (
+                  <div className="flex flex-row  sm:flex-col xs-flex-col  justify-end items-center">
+                    <h3 className="text-sm  text-gray-600 font-normal">
+                      Change:
+                    </h3>
+                    <h3 className="text-sm font-semibold text-green-600">
+                      GH₵ {change}
+                    </h3>
+                  </div>
+                )}
               </div>
             ) : (
               <></>
@@ -451,14 +477,22 @@ export default function SalesClient() {
 
           {cashRecieved >= total &&
             selectedProducts.length > 0 &&
-            order.status == "paid" && (
+            order.mode == "cash" &&
+            total > 0 && (
               <button
                 onClick={handleAddOrder}
                 className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
                 Pay GH₵ {total}
               </button>
             )}
-          {selectedProducts.length > 0 && order.status == "pending" && (
+          {selectedProducts.length > 0 && order.mode == "momo" && (
+            <button
+              onClick={handleAddOrder}
+              className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">
+              Pay GH₵ {total} with Momo
+            </button>
+          )}
+          {selectedProducts.length > 0 && order.mode == "pending" && (
             <button
               onClick={handleAddOrder}
               className=" border p-5 text-white py-2 w-full bg-green-500 rounded-xl font-bold mt-4 shadow-emerald-300 shadow-lg">

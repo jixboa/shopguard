@@ -3,46 +3,45 @@
 
 import { revalidatePath } from "next/cache";
 import connectMongo from "../../database/conn";
-import Category from "../../models/categorySchema";
+import Order from "../../models/orderSchema";
 
 export async function AddCategory(data) {
   await connectMongo();
 
   try {
     let name = data.get("name")?.valueOf();
-    const saveCategory = new Category({ name });
+    const saveOrder = new Order({ name });
 
-    const newCategory = await saveCategory.save();
+    const newOrder = await saveOrder.save();
 
-    const simplifiedCategory = JSON.parse(JSON.stringify(newCategory));
+    const simplifiedOrders = JSON.parse(JSON.stringify(newOrder));
 
-    return simplifiedCategory;
+    return simplifiedOrders;
   } catch (error) {
-    console.error("Error creating category:", error);
+    console.error("Error creating Order:", error);
     throw error;
   } finally {
-    revalidatePath("/categories");
+    revalidatePath("/orders");
   }
 }
 
-// Server
-export async function GetCategories() {
+export async function GetOrders() {
   await connectMongo();
   try {
-    const categories = await Category.find({});
+    const orders = await Order.find({});
 
-    const serialisedCategory = categories.map((category) => {
-      return { ...category._doc, _id: category._id.toString() };
+    const serialisedOrders = orders.map((order) => {
+      return { ...order._doc, _id: order._id.toString() };
     });
     //console.log(serialisedCategory);
 
     // Convert the array of objects to plain JavaScript objects
-    /*  const simplifiedCategories = categories.map((category) =>
-      JSON.parse(JSON.stringify(category))
+    /*  const simplifiedCategories = orders.map((product) =>
+      JSON.parse(JSON.stringify(product))
     ); */
-    return serialisedCategory;
+    return serialisedOrders;
   } catch (error) {
-    console.error("Error retrieving categories:", error);
+    console.error("Error retrieving orders:", error);
     throw error;
   }
 }
@@ -56,8 +55,8 @@ export async function DeleteCategory(ID) {
   }
 
   try {
-    await Category.findByIdAndDelete(id);
-    revalidatePath("/categories");
+    await Order.findByIdAndDelete(id);
+    revalidatePath("/orders");
   } catch (error) {
     console.log(error);
   }
@@ -69,6 +68,6 @@ export async function UpdateCategory(editCat) {
   const name = editCat.name;
   await connectMongo();
 
-  await Category.findByIdAndUpdate(id, { name });
-  revalidatePath("/categories");
+  await Order.findByIdAndUpdate(id, { name });
+  revalidatePath("/orders");
 }

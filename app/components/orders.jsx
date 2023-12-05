@@ -37,61 +37,10 @@ const TABLE_HEAD = [
   "Invoice No.",
   "Amount",
   "Date",
+  "Payment Mode",
   "Status",
+  "Created By",
   "",
-];
-
-const TABLE_ROWS = [
-  {
-    img: "/img/logos/logo-spotify.svg",
-    name: "Spotify",
-    amount: "$2,500",
-    date: "Wed 3:00pm",
-    status: "paid",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "/img/logos/logo-amazon.svg",
-    name: "Amazon",
-    amount: "$5,000",
-    date: "Wed 1:00pm",
-    status: "paid",
-    account: "master-card",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "/img/logos/logo-pinterest.svg",
-    name: "Pinterest",
-    amount: "$3,400",
-    date: "Mon 7:40pm",
-    status: "pending",
-    account: "master-card",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "/img/logos/logo-google.svg",
-    name: "Google",
-    amount: "$1,000",
-    date: "Wed 5:00pm",
-    status: "paid",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "/img/logos/logo-netflix.svg",
-    name: "netflix",
-    amount: "$14,000",
-    date: "Wed 3:30am",
-    status: "cancelled",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
 ];
 
 const getOrders = async () => {
@@ -111,12 +60,13 @@ const getOrders = async () => {
   }
 };
 
-export default function OrdersClient() {
+export default function OrdersClient({ orders }) {
   const router = useRouter();
-  const { data, isLoading } = useQuery({
+
+  /* const { data, isLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
-  });
+  }); */
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5; // Number of items to display per page
@@ -142,7 +92,7 @@ export default function OrdersClient() {
 
   const offset = currentPage * itemsPerPage;
 
-  const sortedData = data?.slice().sort((a, b) => {
+  const sortedData = orders?.slice().sort((a, b) => {
     // Parse the date strings into Date objects
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
@@ -240,7 +190,9 @@ export default function OrdersClient() {
                     invoice_number,
                     total_amount,
                     date,
+                    payment_mode,
                     status,
+                    created_by,
                     products,
                   },
                   index
@@ -284,6 +236,11 @@ export default function OrdersClient() {
                         </h1>
                       </td>
                       <td className={classes}>
+                        <h1 className="font-semibold text-sm">
+                          {payment_mode}
+                        </h1>
+                      </td>
+                      <td className={classes}>
                         <div className="w-max">
                           <Chip
                             size="sm"
@@ -299,6 +256,9 @@ export default function OrdersClient() {
                             }
                           />
                         </div>
+                      </td>
+                      <td className={classes}>
+                        <h1 className="font-semibold text-sm">{created_by}</h1>
                       </td>
                       {/* <td className={classes}>
                       <ol className="mb-10">
@@ -344,7 +304,7 @@ export default function OrdersClient() {
               height: "100%",
             }}>
             <ReactPaginate
-              pageCount={Math.ceil(data.length / itemsPerPage)}
+              pageCount={Math.ceil(orders.length / itemsPerPage)}
               pageRangeDisplayed={5}
               marginPagesDisplayed={2}
               onPageChange={handlePageChange}
@@ -370,7 +330,7 @@ export default function OrdersClient() {
           </tr>
         </thead>
         <tbody>
-          {data.map((order) => (
+          {orders.map((order) => (
             <tr key={order._id}>
               <td>{order.name}</td>
               <td>{order.contact}</td>
