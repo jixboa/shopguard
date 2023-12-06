@@ -250,9 +250,7 @@ export default function SalesClient({ productss }) {
   let products;
 
   if (phrase) {
-    products = data?.productss.filter((p) =>
-      p.name.toLowerCase().includes(phrase)
-    );
+    products = productss?.filter((p) => p.name.toLowerCase().includes(phrase));
   } else {
     products = productss;
   }
