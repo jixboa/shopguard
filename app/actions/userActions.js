@@ -9,46 +9,53 @@ import { cookies } from "next/headers";
 import { getTokenData } from "../utils/getTokenData";
 import { revalidatePath } from "next/cache";
 
+connectMongo();
+
 export async function Login(data) {
-  const cookieStore = await cookies();
+  try {
+    const cookieStore = await cookies();
 
-  const MAX_AGE = 60 * 60 * 20;
-  let email = data?.email;
-  let password = data?.password;
+    const MAX_AGE = 60 * 60 * 20;
+    let email = data?.email;
+    let password = data?.password;
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    return { error: "User does not exist" };
+    const user = await User.findOne({ email });
+    if (!user) {
+      return { error: "User does not exist" };
+    }
+
+    const validPassword = await bcryptjs.compare(password, user.password);
+    if (!validPassword) {
+      return { error: "Invalid Password" };
+    }
+
+    const tokenData = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    };
+
+    const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
+      expiresIn: MAX_AGE,
+    });
+
+    const serialized = serialize("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: MAX_AGE,
+      path: "/",
+    });
+
+    const response = {
+      message: "Authorized",
+    };
+    cookieStore.set("token", token, { serialized, maxAge: MAX_AGE });
+  } catch (error) {
+    console.log(error.message);
+    return { error: "An error occured" };
   }
-
-  const validPassword = await bcryptjs.compare(password, user.password);
-  if (!validPassword) {
-    return { error: "Invalid Password" };
-  }
-
-  const tokenData = {
-    id: user._id,
-    username: user.username,
-    email: user.email,
-    isAdmin: user.isAdmin,
-  };
-
-  const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
-    expiresIn: MAX_AGE,
-  });
-
-  const serialized = serialize("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: MAX_AGE,
-    path: "/",
-  });
-
-  const response = {
-    message: "Authorized",
-  };
-  cookieStore.set("token", token, { serialized, maxAge: 60 });
 }
 
 export async function GetCurrentUser() {
