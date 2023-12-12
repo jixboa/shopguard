@@ -75,26 +75,23 @@ const getOrders = async () => {
   }
 };
 
-export default function Dashboard({ categories, products, orders }) {
+export default function Dashboard({
+  categories,
+  products,
+  orders,
+  currentUser,
+}) {
   const router = useRouter();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(!open);
+  const currentTime = Math.floor(Date.now() / 1000);
 
   useEffect(() => {
     // Define the API request within the useEffect
-
-    fetch("/api/users/me")
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setUserDetail(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
+    console.log("timer");
+  }, [!currentUser.userData.exp]);
 
   const { data: productsData, isLoading: productsIsLoading } = useQuery({
     queryKey: ["products"],

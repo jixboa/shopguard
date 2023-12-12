@@ -57,6 +57,7 @@ export async function DeleteCategory(ID) {
   try {
     await Order.findByIdAndDelete(id);
     revalidatePath("/orders");
+    revalidatePath("/");
   } catch (error) {
     console.log(error);
   }
@@ -70,4 +71,5 @@ export async function UpdateCategory(editCat) {
 
   await Order.findByIdAndUpdate(id, { name });
   revalidatePath("/orders");
+  revalidatePath("/");
 }

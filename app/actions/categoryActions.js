@@ -5,18 +5,37 @@ import { revalidatePath } from "next/cache";
 import connectMongo from "../../database/conn";
 import Category from "../../models/categorySchema";
 
+import { cookies } from "next/headers";
+import { getTokenData } from "app/utils/getTokenData";
+
 export async function AddCategory(data) {
+  const cookieStore = cookies();
+  const token = await cookieStore.get("token");
+  const userData = await getTokenData(token.value);
+
+  if (!userData.isAdmin) {
+    return { error: "Not Authorized" };
+  }
+
   await connectMongo();
 
   try {
-    let name = data.get("name")?.valueOf();
-    const saveCategory = new Category({ name });
+    let name = data.name;
+    let active = data.active;
 
+    const cat = await Category.findOne({ name });
+
+    if (cat) {
+      console.log("cat exist");
+      return { error: "Category already exist" };
+    }
+
+    const saveCategory = new Category({ name, active });
     const newCategory = await saveCategory.save();
 
     const simplifiedCategory = JSON.parse(JSON.stringify(newCategory));
 
-    return simplifiedCategory;
+    return { simplifiedCategory, message: "Added successfully" };
   } catch (error) {
     console.error("Error creating category:", error);
     throw error;
@@ -52,7 +71,7 @@ export async function DeleteCategory(ID) {
 
   const id = ID;
   if (!id) {
-    return NextResponse.json("Id not Received");
+    return { message: "An Eror occured" };
   }
 
   try {
@@ -65,10 +84,18 @@ export async function DeleteCategory(ID) {
 }
 
 export async function UpdateCategory(editCat) {
-  const id = editCat.id;
-  const name = editCat.name;
+  const id = editCat?.id;
+  const name = editCat?.name;
   await connectMongo();
 
-  await Category.findByIdAndUpdate(id, { name });
-  revalidatePath("/categories");
+  const cat = await Category.findOne({ name });
+
+  if (cat) {
+    //console.log("cat exists");
+    return { error: "Category already exist" };
+  } else {
+    await Category.findByIdAndUpdate(id, { name });
+    revalidatePath("/categories");
+    return { message: "Category Updated" };
+  }
 }

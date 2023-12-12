@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const CategorySchema = new mongoose.Schema({
   name: String,
+  active: Boolean,
   date: {
     type: Date,
     default: Date.now,

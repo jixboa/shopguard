@@ -2,13 +2,15 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import { Login } from "../../actions/userActions";
 
 import { Spinner, Input } from "@material-tailwind/react";
 
@@ -30,15 +32,23 @@ export default function SignIn() {
 
   const {
     register,
+    reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     /* console.log(data); */
-    onSignIn(data);
+    const result = await Login(data);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("Login Successful");
+      reset();
+      router.push("/");
+    }
   };
 
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -125,7 +135,6 @@ export default function SignIn() {
                       setUser({ ...user, password: e.target.value })
                     } */
                     {...register("password")}
-                    required
                   />
                   {errors.password?.message && (
                     <p className="pt-1 text-red-600 rounded-md text-xs  font-semibold">
@@ -138,9 +147,10 @@ export default function SignIn() {
               <div>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   /*  onClick={onSignIn} */
-                  className="flex w-full justify-center rounded-md bg-blue-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  {buttonDisabled ? "Sign In" : "Sign In"}
+                  className="flex w-full justify-center disabled:bg-blue-gray-100 rounded-md bg-blue-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  {isSubmitting ? "Signing In" : "Sign In"}
                 </button>
               </div>
             </form>

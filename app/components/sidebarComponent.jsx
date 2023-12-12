@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { ProductsContext } from "./ProductsContext";
+import { GetCurrentUser } from "app/actions/userActions";
 
 const navigation = [
   {
@@ -68,6 +69,8 @@ export default function SidebarComponent() {
   const pathname = usePathname();
 
   const { userDetail } = useContext(ProductsContext);
+  /* 
+  const currentUser = GetCurrentUser(); */
 
   const [open, setOpen] = useState(false);
 
@@ -88,7 +91,7 @@ export default function SidebarComponent() {
       </>
     );
   }
-  const isAdmin = userDetail.isAdmin;
+  const isAdmin = true;
 
   const filteredNavigation = isAdmin
     ? navigation

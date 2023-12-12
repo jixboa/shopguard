@@ -10,6 +10,6 @@ export const getTokenData = async (tokenString) => {
     const userData = await verify(tokenString, secret);
     return userData;
   } catch (error) {
-    throw new Error(error.message);
+    return { error: "Not Authorized" };
   }
 };

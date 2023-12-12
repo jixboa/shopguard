@@ -38,15 +38,6 @@ export async function POST(request) {
       expiresIn: MAX_AGE,
     });
 
-    /*  const response = NextResponse.json({
-      message: "Login successful",
-      success: true,
-    });
-
-    response.cookies.set("token", token, {
-      httpOnly: true,
-    });
- */
     const serialized = serialize("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

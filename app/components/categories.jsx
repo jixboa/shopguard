@@ -6,6 +6,7 @@ import {
   ListItemSuffix,
   Card,
   IconButton,
+  Radio,
 } from "@material-tailwind/react";
 
 import {
@@ -35,12 +36,15 @@ import ReactPaginate from "react-paginate";
 import { Spinner } from "@material-tailwind/react";
 
 import { MdDelete, MdEdit, MdEditNotifications } from "react-icons/md";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { experimental_useOptimistic as useOptimistic } from "react";
+
 import {
   AddCategory,
   GetCategories,
@@ -63,6 +67,13 @@ function TrashIcon() {
     </svg>
   );
 }
+
+const schema = yup
+  .object({
+    name: yup.string().required().min(3),
+    active: yup.boolean().required("Please select the category status"),
+  })
+  .required();
 
 //get cats
 const getCategories = async () => {
@@ -87,6 +98,30 @@ export function CategoryClient({ data }) {
   const queryClient = useQueryClient();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
 
+  const { pending } = useFormStatus();
+  const [useOptimisticData, addOptimisticData] = useOptimistic(
+    data,
+    (state, newData) => {
+      return [...state, newData];
+    }
+  );
+
+  //const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    register,
+    reset,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      active: true,
+    },
+  });
+
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
 
@@ -98,11 +133,13 @@ export function CategoryClient({ data }) {
 
   const [category, setCategory] = useState({
     name: "",
+    active: true,
   });
 
   const [editCat, setEditCat] = useState({
     id: "",
     name: "",
+    active: true,
   });
 
   const [delCategoryID, setDelCategoryID] = useState("");
@@ -198,7 +235,16 @@ export function CategoryClient({ data }) {
   /*  const data = GetCategories();
   console.log(data); */
 
-  const displayedItems = data?.slice(offset, offset + itemsPerPage);
+  const sortedData = useOptimisticData?.slice().sort((a, b) => {
+    // Parse the date strings into Date objects
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+
+    // Compare the dates to sort in descending order (latest date first)
+    return dateB - dateA;
+  });
+
+  const displayedItems = sortedData?.slice(offset, offset + itemsPerPage);
 
   const updateCategory = async () => {
     const newName = editCat.name;
@@ -240,13 +286,26 @@ export function CategoryClient({ data }) {
     },
     onSuccess(data, variables, context) {
       setEditOpen(false);
-      toast.success("Updated successfully");
+
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("Updated successfully");
+      }
     },
   });
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    updateMutation.mutate(editCat);
+  const handleUpdate = async (cat) => {
+    //e.preventDefault();
+    //updateMutation.mutate(editCat);
+
+    const result = await UpdateCategory(cat);
+
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      toast.success(result?.message);
+    }
   };
 
   const addCategory = async () => {
@@ -284,8 +343,14 @@ export function CategoryClient({ data }) {
     },
     onSuccess: (data, variables, context) => {
       // Handle success, if needed
-      setOpen(false);
-      toast.success("Category added successfully");
+      if (data.error) {
+        setOpen(false);
+        toast.error(data.error);
+      } else {
+        toast.success(data.message);
+        setOpen(false);
+        reset();
+      }
     },
   });
 
@@ -295,50 +360,25 @@ export function CategoryClient({ data }) {
     addMutation.mutate(category);
   };
 
-  /*   const [inputValue, setInputValue] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const dropdownData = [
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-    "Item 5",
-    "Item 6",
-    "Item 7",
-    "Item 8",
-    "Item 9",
-    "Item 10",
-    "Item 12",
-    "Item 13",
-  ]; */
-
-  /* const handleInputChange = (event) => {
-    const value = event.target.value.toLowerCase();
-    setInputValue(value);
-    setShowDropdown(true); // Show the dropdown when typing
-  };
-
-  // Function to handle selecting an item from the dropdown
-  const handleItemClick = (item) => {
-    setInputValue(item);
-    setShowDropdown(false); // Hide the dropdown
-  }; */
-
   const handleFormSubmit = async (data) => {
-    /* let name = data.get("name")?.valueOf();
-    console.log(name); */
-    //await AddCategory(data);
-    addMutation.mutate(data);
-  };
+    console.log(data);
 
-  /*   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner />
-      </div>
-    );
-  } */
+    addOptimisticData({
+      _id: Math.random(),
+      content: data,
+    });
+
+    const result = await AddCategory(data);
+    if (result.error) {
+      setOpen(false);
+      reset();
+      toast.error(result.error);
+    } else {
+      toast.success(result.message);
+      setOpen(false);
+      reset();
+    }
+  };
 
   return (
     <>
@@ -355,31 +395,6 @@ export function CategoryClient({ data }) {
             {/*  {loading ? "Creating Category" : "Add new Category"} */}
             Categories
           </h2>
-
-          {/*       <div className="relative">
-            <Input
-              type="text"
-              className="w-full py-2 px-4 border rounded-lg shadow-md"
-              label="Type to filter..."
-              value={inputValue}
-              onChange={handleInputChange}
-              onClick={() => setShowDropdown(true)} // Show the dropdown when the input is clicked
-            />
-            {showDropdown && (
-              <ul className="absolute z-10 w-full border rounded-lg mt-2 bg-white shadow-md overflow-y-auto">
-                {dropdownData
-                  .filter((item) => item.toLowerCase().includes(inputValue))
-                  .map((item, index) => (
-                    <li
-                      key={index}
-                      className="py-2 px-4 cursor-pointer hover:bg-gray-200"
-                      onClick={() => handleItemClick(item)}>
-                      {item}
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </div> */}
         </div>
         <div className="flex flex-row justify-between mb-5">
           <h1 className=" flex flex-grow"></h1>
@@ -446,29 +461,92 @@ export function CategoryClient({ data }) {
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4 p-4">
-              <form className="space-y-6" action={handleFormSubmit}>
+              <form
+                className="space-y-6"
+                onSubmit={handleSubmit(handleFormSubmit)}>
                 <div>
                   <div className="mt-2">
                     <Input
-                      id="name"
                       name="name"
                       type="text"
-                      autoComplete="name"
                       label="Category name"
-                      onChange={(e) =>
-                        setCategory({ ...category, name: e.target.value })
-                      }
-                      required
+                      defaultValue=""
+                      onChange={(e) => {
+                        setValue("name", e.target.value);
+
+                        setCategory({ ...category, name: e.target.value });
+                      }}
+                      {...register("name")}
+                      error={errors.name ? true : false}
+                    />
+                    {errors.name?.message && (
+                      <p className="pt-1 text-red-600  rounded-md text-xs  font-semibold">
+                        {errors.name?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex gap-10">
+                    <Controller
+                      control={control}
+                      name="active"
+                      render={({ field }) => (
+                        <Radio
+                          onChange={() => {
+                            field.onChange(true);
+                          }}
+                          name="type"
+                          label="Active"
+                          defaultChecked
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      control={control}
+                      name="active"
+                      render={({ field }) => (
+                        <Radio
+                          onChange={() => {
+                            field.onChange(false);
+                          }}
+                          name="type"
+                          label="InActive"
+                        />
+                      )}
                     />
                   </div>
 
+                  {errors.active && (
+                    <p className="text-red-600 rounded-md text-xs font-semibold">
+                      {errors.active.message}
+                    </p>
+                  )}
+                  {/*  <div className="flex gap-10">
+                    <Radio
+                      onClick={(e) => {
+                        setCategory({ ...category, active: true });
+                      }}
+                      name="type"
+                      label="Active"
+                      defaultChecked
+                    />
+                    <Radio
+                      onClick={(e) => {
+                        setCategory({ ...category, active: false });
+                      }}
+                      name="type"
+                      label="Inactive"
+                    />
+                  </div> */}
+
                   <div className="py-2">
-                    <button
+                    <Button
+                      disabled={isSubmitting}
                       type="submit"
                       /*   onClick={handleAddCategory} */
-                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Add Category
-                    </button>
+                      className="flex w-full justify-center rounded-md disabled:bg-gray-600 bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
                   </div>
                 </div>
               </form>
@@ -503,38 +581,33 @@ export function CategoryClient({ data }) {
                 action={(e) => {
                   setEditOpen(false);
                   const cat = editCat;
-                  UpdateCategory(cat);
+                  handleUpdate(cat);
                 }}>
                 <div>
-                  <label
-                    htmlFor="fullname"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Category name
-                  </label>
                   <div className="mt-2">
-                    <input
+                    <Input
                       id="name"
                       name="name"
                       type="text"
                       value={editCat.name}
-                      autoComplete="name"
+                      label="Category name"
                       onChange={(e) =>
                         setEditCat({ ...editCat, name: e.target.value })
                       }
                       required
-                      className=" px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
 
                   <div className="py-2">
-                    <button
+                    <Button
+                      disabled={pending}
                       type="submit"
                       /* onClick={(e) => {
                         handleUpdate(e);
                       }} */
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Update Category
-                    </button>
+                      {pending ? "Updating" : "Update"}
+                    </Button>
                   </div>
                 </div>
               </form>
@@ -558,10 +631,10 @@ export function CategoryClient({ data }) {
           </DialogBody>
           <DialogFooter>
             <form
-              action={(e) => {
-                setDeleteOpen(false);
+              action={() => {
                 const id = delCategoryID;
                 DeleteCategory(id);
+                setDeleteOpen(false);
               }}>
               <Button
                 variant="text"
@@ -571,13 +644,14 @@ export function CategoryClient({ data }) {
                 <span>Cancel</span>
               </Button>
               <Button
+                disabled={pending}
                 variant="gradient"
                 color="green"
                 type="submit"
                 className="bg-green-400 text-white text-sm"
                 /* onClick={() => delMutation.mutate(delCategoryID)} */
               >
-                <span>Confirm</span>
+                <span>{pending ? "Deleting" : "Confirm"}</span>
               </Button>
             </form>
           </DialogFooter>
