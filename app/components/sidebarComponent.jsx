@@ -91,7 +91,7 @@ export default function SidebarComponent() {
       </>
     );
   }
-  const isAdmin = true;
+  const isAdmin = userDetail?.isAdmin;
 
   const filteredNavigation = isAdmin
     ? navigation

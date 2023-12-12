@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"; */
 import { toast } from "react-hot-toast";
 //import UserList from "../../components/userList";
-import { SortableTable } from "../../components/userList2";
+import { SortableTable } from "../../components/userList";
 
 import getQueryClient from "../../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";

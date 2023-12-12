@@ -89,9 +89,8 @@ export default function Dashboard({
   const currentTime = Math.floor(Date.now() / 1000);
 
   useEffect(() => {
-    // Define the API request within the useEffect
-    console.log("timer");
-  }, [!currentUser.userData.exp]);
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const { data: productsData, isLoading: productsIsLoading } = useQuery({
     queryKey: ["products"],

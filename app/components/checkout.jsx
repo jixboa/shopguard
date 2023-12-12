@@ -8,7 +8,7 @@ import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-export default function CheckOutComponent() {
+export default function CheckOutComponent({ currentUser }) {
   //const queryClient = useQueryClient();
 
   const [cashRecieved, setCashRecieve] = useState(0);
@@ -18,19 +18,8 @@ export default function CheckOutComponent() {
     useContext(ProductsContext);
 
   useEffect(() => {
-    // Define the API request within the useEffect
-
-    fetch("/api/users/me")
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setUserDetail(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
-  //const [productInfo, setProductInfo] = useState([]);
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const [order, setOrder] = useState({
     name: "",

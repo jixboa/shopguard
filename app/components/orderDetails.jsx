@@ -18,7 +18,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 
-export default function OrderDetailsClient({ params }) {
+export default function OrderDetailsClient({ params, currentUser }) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [searchParams] = useSearchParams();
@@ -27,6 +27,11 @@ export default function OrderDetailsClient({ params }) {
   const [OrderData, setOrderData] = useState({
     // Your initial data here
   });
+
+  useEffect(() => {
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
+
   const [change, setChange] = useState(0);
   const [cashRecieved, setCashRecieve] = useState(0);
 
@@ -45,20 +50,6 @@ export default function OrderDetailsClient({ params }) {
 
   const [openReturn, setOpenReturn] = useState(false);
   const handleOpenReturn = () => setOpenReturn(!openReturn);
-
-  useEffect(() => {
-    // Define the API request within the useEffect
-
-    fetch("/api/users/me")
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setUserDetail(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
 
   const getOrder = async () => {
     try {

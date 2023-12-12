@@ -94,9 +94,13 @@ const getCategories = async () => {
 };
 
 //main function
-export function CategoryClient({ data }) {
+export function CategoryClient({ data, currentUser }) {
   const queryClient = useQueryClient();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const { pending } = useFormStatus();
   const [useOptimisticData, addOptimisticData] = useOptimistic(
@@ -162,20 +166,6 @@ export function CategoryClient({ data }) {
     setDelCategoryID(id);
     setDeleteOpen((cur) => !cur);
   };
-
-  useEffect(() => {
-    // Define the API request within the useEffect
-
-    fetch("/api/users/me")
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setUserDetail(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
 
   const deleteHandler = async (deletedCat) => {
     //console.log(deletedCat._id);

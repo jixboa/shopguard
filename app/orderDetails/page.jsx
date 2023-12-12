@@ -1,7 +1,10 @@
 import OrderDetailsClient from "../components/orderDetails";
+import { GetCurrentUser } from "../actions/userActions";
 
 // export const runtime = "edge";
 
-export default function orderDetails() {
-  return <OrderDetailsClient />;
+export default async function orderDetails() {
+  const currentUser = await GetCurrentUser();
+
+  return <OrderDetailsClient currentUser={currentUser} />;
 }

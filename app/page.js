@@ -15,8 +15,8 @@ export default async function Home() {
 
   const currentTime = Math.floor(Date.now() / 1000);
 
-  if (currentTime > currentUser.userData.exp) {
-    redirect("/users/signin");
+  if (!currentUser?.userData?.isAdmin) {
+    redirect("/sales");
   }
 
   return (

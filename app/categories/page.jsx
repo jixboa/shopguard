@@ -26,7 +26,7 @@ export default async function Categories() {
       {
         <Hydrate state={dehydratedState}>
           <div>
-            <CategoryClient data={data} />
+            <CategoryClient data={data} currentUser={currentUser} />
           </div>
         </Hydrate>
       }

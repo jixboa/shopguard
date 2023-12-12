@@ -3,6 +3,7 @@ import Link from "next/link";
 import CheckOutComponent from "../components/checkout";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { GetCurrentUser } from "app/actions/userActions";
 
 // export const runtime = "edge";
 
@@ -24,15 +25,21 @@ const getCart = async () => {
 };
 
 export default async function CheckOut() {
+  const currentUser = await GetCurrentUser();
+
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["cart"], getCart);
   const dehydratedState = dehydrate(queryClient);
+
+  if (!currentUser?.userData) {
+    redirect("/users/signin");
+  }
 
   return (
     <>
       <Hydrate state={dehydratedState}>
         <div>
-          <CheckOutComponent />
+          <CheckOutComponent currentUser={currentUser} />
         </div>
       </Hydrate>
     </>
