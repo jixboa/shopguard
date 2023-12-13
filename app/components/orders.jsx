@@ -60,7 +60,7 @@ const getOrders = async () => {
   }
 };
 
-export default function OrdersClient({ orders }) {
+export default function OrdersClient({ orders, currentUser }) {
   const router = useRouter();
 
   /* const { data, isLoading } = useQuery({
@@ -71,6 +71,10 @@ export default function OrdersClient({ orders }) {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5; // Number of items to display per page
   const { userDetail, setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);

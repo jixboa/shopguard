@@ -8,6 +8,7 @@ import { SortableTable } from "../../components/userList";
 
 import getQueryClient from "../../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { GetCurrentUser } from "app/actions/userActions";
 
 // export const runtime = "edge";
 /* 
@@ -41,15 +42,21 @@ export default async function SignUp() {
   /*   const users = await getUsers();
   console.log(users); */
 
+  const currentUser = await GetCurrentUser();
+
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["users"], getUsers);
   const dehydratedState = dehydrate(queryClient);
+
+  if (!currentUser?.userData?.isAdmin) {
+    redirect("/users/signin");
+  }
 
   return (
     <>
       <Hydrate state={dehydratedState}>
         <div className="mt-20">
-          <SortableTable />
+          <SortableTable currentUser={currentUser} />
         </div>
       </Hydrate>
       {/*  <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-10">

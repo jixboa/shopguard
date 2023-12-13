@@ -3,6 +3,7 @@ import OrdersClient from "../components/orders";
 import getQueryClient from "../utils/getQueryClient";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { GetOrders } from "../actions/orderActions";
+import { GetCurrentUser } from "app/actions/userActions";
 
 // export const runtime = "edge";
 
@@ -25,6 +26,7 @@ const getOrders = async () => {
 
 export default async function Orders() {
   const orders = await GetOrders();
+  const currentUser = await GetCurrentUser();
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(["orders"], getOrders);
@@ -34,7 +36,7 @@ export default async function Orders() {
     <>
       <Hydrate state={dehydratedState}>
         <div className="mt-20">
-          <OrdersClient orders={orders} />
+          <OrdersClient orders={orders} currentUser={currentUser} />
         </div>
       </Hydrate>
     </>

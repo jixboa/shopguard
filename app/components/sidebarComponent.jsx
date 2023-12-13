@@ -115,25 +115,30 @@ export default function SidebarComponent() {
         </h3>
       </div>
       <div className="p-5 items-center">
-        <ul>
-          {filteredNavigation.map((item, index) => (
-            <li key={index} className="">
-              <Link
-                href={item.href}
-                className={`flex gap-x-2 mb-4  px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white
+        {userDetail?.username?.length ? (
+          <ul>
+            {filteredNavigation.map((item, index) => (
+              <li key={index} className="">
+                <Link
+                  href={item.href}
+                  className={`flex gap-x-2 mb-4  px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white
                 ${
                   pathname === item.href
                     ? " bg-gray-900 shadow-md shadow-black"
                     : "bg-transparent"
                 }
                 ${item.gap && "mt-10"}
+                 
                 `}>
-                {item.icon}
-                {!open ? null : item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  {item.icon}
+                  {!open ? null : item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

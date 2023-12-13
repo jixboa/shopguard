@@ -49,6 +49,10 @@ export default async function Sales() {
   await queryClient.prefetchQuery(["cart"], getCart);
   const dehydratedState = dehydrate(queryClient);
 
+  if (!currentUser?.userData) {
+    redirect("/users/signin");
+  }
+
   return (
     <>
       <Hydrate state={dehydratedState}>

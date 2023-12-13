@@ -65,9 +65,13 @@ const getProducts = async () => {
   }
 };
 
-export default function ProductClient() {
+export default function ProductClient({ currentUser }) {
   const queryClient = useQueryClient();
   const { userDetail, setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const [product, setProduct] = useState({
     name: "",

@@ -36,7 +36,8 @@ export default function NavbarNew() {
   const pathname = usePathname();
   ///const { username } = useContext(ProductsContext);
 
-  const { selectedProducts, userDetail } = useContext(ProductsContext);
+  const { selectedProducts, userDetail, setUserDetail } =
+    useContext(ProductsContext);
 
   //const [userData, setUserData] = useState();
   //const [profileName, setProfileName] = useState("");
@@ -49,7 +50,8 @@ export default function NavbarNew() {
       console.log(error.message);
       toast.error("Logout failed");
     } finally {
-      //toast.success("Logout successful");
+      setUserDetail([]);
+      toast("Signed out");
     }
   };
 

@@ -116,8 +116,12 @@ const getUsers = async () => {
     console.log("error Loading Users", error);
   }
 };
-export function SortableTable() {
+export function SortableTable({ currentUser }) {
   const { setUserDetail } = useContext(ProductsContext);
+
+  useEffect(() => {
+    setUserDetail(currentUser?.userData);
+  }, [currentUser?.userData, setUserDetail]);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
